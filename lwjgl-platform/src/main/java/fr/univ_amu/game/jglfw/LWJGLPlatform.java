@@ -5,6 +5,7 @@ import fr.univ_amu.game.core.KeyCode;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.jglfw.render.GLIndexBuffer;
+import fr.univ_amu.game.jglfw.render.GLMaterial;
 import fr.univ_amu.game.jglfw.render.GLVertexArray;
 import fr.univ_amu.game.jglfw.render.GLVertexBuffer;
 import fr.univ_amu.game.render.*;
@@ -205,7 +206,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
     }
 
     @Override
-    public Material create_material(Map<ShaderType, String> shader) {
-        return null;
+    public Material create_material(Map<ShaderType, String> shaders) {
+        return new GLMaterial(shaders);
     }
 }
