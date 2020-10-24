@@ -4,6 +4,8 @@ import fr.univ_amu.game.core.GraphicPlatform;
 import fr.univ_amu.game.core.KeyCode;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.Event;
+import fr.univ_amu.game.jglfw.render.GLIndexBuffer;
+import fr.univ_amu.game.jglfw.render.GLVertexArray;
 import fr.univ_amu.game.jglfw.render.GLVertexBuffer;
 import fr.univ_amu.game.render.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -11,6 +13,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -183,7 +186,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     @Override
     public IndexBuffer make_index(int[] index) {
-        return null;
+        return new GLIndexBuffer(IntBuffer.wrap(index));
     }
 
     @Override
@@ -198,7 +201,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     @Override
     public VertexArray create_vertexArray() {
-        return null;
+        return new GLVertexArray();
     }
 
     @Override
