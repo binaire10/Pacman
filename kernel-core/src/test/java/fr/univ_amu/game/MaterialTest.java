@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MaterialTest {
     private static final String FRAGMENT_SRC = "#version 330 core\n" +
@@ -36,7 +36,7 @@ public class MaterialTest {
             FRAGMENT_SRC;
 
     @Test
-    void test_shader_split_reader() {
+    public void test_shader_split_reader() {
         Map<ShaderType, String> shader = Material.splitCode(CODE_SRC);
         assertEquals(2, shader.size());
         assertEquals(FRAGMENT_SRC, shader.get(ShaderType.FRAGMENT));
