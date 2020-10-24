@@ -2,9 +2,10 @@ package fr.univ_amu.game.lwjgl.render;
 
 import fr.univ_amu.game.render.Material;
 import fr.univ_amu.game.render.ShaderType;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class GLMaterial implements Material {
                 int[] maxLength = {0};
                 glGetShaderiv(id, GL_INFO_LOG_LENGTH, maxLength);
                 byte[] msg = new byte[maxLength[0]];
-                glGetShaderInfoLog(id, maxLength, ByteBuffer.wrap(msg));
+                glGetShaderInfoLog(id, maxLength, ByteBuffer.wrap(msg).flip());
                 for (int i = 0; i < index; ++i)
                     glDeleteShader(shaders[i]);
                 throw new RuntimeException(new String(msg));
@@ -44,7 +45,7 @@ public class GLMaterial implements Material {
             int[] maxLength = {0};
             glGetProgramiv(program, GL_INFO_LOG_LENGTH, maxLength);
             byte[] msg = new byte[maxLength[0]];
-            glGetProgramInfoLog(program, maxLength, ByteBuffer.wrap(msg));
+            glGetProgramInfoLog(program, maxLength, ByteBuffer.wrap(msg).flip());
             for (int i = 0; i < index; ++i) {
                 glDetachShader(program, shaders[i]);
                 glDeleteShader(shaders[i]);
@@ -58,20 +59,27 @@ public class GLMaterial implements Material {
             glDeleteShader(shaders[i]);
         }
 
-        int nbUniforms = glGetProgrami(program, GL_ACTIVE_ATTRIBUTES);
-        int[] maxUniformLen = {0};
-        glGetProgramiv(program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, maxUniformLen);
-        int[] type = {};
-        for (int i = 0; i < nbUniforms; ++i) {
-            byte[] buffer = new byte[maxUniformLen[0]];
-            glGetActiveAttrib(program, i, IntBuffer.wrap(maxUniformLen), IntBuffer.allocate(1), IntBuffer.wrap(type), ByteBuffer.wrap(buffer));
-            String name = new String(buffer);
-            uniforms.put(name, glGetAttribLocation(program, name));
-            if (name.contains("[")) {
-                name = name.substring(0, name.indexOf('['));
-                uniforms.put(name, glGetAttribLocation(program, name));
+        int nbUniforms = glGetProgrami(program, GL_ACTIVE_UNIFORMS);
+        int maxUniformLen = glGetProgrami(program, GL_ACTIVE_UNIFORM_MAX_LENGTH);
+
+        System.out.println("uniforms count " + nbUniforms);
+        try (var stackMem = MemoryStack.stackPush()) {
+            var length = stackMem.mallocInt(1);
+            var size = stackMem.mallocInt(1);
+            var type = stackMem.mallocInt(1);
+            var name = stackMem.malloc(maxUniformLen);
+            for (int i = 0; i < nbUniforms; ++i) {
+                glGetActiveUniform(program, i, length, size, type, name);
+                String str = MemoryUtil.memASCII(name, length.get(0));
+                System.out.println(str + " " + i + " " + length.get(0));
+                uniforms.put(str, glGetUniformLocation(program, str));
+                if (str.contains("[")) {
+                    str = str.substring(0, str.indexOf('['));
+                    uniforms.put(str, glGetUniformLocation(program, str));
+                }
             }
         }
+        System.out.println(uniforms);
     }
 
     private static int getShaderType(ShaderType shaderType) {

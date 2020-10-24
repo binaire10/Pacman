@@ -12,8 +12,6 @@ import fr.univ_amu.game.render.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -192,12 +190,12 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     @Override
     public IndexBuffer make_index(int[] index) {
-        return new GLIndexBuffer(IntBuffer.wrap(index));
+        return new GLIndexBuffer(index);
     }
 
     @Override
     public VertexBuffer make_buffer(float[] data) {
-        return new GLVertexBuffer(FloatBuffer.wrap(data));
+        return new GLVertexBuffer(data);
     }
 
     @Override

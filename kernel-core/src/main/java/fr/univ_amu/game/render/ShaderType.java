@@ -9,6 +9,6 @@ public enum ShaderType {
             return VERTEX;
         if (type.equals("fragment") || type.equals("pixel"))
             return FRAGMENT;
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException(type);
     }
 }

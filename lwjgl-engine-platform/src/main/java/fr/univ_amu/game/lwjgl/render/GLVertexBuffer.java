@@ -2,15 +2,12 @@ package fr.univ_amu.game.lwjgl.render;
 
 import fr.univ_amu.game.render.VertexBuffer;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
 import static org.lwjgl.opengl.GL30.*;
 
 public class GLVertexBuffer implements VertexBuffer {
     private final int id;
 
-    public GLVertexBuffer(FloatBuffer data) {
+    public GLVertexBuffer(float[] data) {
         id = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, id);
         glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
@@ -28,13 +25,13 @@ public class GLVertexBuffer implements VertexBuffer {
     }
 
     @Override
-    public void write(IntBuffer data) {
+    public void write(int[] data) {
         glBindBuffer(GL_ARRAY_BUFFER, id);
         glBufferSubData(GL_ARRAY_BUFFER, 0, data);
     }
 
     @Override
-    public void write(FloatBuffer data) {
+    public void write(float[] data) {
         glBindBuffer(GL_ARRAY_BUFFER, id);
         glBufferSubData(GL_ARRAY_BUFFER, 0, data);
     }
