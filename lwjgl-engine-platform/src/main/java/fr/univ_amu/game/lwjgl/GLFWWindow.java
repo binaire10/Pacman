@@ -2,6 +2,7 @@ package fr.univ_amu.game.lwjgl;
 
 import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
+import fr.univ_amu.game.event.application.WindowCloseEvent;
 import fr.univ_amu.game.event.application.WindowResizeEvent;
 import fr.univ_amu.game.event.keyboard.KeyPressedEvent;
 import fr.univ_amu.game.event.keyboard.KeyReleasedEvent;
@@ -30,6 +31,7 @@ public class GLFWWindow implements Window {
         glfwSetWindowSizeCallback(winID, this::handleResizeEvent);
         glfwSetCharCallback(winID, GLFWWindow::handleTypedEvent);
         glfwSetKeyCallback(winID, GLFWWindow::handleKeyEvent);
+        glfwSetWindowCloseCallback(winID, GLFWWindow::handleClose);
 
         glfwMakeContextCurrent(winID);
     }
@@ -50,6 +52,10 @@ public class GLFWWindow implements Window {
                 Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyFromGLFW(key), true));
                 break;
         }
+    }
+
+    private static void handleClose(long wid) {
+        Platform.dispatch(new WindowCloseEvent());
     }
 
     @Override
