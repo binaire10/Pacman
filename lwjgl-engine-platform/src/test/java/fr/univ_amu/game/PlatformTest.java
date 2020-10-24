@@ -12,6 +12,7 @@ public class PlatformTest {
      @Test
      public void test_platform() {
           GraphicPlatform platform = Platform.getGraphicPlatform();
+          System.out.println(platform);
           assertNotNull(platform);
           assertEquals(LWJGLPlatform.class, platform.getClass());
      }

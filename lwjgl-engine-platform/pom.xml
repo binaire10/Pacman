@@ -50,7 +50,6 @@
             </properties>
         </profile>
     </profiles>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -62,7 +61,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>fr.univ_amu.fr.univ_amu.game</groupId>
@@ -100,35 +98,30 @@
             <artifactId>lwjgl</artifactId>
             <version>3.2.3</version>
             <classifier>${lwjgl.natives}</classifier>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-glfw</artifactId>
             <version>3.2.3</version>
             <classifier>${lwjgl.natives}</classifier>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-openal</artifactId>
             <version>3.2.3</version>
             <classifier>${lwjgl.natives}</classifier>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-opengl</artifactId>
             <version>3.2.3</version>
             <classifier>${lwjgl.natives}</classifier>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-stb</artifactId>
             <version>3.2.3</version>
             <classifier>${lwjgl.natives}</classifier>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
