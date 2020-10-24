@@ -2,6 +2,7 @@ package fr.univ_amu.game.lwjgl;
 
 import fr.univ_amu.game.core.GraphicPlatform;
 import fr.univ_amu.game.core.KeyCode;
+import fr.univ_amu.game.core.MouseCode;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.lwjgl.render.GLIndexBuffer;
@@ -34,7 +35,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
         };
     }
 
-    public static KeyCode keyFromGLFW(int code) {
+    public static KeyCode keyboardFromGLFW(int code) {
         return switch (code) {
             case GLFW_KEY_SPACE -> KeyCode.Space;
             case GLFW_KEY_APOSTROPHE -> KeyCode.Apostrophe;
@@ -164,6 +165,20 @@ public final class LWJGLPlatform implements GraphicPlatform {
             case GLFW_KEY_RIGHT_ALT -> KeyCode.RightAlt;
             case GLFW_KEY_RIGHT_SUPER -> KeyCode.RightSuper;
             case GLFW_KEY_MENU -> KeyCode.Menu;
+
+            default -> throw new IllegalArgumentException("Unmapped character");
+        };
+    }
+
+    public static MouseCode mouseFromGLFW(int code) {
+        return switch (code) {
+            case GLFW_MOUSE_BUTTON_1 -> MouseCode.Button0;
+            case GLFW_MOUSE_BUTTON_2 -> MouseCode.Button1;
+            case GLFW_MOUSE_BUTTON_3 -> MouseCode.Button2;
+            case GLFW_MOUSE_BUTTON_4 -> MouseCode.Button3;
+            case GLFW_MOUSE_BUTTON_5 -> MouseCode.Button4;
+            case GLFW_MOUSE_BUTTON_6 -> MouseCode.Button5;
+            case GLFW_MOUSE_BUTTON_7 -> MouseCode.Button6;
 
             default -> throw new IllegalArgumentException("Unmapped character");
         };

@@ -7,6 +7,10 @@ import fr.univ_amu.game.event.application.WindowResizeEvent;
 import fr.univ_amu.game.event.keyboard.KeyPressedEvent;
 import fr.univ_amu.game.event.keyboard.KeyReleasedEvent;
 import fr.univ_amu.game.event.keyboard.KeyTypedEvent;
+import fr.univ_amu.game.event.mouse.MouseButtonPressedEvent;
+import fr.univ_amu.game.event.mouse.MouseButtonReleasedEvent;
+import fr.univ_amu.game.event.mouse.MouseMovedEvent;
+import fr.univ_amu.game.event.mouse.MouseScrolledEvent;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.glViewport;
@@ -32,6 +36,9 @@ public class GLFWWindow implements Window {
         glfwSetCharCallback(winID, GLFWWindow::handleTypedEvent);
         glfwSetKeyCallback(winID, GLFWWindow::handleKeyEvent);
         glfwSetWindowCloseCallback(winID, GLFWWindow::handleClose);
+        glfwSetMouseButtonCallback(winID, GLFWWindow::handleMouseButtonEvent);
+        glfwSetScrollCallback(winID, GLFWWindow::handleScrollEvent);
+        glfwSetCursorPosCallback(winID, GLFWWindow::handleCursorPosEvent);
 
         glfwMakeContextCurrent(winID);
     }
@@ -43,15 +50,34 @@ public class GLFWWindow implements Window {
     private static void handleKeyEvent(long wid, int key, int scancode, int action, int mods) {
         switch (action) {
             case GLFW_PRESS:
-                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyFromGLFW(key), false));
+                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), false));
                 break;
             case GLFW_RELEASE:
-                Platform.dispatch(new KeyReleasedEvent(LWJGLPlatform.keyFromGLFW(key)));
+                Platform.dispatch(new KeyReleasedEvent(LWJGLPlatform.keyboardFromGLFW(key)));
                 break;
             case GLFW_REPEAT:
-                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyFromGLFW(key), true));
+                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), true));
                 break;
         }
+    }
+
+    private static void handleMouseButtonEvent(long wid, int button, int action, int mods) {
+        switch (action) {
+            case GLFW_PRESS:
+                Platform.dispatch(new MouseButtonPressedEvent(LWJGLPlatform.mouseFromGLFW(button)));
+                break;
+            case GLFW_RELEASE:
+                Platform.dispatch(new MouseButtonReleasedEvent(LWJGLPlatform.mouseFromGLFW(button)));
+                break;
+        }
+    }
+
+    private static void handleScrollEvent(long wid, double xOffset, double yOffset) {
+        Platform.dispatch(new MouseScrolledEvent((float) xOffset, (float) yOffset));
+    }
+
+    private static void handleCursorPosEvent(long wid, double xPos, double yPos) {
+        Platform.dispatch(new MouseMovedEvent((float) xPos, (float) yPos));
     }
 
     private static void handleClose(long wid) {
