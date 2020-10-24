@@ -8,6 +8,7 @@ import fr.univ_amu.game.event.keyboard.KeyReleasedEvent;
 import fr.univ_amu.game.event.keyboard.KeyTypedEvent;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL33.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class GLFWWindow implements Window {
@@ -74,6 +75,7 @@ public class GLFWWindow implements Window {
     private void handleResizeEvent(long wid, int w, int h) {
         this.width = w;
         this.height = h;
+        glViewport(0, 0, w, h);
         Platform.dispatch(new WindowResizeEvent(w, h));
     }
 }
