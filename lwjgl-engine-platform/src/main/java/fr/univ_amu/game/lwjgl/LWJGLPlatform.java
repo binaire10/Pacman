@@ -11,13 +11,13 @@ import fr.univ_amu.game.lwjgl.render.GLVertexBuffer;
 import fr.univ_amu.game.render.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL30;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL33.*;
 
 public final class LWJGLPlatform implements GraphicPlatform {
     private boolean initialize = false;
@@ -30,9 +30,9 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     public static int toOpenGL(ShaderDataType shaderDataType) {
         return switch (shaderDataType) {
-            case Int, Int2, Int3, Int4 -> GL30.GL_INT;
-            case Float, Float2, Float3, Float4, Float2x2, Float3x3, Float4x4 -> GL30.GL_FLOAT;
-            case Bool -> GL30.GL_BOOL;
+            case Int, Int2, Int3, Int4 -> GL_INT;
+            case Float, Float2, Float3, Float4, Float2x2, Float3x3, Float4x4 -> GL_FLOAT;
+            case Bool -> GL_BOOL;
         };
     }
 
@@ -171,8 +171,13 @@ public final class LWJGLPlatform implements GraphicPlatform {
         };
     }
 
-    public static void dispatch(Event event) {
+    @Override
+    public void processEvent() {
+        glfwPollEvents();
+    }
 
+    public void dispatch(Event event) {
+        System.out.println(event);
     }
 
     @Override
