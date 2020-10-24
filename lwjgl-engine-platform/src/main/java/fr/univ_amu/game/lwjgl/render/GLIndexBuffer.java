@@ -1,4 +1,4 @@
-package fr.univ_amu.game.jglfw.render;
+package fr.univ_amu.game.lwjgl.render;
 
 import fr.univ_amu.game.render.IndexBuffer;
 

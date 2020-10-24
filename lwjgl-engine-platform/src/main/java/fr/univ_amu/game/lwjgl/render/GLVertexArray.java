@@ -1,6 +1,6 @@
-package fr.univ_amu.game.jglfw.render;
+package fr.univ_amu.game.lwjgl.render;
 
-import fr.univ_amu.game.jglfw.LWJGLPlatform;
+import fr.univ_amu.game.lwjgl.LWJGLPlatform;
 import fr.univ_amu.game.render.BufferLayout;
 import fr.univ_amu.game.render.IndexBuffer;
 import fr.univ_amu.game.render.VertexArray;

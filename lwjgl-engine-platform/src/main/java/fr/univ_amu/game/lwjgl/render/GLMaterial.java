@@ -1,4 +1,4 @@
-package fr.univ_amu.game.jglfw.render;
+package fr.univ_amu.game.lwjgl.render;
 
 import fr.univ_amu.game.render.Material;
 import fr.univ_amu.game.render.ShaderType;
@@ -11,8 +11,8 @@ import java.util.Map;
 import static org.lwjgl.opengl.GL30.*;
 
 public class GLMaterial implements Material {
-    private int program;
-    private Map<String, Integer> uniforms = new HashMap<>();
+    private final int program;
+    private final Map<String, Integer> uniforms = new HashMap<>();
 
     public GLMaterial(Map<ShaderType, String> sources) {
         int[] shaders = new int[sources.size()];

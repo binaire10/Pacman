@@ -1,13 +1,13 @@
-package fr.univ_amu.game.jglfw;
+package fr.univ_amu.game.lwjgl;
 
 import fr.univ_amu.game.core.GraphicPlatform;
 import fr.univ_amu.game.core.KeyCode;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.Event;
-import fr.univ_amu.game.jglfw.render.GLIndexBuffer;
-import fr.univ_amu.game.jglfw.render.GLMaterial;
-import fr.univ_amu.game.jglfw.render.GLVertexArray;
-import fr.univ_amu.game.jglfw.render.GLVertexBuffer;
+import fr.univ_amu.game.lwjgl.render.GLIndexBuffer;
+import fr.univ_amu.game.lwjgl.render.GLMaterial;
+import fr.univ_amu.game.lwjgl.render.GLVertexArray;
+import fr.univ_amu.game.lwjgl.render.GLVertexBuffer;
 import fr.univ_amu.game.render.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;

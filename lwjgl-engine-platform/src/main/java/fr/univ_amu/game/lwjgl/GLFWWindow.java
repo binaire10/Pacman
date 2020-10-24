@@ -1,4 +1,4 @@
-package fr.univ_amu.game.jglfw;
+package fr.univ_amu.game.lwjgl;
 
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.application.WindowResizeEvent;
