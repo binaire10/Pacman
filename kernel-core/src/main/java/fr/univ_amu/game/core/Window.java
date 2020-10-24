@@ -4,4 +4,8 @@ public interface Window {
     int getWidth();
 
     int getHeight();
+
+    boolean isClose();
+
+    void swap();
 }

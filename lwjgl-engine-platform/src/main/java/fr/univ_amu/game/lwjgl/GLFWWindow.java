@@ -1,5 +1,6 @@
 package fr.univ_amu.game.lwjgl;
 
+import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.application.WindowResizeEvent;
 import fr.univ_amu.game.event.keyboard.KeyPressedEvent;
@@ -33,19 +34,19 @@ public class GLFWWindow implements Window {
     }
 
     private static void handleTypedEvent(long wid, int key) {
-        LWJGLPlatform.dispatch(new KeyTypedEvent(LWJGLPlatform.keyFromGLFW(key)));
+        Platform.dispatch(new KeyTypedEvent(key));
     }
 
     private static void handleKeyEvent(long wid, int key, int scancode, int action, int mods) {
         switch (action) {
             case GLFW_PRESS:
-                LWJGLPlatform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyFromGLFW(key), false));
+                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyFromGLFW(key), false));
                 break;
             case GLFW_RELEASE:
-                LWJGLPlatform.dispatch(new KeyReleasedEvent(LWJGLPlatform.keyFromGLFW(key)));
+                Platform.dispatch(new KeyReleasedEvent(LWJGLPlatform.keyFromGLFW(key)));
                 break;
             case GLFW_REPEAT:
-                LWJGLPlatform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyFromGLFW(key), true));
+                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyFromGLFW(key), true));
                 break;
         }
     }
@@ -60,9 +61,19 @@ public class GLFWWindow implements Window {
         return height;
     }
 
+    @Override
+    public boolean isClose() {
+        return glfwWindowShouldClose(winID);
+    }
+
+    @Override
+    public void swap() {
+        glfwSwapBuffers(winID);
+    }
+
     private void handleResizeEvent(long wid, int w, int h) {
         this.width = w;
         this.height = h;
-        LWJGLPlatform.dispatch(new WindowResizeEvent(w, h));
+        Platform.dispatch(new WindowResizeEvent(w, h));
     }
 }
