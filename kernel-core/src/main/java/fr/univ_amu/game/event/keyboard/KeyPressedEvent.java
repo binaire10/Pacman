@@ -9,4 +9,12 @@ public final class KeyPressedEvent extends KeyEvent {
         super(keyCode);
         this.repeat = repeat;
     }
+
+    @Override
+    public String toString() {
+        return "KeyPressedEvent{" +
+                "repeat=" + repeat +
+                ", keyCode=" + keyCode +
+                '}';
+    }
 }

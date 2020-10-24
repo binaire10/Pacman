@@ -6,4 +6,11 @@ public final class KeyReleasedEvent extends KeyEvent {
     public KeyReleasedEvent(KeyCode keyCode) {
         super(keyCode);
     }
+
+    @Override
+    public String toString() {
+        return "KeyReleasedEvent{" +
+                "keyCode=" + keyCode +
+                '}';
+    }
 }

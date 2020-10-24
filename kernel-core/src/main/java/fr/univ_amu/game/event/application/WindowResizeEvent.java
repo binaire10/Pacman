@@ -10,4 +10,12 @@ public final class WindowResizeEvent extends Event {
         this.width = width;
         this.height = height;
     }
+
+    @Override
+    public String toString() {
+        return "WindowResizeEvent{" +
+                "width=" + width +
+                ", height=" + height +
+                '}';
+    }
 }
