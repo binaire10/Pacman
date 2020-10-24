@@ -8,12 +8,12 @@ public final class Mat {
         return res;
     }
 
-    public static float[] ortho(float left, float right, float bottom, float top, float zNear, float zFar) {
+    public static float[] ortho(float left, float right, float bottom, float top) {
         return new float[] {
-                2f/(right - left)           , 0                         , 0                         , 0,
-                0                           , 2f/(top - bottom)         , 0                         , 0,
-                0                           , 0                         , -2f/(zFar - zNear)        , 0,
-                -(right+left)/(right-left)  , -(top+bottom)/(top-bottom), -(zFar+zNear)/(zFar-zNear), 1
+                2f/(right - left)           , 0                         , 0, 0,
+                0                           , 2f/(top - bottom)         , 0, 0,
+                0                           , 0                         , 1, 0,
+                -(right+left)/(right-left)  , -(top+bottom)/(top-bottom), 0, 1
         };
     }
 
