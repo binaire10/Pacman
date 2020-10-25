@@ -1,5 +1,7 @@
 package fr.univ_amu.game.math;
 
+import java.util.Arrays;
+
 public final class Vec {
     public static float[] make_vec2(float x, float y) {
         return new float[]{x, y};
@@ -89,6 +91,20 @@ public final class Vec {
         for (int j = 0; j < m; ++j)
             for (int i = 0; i < n; ++i)
                 result[j] += matrix[i + j * n] * vector[i];
+        return result;
+    }
+
+    public static float[] normalize(float[] vector) {
+        float distance = (float) Math.sqrt(dot_product(vector, vector));
+        float[] result = new float[vector.length];
+        for (int i = 0; i < result.length; i++)
+            result[i] = vector[i] / distance;
+        return result;
+    }
+
+    public static float[] vector_fill(int n, int v) {
+        float[] result = new float[n];
+        Arrays.fill(result, v);
         return result;
     }
 }
