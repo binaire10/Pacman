@@ -21,4 +21,6 @@ public interface GraphicPlatform {
     VertexArray create_vertexArray();
 
     Material create_material(Map<ShaderType, String> shader);
+
+    RenderCommand getRenderCommand();
 }

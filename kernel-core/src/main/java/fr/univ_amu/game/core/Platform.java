@@ -37,6 +37,10 @@ public final class Platform {
         return GRAPHIC_PLATFORM;
     }
 
+    public static RenderCommand getRenderCommand() {
+        return GRAPHIC_PLATFORM.getRenderCommand();
+    }
+
     public static void dispatch(Event event) {
         GRAPHIC_PLATFORM.dispatch(event);
     }
