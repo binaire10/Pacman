@@ -83,7 +83,8 @@ public final class Vec {
         return result;
     }
 
-    public static float[] dot_product(float[] vector, float[] matrix, int n, int m) {
+    public static float[] dot_product(float[] vector, float[] matrix, int n) {
+        int m = matrix.length / n;
         float[] result = new float[m];
         for (int j = 0; j < m; ++j)
             for (int i = 0; i < n; ++i)

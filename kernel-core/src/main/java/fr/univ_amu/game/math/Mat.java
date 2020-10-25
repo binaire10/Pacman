@@ -1,5 +1,7 @@
 package fr.univ_amu.game.math;
 
+import java.util.Arrays;
+
 public final class Mat {
     public static float[] identity(int n) {
         float[] res = new float[n * n];
@@ -35,5 +37,13 @@ public final class Mat {
             A = dot_product(A, A, n);
         }
         return R;
+    }
+
+    public static float[] translateMatrix4(float[] matrix, float[] position) {
+        float[] result = Arrays.copyOf(matrix, matrix.length);
+        float[] r = Vec.dot_product(position, matrix, 4);
+        for (int i = 0; i < position.length; i++)
+            result[3 + i * 4] = r[i];
+        return result;
     }
 }
