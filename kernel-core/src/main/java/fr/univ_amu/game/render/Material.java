@@ -24,6 +24,10 @@ public interface Material extends Bindable, Closeable {
         return code;
     }
 
+    void uploadUniform(String key, int value);
+
+    void uploadUniform(String key, int[] value);
+
     void uploadUniform(String key, float value);
 
     void uploadUniform(String key, float[] vector);

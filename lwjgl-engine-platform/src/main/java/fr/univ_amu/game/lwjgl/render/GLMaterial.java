@@ -85,6 +85,31 @@ public class GLMaterial implements Material {
     }
 
     @Override
+    public void uploadUniform(String key, int value) {
+        glUniform1i(uniforms.get(key), value);
+    }
+
+    @Override
+    public void uploadUniform(String key, int[] value) {
+        switch (value.length) {
+            case 1:
+                glUniform1iv(uniforms.get(key), value);
+                break;
+            case 2:
+                glUniform2iv(uniforms.get(key), value);
+                break;
+            case 3:
+                glUniform3iv(uniforms.get(key), value);
+                break;
+            case 4:
+                glUniform4iv(uniforms.get(key), value);
+                break;
+            default:
+                throw new IllegalArgumentException("uniform vector too long");
+        }
+    }
+
+    @Override
     public void uploadUniform(String key, float value) {
         glUniform1f(uniforms.get(key), value);
     }
