@@ -189,6 +189,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
         glfwPollEvents();
     }
 
+    @Override
     public void dispatch(Event event) {
         System.out.println(event);
     }
