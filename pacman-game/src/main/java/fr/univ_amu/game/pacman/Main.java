@@ -2,14 +2,12 @@ package fr.univ_amu.game.pacman;
 
 import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
+import fr.univ_amu.game.graphic.camera.OrthographicCamera;
 import fr.univ_amu.game.math.Mat;
 import fr.univ_amu.game.math.Vec;
 import fr.univ_amu.game.render.*;
 
 import java.io.IOException;
-
-import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -30,12 +28,14 @@ public class Main {
         ));
         var code = Material.splitCode(new String(Main.class.getResourceAsStream("flatColor.glsl").readAllBytes()));
         var shaders = Platform.create_material(code);
+        var camera = new OrthographicCamera();
+        camera.setZRotation((float) Math.toRadians(25));
 
         shaders.bind();
-        shaders.uploadUniformMatrix4("u_transform", Mat.identity(4));
+        shaders.uploadUniformMatrix4("u_transform", camera.getMatrix());
 
         while (!window.isClose()) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            Platform.getRenderCommand().clear();
 
 
             float ratio = (float) window.getWidth() / window.getHeight();
@@ -46,7 +46,7 @@ public class Main {
             vertexArray.bind();
             shaders.bind();
             shaders.uploadUniform("u_Color", Vec.make_vec4(1, 0, 1, 1));
-            glDrawElements(GL_TRIANGLES, indexBuffer.count(), GL_UNSIGNED_INT, NULL);
+            Platform.getRenderCommand().drawElements(vertexArray, indexBuffer.count());
             window.swap();
             Platform.processEvent();
         }
