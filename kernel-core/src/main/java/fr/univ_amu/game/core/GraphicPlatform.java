@@ -26,4 +26,6 @@ public interface GraphicPlatform {
     RenderCommand getRenderCommand();
 
     Texture2D load_texture(ByteBuffer data);
+
+    Texture2D make_texture(int w, int h);
 }

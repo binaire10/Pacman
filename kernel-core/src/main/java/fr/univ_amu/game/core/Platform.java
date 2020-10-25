@@ -53,4 +53,8 @@ public final class Platform {
     public static Texture2D load_texture(ByteBuffer image) {
         return GRAPHIC_PLATFORM.load_texture(image);
     }
+
+    public static Texture2D make_texture(int w, int h) {
+        return GRAPHIC_PLATFORM.make_texture(w, h);
+    }
 }

@@ -50,6 +50,16 @@ public class GLTexture2D implements Texture2D {
         }
     }
 
+    public GLTexture2D(int w, int h) {
+        width = w;
+        height = h;
+        id = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, id);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    }
+
     @Override
     public void bind(int textureUnit) {
         glActiveTexture(GL_TEXTURE0 + textureUnit);
@@ -64,6 +74,12 @@ public class GLTexture2D implements Texture2D {
     @Override
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public void setPixels(ByteBuffer pixels) {
+        ByteBuffer storage = pixels.isDirect() ? pixels : BufferUtils.createByteBuffer(pixels.capacity()).put(pixels).flip();
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, storage);
     }
 
     @Override

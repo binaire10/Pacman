@@ -220,4 +220,9 @@ public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatf
     public Texture2D load_texture(ByteBuffer data) {
         return new GLTexture2D(data);
     }
+
+    @Override
+    public GLTexture2D make_texture(int w, int h) {
+        return new GLTexture2D(w, h);
+    }
 }
