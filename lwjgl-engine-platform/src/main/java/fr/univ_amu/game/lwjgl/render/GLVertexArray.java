@@ -10,6 +10,7 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class GLVertexArray implements VertexArray {
     private final int vertexArray;
+    private int componentCount = 0;
 
     public GLVertexArray() {
         this.vertexArray = glGenVertexArrays();
@@ -35,6 +36,12 @@ public class GLVertexArray implements VertexArray {
     public void setIndexBuffer(IndexBuffer indexBuffer) {
         glBindVertexArray(vertexArray);
         indexBuffer.bind();
+        componentCount = indexBuffer.count();
+    }
+
+    @Override
+    public int getComponentCount() {
+        return componentCount;
     }
 
     @Override

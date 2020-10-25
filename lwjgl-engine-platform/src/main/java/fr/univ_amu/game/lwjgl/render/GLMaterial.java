@@ -5,7 +5,6 @@ import fr.univ_amu.game.render.ShaderType;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,13 +25,11 @@ public class GLMaterial implements Material {
             glCompileShader(id);
             int isCompiles = glGetShaderi(id, GL_COMPILE_STATUS);
             if (isCompiles == GL_FALSE) {
-                int[] maxLength = {0};
-                glGetShaderiv(id, GL_INFO_LOG_LENGTH, maxLength);
-                byte[] msg = new byte[maxLength[0]];
-                glGetShaderInfoLog(id, maxLength, ByteBuffer.wrap(msg).flip());
+                int maxLength = glGetShaderi(id, GL_INFO_LOG_LENGTH);
+                String message = glGetShaderInfoLog(id, maxLength);
                 for (int i = 0; i < index; ++i)
                     glDeleteShader(shaders[i]);
-                throw new RuntimeException(new String(msg));
+                throw new RuntimeException(message);
             }
         }
         program = glCreateProgram();
@@ -42,16 +39,14 @@ public class GLMaterial implements Material {
         int isLinked = glGetProgrami(program, GL_LINK_STATUS);
 
         if (isLinked == GL_FALSE) {
-            int[] maxLength = {0};
-            glGetProgramiv(program, GL_INFO_LOG_LENGTH, maxLength);
-            byte[] msg = new byte[maxLength[0]];
-            glGetProgramInfoLog(program, maxLength, ByteBuffer.wrap(msg).flip());
+            int maxLength = glGetProgrami(program, GL_INFO_LOG_LENGTH);
+            String message = glGetProgramInfoLog(program, maxLength);
             for (int i = 0; i < index; ++i) {
                 glDetachShader(program, shaders[i]);
                 glDeleteShader(shaders[i]);
             }
             glDeleteProgram(program);
-            throw new RuntimeException(new String(msg));
+            throw new RuntimeException(message);
         }
 
         for (int i = 0; i < index; ++i) {
@@ -62,7 +57,6 @@ public class GLMaterial implements Material {
         int nbUniforms = glGetProgrami(program, GL_ACTIVE_UNIFORMS);
         int maxUniformLen = glGetProgrami(program, GL_ACTIVE_UNIFORM_MAX_LENGTH);
 
-        System.out.println("uniforms count " + nbUniforms);
         try (var stackMem = MemoryStack.stackPush()) {
             var length = stackMem.mallocInt(1);
             var size = stackMem.mallocInt(1);

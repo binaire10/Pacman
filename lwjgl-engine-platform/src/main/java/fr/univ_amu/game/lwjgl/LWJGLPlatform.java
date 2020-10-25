@@ -4,10 +4,7 @@ import fr.univ_amu.game.core.GraphicPlatform;
 import fr.univ_amu.game.core.KeyCode;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.Event;
-import fr.univ_amu.game.lwjgl.render.GLIndexBuffer;
-import fr.univ_amu.game.lwjgl.render.GLMaterial;
-import fr.univ_amu.game.lwjgl.render.GLVertexArray;
-import fr.univ_amu.game.lwjgl.render.GLVertexBuffer;
+import fr.univ_amu.game.lwjgl.render.*;
 import fr.univ_amu.game.render.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
@@ -17,7 +14,7 @@ import java.util.Map;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 
-public final class LWJGLPlatform implements GraphicPlatform {
+public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatform {
     private boolean initialize = false;
 
     public LWJGLPlatform() {
@@ -211,5 +208,10 @@ public final class LWJGLPlatform implements GraphicPlatform {
     @Override
     public Material create_material(Map<ShaderType, String> shaders) {
         return new GLMaterial(shaders);
+    }
+
+    @Override
+    public RenderCommand getRenderCommand() {
+        return this;
     }
 }
