@@ -7,7 +7,6 @@ import org.lwjgl.system.MemoryStack;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.UnknownFormatConversionException;
 
 import static org.lwjgl.opengl.GL33.*;
@@ -18,7 +17,7 @@ public class GLTexture2D implements Texture2D {
     private final int height;
 
     public GLTexture2D(ByteBuffer data) {
-        ByteBuffer storage = data.order().equals(ByteOrder.nativeOrder()) ? data : BufferUtils.createByteBuffer(data.capacity()).put(data).flip();
+        ByteBuffer storage = data.isDirect() ? data : BufferUtils.createByteBuffer(data.capacity()).put(data).flip();
         try (var memory = MemoryStack.stackPush()) {
             var x = memory.mallocInt(1);
             var y = memory.mallocInt(1);
