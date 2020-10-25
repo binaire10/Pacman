@@ -3,7 +3,7 @@ package fr.univ_amu.game.lwjgl.render;
 import fr.univ_amu.game.render.RenderCommand;
 import fr.univ_amu.game.render.VertexArray;
 
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class GLRenderCommand implements RenderCommand {

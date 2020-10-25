@@ -4,7 +4,7 @@ import fr.univ_amu.game.render.VertexBuffer;
 
 import java.io.IOException;
 
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL33.*;
 
 public class GLVertexBuffer implements VertexBuffer {
     private final int id;
