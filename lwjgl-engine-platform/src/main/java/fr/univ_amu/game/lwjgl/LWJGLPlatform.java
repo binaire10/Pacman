@@ -9,6 +9,7 @@ import fr.univ_amu.game.render.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
+import java.nio.ByteBuffer;
 import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -213,5 +214,10 @@ public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatf
     @Override
     public RenderCommand getRenderCommand() {
         return this;
+    }
+
+    @Override
+    public Texture2D load_texture(ByteBuffer data) {
+        return new GLTexture2D(data);
     }
 }

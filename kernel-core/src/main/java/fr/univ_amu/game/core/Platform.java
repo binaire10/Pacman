@@ -3,6 +3,7 @@ package fr.univ_amu.game.core;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.render.*;
 
+import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.ServiceLoader;
 
@@ -47,5 +48,9 @@ public final class Platform {
 
     public static void processEvent() {
         GRAPHIC_PLATFORM.processEvent();
+    }
+
+    public static Texture2D load_texture(ByteBuffer image) {
+        return GRAPHIC_PLATFORM.load_texture(image);
     }
 }
