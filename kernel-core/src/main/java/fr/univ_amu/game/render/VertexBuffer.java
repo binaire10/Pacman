@@ -1,6 +1,8 @@
 package fr.univ_amu.game.render;
 
-public interface VertexBuffer extends Bindable {
+import java.io.Closeable;
+
+public interface VertexBuffer extends Bindable, Closeable {
     void write(int[] data);
 
     void write(float[] data);

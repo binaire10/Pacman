@@ -1,6 +1,8 @@
 package fr.univ_amu.game.render;
 
-public interface VertexArray extends Bindable {
+import java.io.Closeable;
+
+public interface VertexArray extends Bindable, Closeable {
     void setVertexBuffer(VertexBuffer vertexBuffer, BufferLayout bufferLayout);
 
     void setIndexBuffer(IndexBuffer indexBuffer);

@@ -1,9 +1,10 @@
 package fr.univ_amu.game.render;
 
+import java.io.Closeable;
 import java.util.Map;
 import java.util.TreeMap;
 
-public interface Material extends Bindable {
+public interface Material extends Bindable, Closeable {
     static Map<ShaderType, String> splitCode(String txt) {
         final String token = "#type";
         int pos = txt.indexOf(token);

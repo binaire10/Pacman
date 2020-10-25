@@ -2,6 +2,8 @@ package fr.univ_amu.game.lwjgl.render;
 
 import fr.univ_amu.game.render.VertexBuffer;
 
+import java.io.IOException;
+
 import static org.lwjgl.opengl.GL30.*;
 
 public class GLVertexBuffer implements VertexBuffer {
@@ -34,5 +36,11 @@ public class GLVertexBuffer implements VertexBuffer {
     public void write(float[] data) {
         glBindBuffer(GL_ARRAY_BUFFER, id);
         glBufferSubData(GL_ARRAY_BUFFER, 0, data);
+    }
+
+    @Override
+    public void close() throws IOException {
+        System.out.println("free vertex buffer");
+        glDeleteBuffers(id);
     }
 }
