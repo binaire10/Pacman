@@ -1,6 +1,7 @@
 package fr.univ_amu.game.graphic.render2D;
 
 import fr.univ_amu.game.core.Platform;
+import fr.univ_amu.game.graphic.Color;
 import fr.univ_amu.game.graphic.camera.Camera;
 import fr.univ_amu.game.math.Vec;
 import fr.univ_amu.game.render.*;
@@ -47,6 +48,7 @@ public class BatchRender2D implements Closeable {
     public BatchRender2D() throws IOException {
         System.out.println(QUAD_LAYOUT.getStride());
         shader = Platform.create_material(Material.splitCode(new String(BatchRender2D.class.getResourceAsStream("batchShader.glsl").readAllBytes())));
+        shader.bind();
         shader.uploadUniform("u_Textures", IntStream.range(0, 32).toArray());
 
         int[] indices = new int[QUAD_COUNT * 6];
