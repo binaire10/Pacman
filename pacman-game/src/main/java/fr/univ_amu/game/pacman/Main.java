@@ -3,8 +3,10 @@ package fr.univ_amu.game.pacman;
 import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.graphic.camera.OrthographicCamera;
-import fr.univ_amu.game.math.Mat;
-import fr.univ_amu.game.render.*;
+import fr.univ_amu.game.graphic.render2D.BatchRender2D;
+import fr.univ_amu.game.math.Vec;
+import fr.univ_amu.game.render.Material;
+import fr.univ_amu.game.render.Texture2D;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -26,59 +28,23 @@ public class Main {
         var code = Material.splitCode(new String(Main.class.getResourceAsStream("flatColor.glsl").readAllBytes()));
         var codeTex = Material.splitCode(new String(Main.class.getResourceAsStream("texture.glsl").readAllBytes()));
 
+        var camera = new OrthographicCamera((float) window.getWidth() / window.getHeight());
         try (
-                Material shaders = Platform.create_material(code);
-                VertexBuffer buffer = Platform.make_buffer(new float[]{
-                        -0.5f, -0.5f, 0.f, 1.f, 0.f, 1.f, 1.f,
-                        0.5f, -0.5f, 0.f, 0.f, 1.f, 1.f, 1.f,
-                        0.f, 0.5f, 0.f, 1.f, 1.f, 0.f, 1.f});
-                IndexBuffer indexBuffer = Platform.make_index(new int[]{0, 1, 2});
-                VertexArray vertexArray = Platform.create_vertexArray();
-
-                Material shadersQuad = Platform.create_material(codeTex);
-                VertexBuffer bufferQuad = Platform.make_buffer(new float[]{
-                        -0.5f, -0.5f, 0.f, 1.f, 0.f, 1.f, 1.f, 0, 0,
-                        0.5f, -0.5f, 0.f, 0.f, 1.f, 1.f, 1.f, 1, 0,
-                        0.5f, 0.5f, 0.f, 0.f, 1.f, 1.f, 1.f, 1, 1,
-                        -0.5f, 0.5f, 0.f, 1.f, 1.f, 0.f, 1.f, 0, 1});
-                IndexBuffer indexBufferQuad = Platform.make_index(new int[]{0, 1, 2, 2, 3, 0});
-                VertexArray vertexArrayQuad = Platform.create_vertexArray();
                 Texture2D texture = Platform.load_texture(read(Main.class.getResource("Checkerboard.png")));
+                BatchRender2D render2D = new BatchRender2D()
         ) {
-            vertexArray.setIndexBuffer(indexBuffer);
-            vertexArray.setVertexBuffer(buffer, new BufferLayout(
-                    new BufferLayout.BufferEntry("a_Position", ShaderDataType.Float3),
-                    new BufferLayout.BufferEntry("a_Color", ShaderDataType.Float4)
-            ));
-
-            vertexArrayQuad.setIndexBuffer(indexBufferQuad);
-            vertexArrayQuad.setVertexBuffer(bufferQuad, new BufferLayout(
-                    new BufferLayout.BufferEntry("a_Position", ShaderDataType.Float3),
-                    new BufferLayout.BufferEntry("a_Color", ShaderDataType.Float4),
-                    new BufferLayout.BufferEntry("a_TexCoord", ShaderDataType.Float2)
-            ));
-
-
-            var camera = new OrthographicCamera();
-            camera.setZRotation((float) Math.toRadians(25));
-
-            shadersQuad.bind();
-            shadersQuad.uploadUniformMatrix4("u_transform", camera.getMatrix());
-            shadersQuad.uploadUniform("u_Texture", 0);
             while (!window.isClose()) {
                 Platform.getRenderCommand().clear();
+                camera.setRatio((float) window.getWidth() / window.getHeight());
 
+                render2D.begin(camera);
+                for (int i = 0; i < 33; i++) {
+                    for (int j = 0; j < 33; j++) {
+                        render2D.drawQuad(Vec.make_vec4((i - 16f) * 0.1f, (j - 16f) * 0.1f, 0), Vec.make_vec2(0.09f, 0.09f), Vec.make_vec4(1, 0, 1, 1));
+                    }
+                }
+                render2D.end();
 
-                float ratio = (float) window.getWidth() / window.getHeight();
-                var view = Mat.ortho(ratio, -ratio, -1, 1);
-                shadersQuad.uploadUniformMatrix4("u_viewProjection", view);
-
-
-                vertexArrayQuad.bind();
-                shadersQuad.bind();
-                texture.bind(0);
-//                shadersQuad.uploadUniform("u_Color", Vec.make_vec4(1, 0, 1, 1));
-                Platform.getRenderCommand().drawElements(vertexArrayQuad, indexBufferQuad.count());
                 window.swap();
                 Platform.processEvent();
             }
