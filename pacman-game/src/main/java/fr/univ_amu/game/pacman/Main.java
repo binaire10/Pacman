@@ -43,6 +43,7 @@ public class Main {
                         render2D.drawQuad(Vec.make_vec4((i - 16f) * 0.1f, (j - 16f) * 0.1f, 0), Vec.make_vec2(0.09f, 0.09f), Vec.make_vec4(1, 0, 1, 1));
                     }
                 }
+                render2D.drawQuad(Vec.make_vec4(0, 0, 0.1f), Vec.make_vec2(4, 4), texture, 5);
                 render2D.end();
 
                 window.swap();
