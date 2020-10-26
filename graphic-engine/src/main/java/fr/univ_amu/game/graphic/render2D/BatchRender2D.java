@@ -80,6 +80,9 @@ public class BatchRender2D implements Closeable {
         shader.uploadUniformMatrix4("u_ViewProjection", camera.getMatrix());
     }
 
+    public void drawQuad(float[] position, float[] size, Texture2D texture2D, float tillingFactor) {
+        drawQuad(position, size, Color.WHITE, texture2D, tillingFactor);
+    }
 
     public void drawQuad(float[] position, float[] size, float[] color) {
         drawQuad(position, size, color, white, 1);
