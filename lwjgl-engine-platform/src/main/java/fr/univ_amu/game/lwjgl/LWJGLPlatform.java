@@ -181,6 +181,9 @@ public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatf
         Window window = new GLFWWindow(title, width, height);
         if (!initialize) {
             GL.createCapabilities();
+            glEnable(GL_DEPTH_TEST);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             initialize = true;
         }
         return window;
