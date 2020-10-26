@@ -13,7 +13,7 @@ import java.nio.FloatBuffer;
 import java.util.stream.IntStream;
 
 public class BatchRender2D implements Closeable {
-    public static final int QUAD_COUNT = 500;
+    public static final int QUAD_COUNT = 2048;
     public static final int VERTEX_PER_QUAD = 4;
     public static final BufferLayout QUAD_LAYOUT = new BufferLayout(
             new BufferLayout.BufferEntry("a_Position", ShaderDataType.Float3),
