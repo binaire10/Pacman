@@ -3,13 +3,9 @@ package fr.univ_amu.game.pacman;
 import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.math.Mat;
-import fr.univ_amu.game.math.Vec;
 import fr.univ_amu.game.render.*;
 
 import java.io.IOException;
-
-import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -35,18 +31,11 @@ public class Main {
         shaders.uploadUniformMatrix4("u_transform", Mat.identity(4));
 
         while (!window.isClose()) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
             float ratio = (float) window.getWidth() / window.getHeight();
             var view = Mat.ortho(ratio, -ratio, -1, 1);
-            shaders.uploadUniformMatrix4("u_viewProjection", view);
 
-
-            vertexArray.bind();
-            shaders.bind();
-            shaders.uploadUniform("u_Color", Vec.make_vec4(1, 0, 1, 1));
-            glDrawElements(GL_TRIANGLES, indexBuffer.count(), GL_UNSIGNED_INT, NULL);
             window.swap();
             Platform.processEvent();
         }
