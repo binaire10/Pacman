@@ -6,7 +6,5 @@ module lwjgl.engine.platform {
     requires org.lwjgl.natives;
     requires org.lwjgl.glfw.natives;
     requires org.lwjgl.opengl.natives;
-    exports fr.univ_amu.game.lwjgl.render;
-    exports fr.univ_amu.game.lwjgl;
     provides fr.univ_amu.game.core.GraphicPlatform with fr.univ_amu.game.lwjgl.LWJGLPlatform;
 }
