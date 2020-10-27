@@ -1,5 +1,7 @@
 package fr.univ_amu.game.render;
 
-public interface IndexBuffer extends Bindable {
+import java.io.Closeable;
+
+public interface IndexBuffer extends Bindable, Closeable {
     int count();
 }

@@ -5,11 +5,11 @@ import fr.univ_amu.game.render.ShaderType;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
-import java.nio.ByteBuffer;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL33.*;
 
 public class GLMaterial implements Material {
     private final int program;
@@ -26,13 +26,11 @@ public class GLMaterial implements Material {
             glCompileShader(id);
             int isCompiles = glGetShaderi(id, GL_COMPILE_STATUS);
             if (isCompiles == GL_FALSE) {
-                int[] maxLength = {0};
-                glGetShaderiv(id, GL_INFO_LOG_LENGTH, maxLength);
-                byte[] msg = new byte[maxLength[0]];
-                glGetShaderInfoLog(id, maxLength, ByteBuffer.wrap(msg).flip());
+                int maxLength = glGetShaderi(id, GL_INFO_LOG_LENGTH);
+                String message = glGetShaderInfoLog(id, maxLength);
                 for (int i = 0; i < index; ++i)
                     glDeleteShader(shaders[i]);
-                throw new RuntimeException(new String(msg));
+                throw new RuntimeException(message);
             }
         }
         program = glCreateProgram();
@@ -42,16 +40,14 @@ public class GLMaterial implements Material {
         int isLinked = glGetProgrami(program, GL_LINK_STATUS);
 
         if (isLinked == GL_FALSE) {
-            int[] maxLength = {0};
-            glGetProgramiv(program, GL_INFO_LOG_LENGTH, maxLength);
-            byte[] msg = new byte[maxLength[0]];
-            glGetProgramInfoLog(program, maxLength, ByteBuffer.wrap(msg).flip());
+            int maxLength = glGetProgrami(program, GL_INFO_LOG_LENGTH);
+            String message = glGetProgramInfoLog(program, maxLength);
             for (int i = 0; i < index; ++i) {
                 glDetachShader(program, shaders[i]);
                 glDeleteShader(shaders[i]);
             }
             glDeleteProgram(program);
-            throw new RuntimeException(new String(msg));
+            throw new RuntimeException(message);
         }
 
         for (int i = 0; i < index; ++i) {
@@ -62,7 +58,6 @@ public class GLMaterial implements Material {
         int nbUniforms = glGetProgrami(program, GL_ACTIVE_UNIFORMS);
         int maxUniformLen = glGetProgrami(program, GL_ACTIVE_UNIFORM_MAX_LENGTH);
 
-        System.out.println("uniforms count " + nbUniforms);
         try (var stackMem = MemoryStack.stackPush()) {
             var length = stackMem.mallocInt(1);
             var size = stackMem.mallocInt(1);
@@ -90,28 +85,23 @@ public class GLMaterial implements Material {
     }
 
     @Override
+    public void uploadUniform(String key, int value) {
+        glUniform1i(uniforms.get(key), value);
+    }
+
+    @Override
+    public void uploadUniform(String key, int[] value) {
+        glUniform1iv(uniforms.get(key), value);
+    }
+
+    @Override
     public void uploadUniform(String key, float value) {
         glUniform1f(uniforms.get(key), value);
     }
 
     @Override
     public void uploadUniform(String key, float[] vector) {
-        switch (vector.length) {
-            case 1:
-                glUniform1fv(uniforms.get(key), vector);
-                break;
-            case 2:
-                glUniform2fv(uniforms.get(key), vector);
-                break;
-            case 3:
-                glUniform3fv(uniforms.get(key), vector);
-                break;
-            case 4:
-                glUniform4fv(uniforms.get(key), vector);
-                break;
-            default:
-                throw new IllegalArgumentException("uniform vector too long");
-        }
+        glUniform1fv(uniforms.get(key), vector);
     }
 
     @Override
@@ -127,5 +117,11 @@ public class GLMaterial implements Material {
     @Override
     public void bind() {
         glUseProgram(program);
+    }
+
+    @Override
+    public void close() throws IOException {
+        System.out.println("free program");
+        glDeleteProgram(program);
     }
 }

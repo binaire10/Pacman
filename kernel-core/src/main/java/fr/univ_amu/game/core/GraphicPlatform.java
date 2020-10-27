@@ -3,6 +3,7 @@ package fr.univ_amu.game.core;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.render.*;
 
+import java.nio.ByteBuffer;
 import java.util.Map;
 
 public interface GraphicPlatform {
@@ -21,4 +22,10 @@ public interface GraphicPlatform {
     VertexArray create_vertexArray();
 
     Material create_material(Map<ShaderType, String> shader);
+
+    RenderCommand getRenderCommand();
+
+    Texture2D load_texture(ByteBuffer data);
+
+    Texture2D make_texture(int w, int h);
 }

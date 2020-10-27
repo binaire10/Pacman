@@ -2,53 +2,55 @@ package fr.univ_amu.game.pacman;
 
 import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
-import fr.univ_amu.game.math.Mat;
+import fr.univ_amu.game.graphic.camera.OrthographicCamera;
+import fr.univ_amu.game.graphic.render2D.BatchRender2D;
 import fr.univ_amu.game.math.Vec;
-import fr.univ_amu.game.render.*;
+import fr.univ_amu.game.render.Material;
+import fr.univ_amu.game.render.Texture2D;
 
 import java.io.IOException;
-
-import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.system.MemoryUtil.NULL;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class Main {
+    public static ByteBuffer read(URL file) throws URISyntaxException, IOException {
+        var path = Path.of(file.toURI());
+        return FileChannel.open(path).map(FileChannel.MapMode.READ_ONLY, 0, Files.size(path));
+    }
+
     public static void main(String[] args) throws IOException {
         Window window = Platform.create_window("pacman", 720, 400);
 
-        VertexBuffer buffer = Platform.make_buffer(new float[]{
-                -0.5f, -0.5f, 0.f, 1.f, 0.f, 1.f, 1.f,
-                0.5f, -0.5f, 0.f, 0.f, 1.f, 1.f, 1.f,
-                0.f, 0.5f, 0.f, 1.f, 1.f, 0.f, 1.f});
-
-        IndexBuffer indexBuffer = Platform.make_index(new int[]{0, 1, 2});
-
-        VertexArray vertexArray = Platform.create_vertexArray();
-        vertexArray.setIndexBuffer(indexBuffer);
-        vertexArray.setVertexBuffer(buffer, new BufferLayout(
-                new BufferLayout.BufferEntry("a_Position", ShaderDataType.Float3),
-                new BufferLayout.BufferEntry("a_Color", ShaderDataType.Float4)
-        ));
         var code = Material.splitCode(new String(Main.class.getResourceAsStream("flatColor.glsl").readAllBytes()));
-        var shaders = Platform.create_material(code);
+        var codeTex = Material.splitCode(new String(Main.class.getResourceAsStream("texture.glsl").readAllBytes()));
 
-        shaders.bind();
-        shaders.uploadUniformMatrix4("u_transform", Mat.identity(4));
+        var camera = new OrthographicCamera((float) window.getWidth() / window.getHeight());
+        try (
+                Texture2D texture = Platform.load_texture(read(Main.class.getResource("Checkerboard.png")));
+                BatchRender2D render2D = new BatchRender2D()
+        ) {
+            while (!window.isClose()) {
+                Platform.getRenderCommand().clear();
+                camera.setRatio((float) window.getWidth() / window.getHeight());
 
-        while (!window.isClose()) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                render2D.begin(camera);
+                for (int i = 0; i < 33; i++) {
+                    for (int j = 0; j < 33; j++) {
+                        render2D.drawQuad(Vec.make_vec4((i - 16f) * 0.1f, (j - 16f) * 0.1f, 0), Vec.make_vec2(0.09f, 0.09f), Vec.make_vec4(1, 0, 1, 1));
+                    }
+                }
+                render2D.drawQuad(Vec.make_vec4(0, 0, 0.1f), Vec.make_vec2(4, 4), texture, 5);
+                render2D.end();
 
-
-            float ratio = (float) window.getWidth() / window.getHeight();
-            var view = Mat.ortho(ratio, -ratio, -1, 1);
-            shaders.uploadUniformMatrix4("u_viewProjection", view);
-
-
-            vertexArray.bind();
-            shaders.bind();
-            shaders.uploadUniform("u_Color", Vec.make_vec4(1, 0, 1, 1));
-            glDrawElements(GL_TRIANGLES, indexBuffer.count(), GL_UNSIGNED_INT, NULL);
-            window.swap();
-            Platform.processEvent();
+                window.swap();
+                Platform.processEvent();
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
     }
 }
