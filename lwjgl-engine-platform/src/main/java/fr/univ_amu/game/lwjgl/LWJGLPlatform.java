@@ -228,4 +228,9 @@ public final class LWJGLPlatform implements GraphicPlatform {
     public Material create_material(Map<ShaderType, String> shaders) {
         return new GLMaterial(shaders);
     }
+
+    @Override
+    public void clear() {
+        glfwTerminate();
+    }
 }

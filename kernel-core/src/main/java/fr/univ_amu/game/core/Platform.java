@@ -44,4 +44,8 @@ public final class Platform {
     public static void processEvent() {
         GRAPHIC_PLATFORM.processEvent();
     }
+
+    public static void clear() {
+        GRAPHIC_PLATFORM.clear();
+    }
 }
