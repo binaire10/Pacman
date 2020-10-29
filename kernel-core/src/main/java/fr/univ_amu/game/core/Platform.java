@@ -13,21 +13,19 @@ import java.util.stream.Collectors;
 public final class Platform {
     private static final GraphicPlatform GRAPHIC_PLATFORM = ServiceLoader.load(GraphicPlatform.class).findFirst().orElseGet(() -> null);
 
-    static {
-        if (GRAPHIC_PLATFORM != null) {
-            var nodes = ServiceLoader.load(Layer.class).stream().map(Node::new).collect(Collectors.toList());
-            for (var node : nodes) {
-                var classt = node.getValue().type().getAnnotation(RequireLayer.class);
-                if (classt != null)
-                    for (Class<? extends Layer> require : classt.require()) {
-                        for (var child : nodes)
-                            if (require.isAssignableFrom(child.getValue().type()))
-                                node.add(child);
-
-                    }
-            }
+        static {
+            if (GRAPHIC_PLATFORM != null) {
+                var nodes = ServiceLoader.load(Layer.class).stream().map(Node::new).collect(Collectors.toList());
+                for (var node : nodes) {
+                    var classt = node.getValue().type().getAnnotation(RequireLayer.class);
+                    if (classt != null)
+                        for (Class<? extends Layer> require : classt.require())
+                            for (var child : nodes)
+                                if (require.isAssignableFrom(child.getValue().type()))
+                                    node.add(child);
+                }
             LayerStack stack = GRAPHIC_PLATFORM.getLayerStack();
-            new DepthIterator<>(nodes.iterator()).forEachRemaining(c -> stack.pushLayer(c.get()));
+                stack.pushLayer(Utility.iteratorToStream(new DepthIterator<>(nodes.iterator()), nodes.size()).map(ServiceLoader.Provider::get).toArray(Layer[]::new));
         }
     }
 
