@@ -6,5 +6,6 @@ module kernel.core {
     exports fr.univ_amu.game.event;
     exports fr.univ_amu.game.math;
     exports fr.univ_amu.game.render;
+    exports fr.univ_amu.graph;
     uses fr.univ_amu.game.core.GraphicPlatform;
 }
