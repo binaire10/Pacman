@@ -13,9 +13,10 @@ import java.util.Map;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 
-public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatform {
+public final class LWJGLPlatform implements GraphicPlatform {
     private boolean initialize = false;
-    private LayerStack layers = new LayerStack();
+    private final LayerStack layers = new LayerStack();
+    private final GLRenderCommand renderCommand = new GLRenderCommand();
 
     public LWJGLPlatform() {
         GLFWErrorCallback.createPrint(System.err).set();
@@ -244,7 +245,7 @@ public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatf
     }
 
     public RenderCommand getRenderCommand() {
-        return this;
+        return renderCommand;
     }
 
     @Override
