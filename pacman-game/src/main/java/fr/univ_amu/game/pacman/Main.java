@@ -2,6 +2,9 @@ package fr.univ_amu.game.pacman;
 
 import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
+import fr.univ_amu.game.math.Mat;
+import fr.univ_amu.game.render.*;
+
 import fr.univ_amu.game.graphic.camera.OrthographicCamera;
 import fr.univ_amu.game.graphic.render2D.BatchRender2D;
 import fr.univ_amu.game.math.Vec;
