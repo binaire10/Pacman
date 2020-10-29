@@ -189,7 +189,11 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     @Override
     public void dispatch(Event event) {
-        layers.iterator().forEachRemaining(layer -> layer.onEvent(event));
+        for (Layer layer : layers) {
+            layer.onEvent(event);
+            if (event.isHandle())
+                break;
+        }
     }
 
     @Override
@@ -229,6 +233,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     @Override
     public void clear() {
+        layers.clear();
         glfwTerminate();
     }
 
