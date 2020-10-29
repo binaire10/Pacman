@@ -8,4 +8,5 @@ module kernel.core {
     exports fr.univ_amu.game.render;
     exports fr.univ_amu.graph;
     uses fr.univ_amu.game.core.GraphicPlatform;
+    uses fr.univ_amu.game.core.Layer;
 }
