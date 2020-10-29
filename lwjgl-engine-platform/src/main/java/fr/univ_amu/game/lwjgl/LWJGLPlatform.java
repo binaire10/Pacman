@@ -1,9 +1,6 @@
 package fr.univ_amu.game.lwjgl;
 
-import fr.univ_amu.game.core.GraphicPlatform;
-import fr.univ_amu.game.core.KeyCode;
-import fr.univ_amu.game.core.MouseCode;
-import fr.univ_amu.game.core.Window;
+import fr.univ_amu.game.core.*;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.lwjgl.render.GLIndexBuffer;
 import fr.univ_amu.game.lwjgl.render.GLMaterial;
@@ -20,6 +17,7 @@ import static org.lwjgl.opengl.GL33.*;
 
 public final class LWJGLPlatform implements GraphicPlatform {
     private boolean initialize = false;
+    private LayerStack layers = new LayerStack();
 
     public LWJGLPlatform() {
         GLFWErrorCallback.createPrint(System.err).set();
@@ -191,7 +189,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     @Override
     public void dispatch(Event event) {
-        System.out.println(event);
+        layers.iterator().forEachRemaining(layer -> layer.onEvent(event));
     }
 
     @Override
@@ -232,5 +230,10 @@ public final class LWJGLPlatform implements GraphicPlatform {
     @Override
     public void clear() {
         glfwTerminate();
+    }
+
+    @Override
+    public LayerStack getLayerStack() {
+        return layers;
     }
 }

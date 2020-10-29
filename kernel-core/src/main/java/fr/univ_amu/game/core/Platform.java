@@ -48,4 +48,8 @@ public final class Platform {
     public static void clear() {
         GRAPHIC_PLATFORM.clear();
     }
+
+    public static LayerStack getLayerStack() {
+        return GRAPHIC_PLATFORM.getLayerStack();
+    }
 }

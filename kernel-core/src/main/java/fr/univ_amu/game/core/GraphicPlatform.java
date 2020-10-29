@@ -23,4 +23,6 @@ public interface GraphicPlatform {
     Material create_material(Map<ShaderType, String> shader);
 
     void clear();
+
+    LayerStack getLayerStack();
 }
