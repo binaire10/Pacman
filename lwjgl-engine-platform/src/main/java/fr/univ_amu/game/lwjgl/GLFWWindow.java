@@ -33,55 +33,55 @@ public class GLFWWindow implements Window {
         if (winID == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
         glfwSetWindowSizeCallback(winID, this::handleResizeEvent);
-        glfwSetCharCallback(winID, GLFWWindow::handleTypedEvent);
-        glfwSetKeyCallback(winID, GLFWWindow::handleKeyEvent);
-        glfwSetWindowCloseCallback(winID, GLFWWindow::handleClose);
-        glfwSetMouseButtonCallback(winID, GLFWWindow::handleMouseButtonEvent);
-        glfwSetScrollCallback(winID, GLFWWindow::handleScrollEvent);
-        glfwSetCursorPosCallback(winID, GLFWWindow::handleCursorPosEvent);
+        glfwSetCharCallback(winID, this::handleTypedEvent);
+        glfwSetKeyCallback(winID, this::handleKeyEvent);
+        glfwSetWindowCloseCallback(winID, this::handleClose);
+        glfwSetMouseButtonCallback(winID, this::handleMouseButtonEvent);
+        glfwSetScrollCallback(winID, this::handleScrollEvent);
+        glfwSetCursorPosCallback(winID, this::handleCursorPosEvent);
 
         glfwMakeContextCurrent(winID);
     }
 
-    private static void handleTypedEvent(long wid, int key) {
-        Platform.dispatch(new KeyTypedEvent(key));
+    private void handleTypedEvent(long wid, int key) {
+        Platform.dispatch(new KeyTypedEvent(key, this));
     }
 
-    private static void handleKeyEvent(long wid, int key, int scancode, int action, int mods) {
+    private void handleKeyEvent(long wid, int key, int scancode, int action, int mods) {
         switch (action) {
             case GLFW_PRESS:
-                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), false));
+                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), false, this));
                 break;
             case GLFW_RELEASE:
-                Platform.dispatch(new KeyReleasedEvent(LWJGLPlatform.keyboardFromGLFW(key)));
+                Platform.dispatch(new KeyReleasedEvent(LWJGLPlatform.keyboardFromGLFW(key), this));
                 break;
             case GLFW_REPEAT:
-                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), true));
+                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), true, this));
                 break;
         }
     }
 
-    private static void handleMouseButtonEvent(long wid, int button, int action, int mods) {
+    private void handleMouseButtonEvent(long wid, int button, int action, int mods) {
         switch (action) {
             case GLFW_PRESS:
-                Platform.dispatch(new MouseButtonPressedEvent(LWJGLPlatform.mouseFromGLFW(button)));
+                Platform.dispatch(new MouseButtonPressedEvent(LWJGLPlatform.mouseFromGLFW(button), this));
                 break;
             case GLFW_RELEASE:
-                Platform.dispatch(new MouseButtonReleasedEvent(LWJGLPlatform.mouseFromGLFW(button)));
+                Platform.dispatch(new MouseButtonReleasedEvent(LWJGLPlatform.mouseFromGLFW(button), this));
                 break;
         }
     }
 
-    private static void handleScrollEvent(long wid, double xOffset, double yOffset) {
-        Platform.dispatch(new MouseScrolledEvent((float) xOffset, (float) yOffset));
+    private void handleScrollEvent(long wid, double xOffset, double yOffset) {
+        Platform.dispatch(new MouseScrolledEvent((float) xOffset, (float) yOffset, this));
     }
 
-    private static void handleCursorPosEvent(long wid, double xPos, double yPos) {
-        Platform.dispatch(new MouseMovedEvent((float) xPos, (float) yPos));
+    private void handleCursorPosEvent(long wid, double xPos, double yPos) {
+        Platform.dispatch(new MouseMovedEvent((float) xPos, (float) yPos, this));
     }
 
-    private static void handleClose(long wid) {
-        Platform.dispatch(new WindowCloseEvent());
+    private void handleClose(long wid) {
+        Platform.dispatch(new WindowCloseEvent(this));
     }
 
     @Override
@@ -108,6 +108,6 @@ public class GLFWWindow implements Window {
         this.width = w;
         this.height = h;
         glViewport(0, 0, w, h);
-        Platform.dispatch(new WindowResizeEvent(w, h));
+        Platform.dispatch(new WindowResizeEvent(w, h, this));
     }
 }
