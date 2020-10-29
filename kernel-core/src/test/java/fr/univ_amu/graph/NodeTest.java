@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class NodeTest {
+public class NodeTest {
     @Test
-    void test_set_value() {
+    public void test_set_value() {
         Node<Integer> value = new Node<>(5);
         assertEquals(5, value.getValue());
         assertTrue(value.getChildren().isEmpty());

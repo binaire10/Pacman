@@ -9,9 +9,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DepthIteratorTest {
+public class DepthIteratorTest {
     @Test
-    void test_iterator() {
+    public void test_iterator() {
         Iterator<Integer> iterator = Node.fabric(1,
                 new Node<>(2),
                 new Node<>(3),
@@ -33,13 +33,13 @@ class DepthIteratorTest {
     }
 
     @Test
-    void test_empty_list() {
+    public void test_empty_list() {
         Iterator<Integer> iterator = new DepthIterator<>(Collections.emptyIterator());
         assertFalse(iterator.hasNext());
     }
 
     @Test
-    void test_trash_list() {
+    public void test_trash_list() {
         List<Node<Integer>> trashList = new ArrayList<>();
         Collections.addAll(trashList, null, Node.fabric(5), null, Node.fabric(6,
                 Node.fabric(8),
@@ -59,7 +59,7 @@ class DepthIteratorTest {
     }
 
     @Test
-    void test_trash_list_2() {
+    public void test_trash_list_2() {
         List<Node<Integer>> trashList = new ArrayList<>();
         Collections.addAll(trashList, null, null, null, null);
         Iterator<Integer> iterator = new DepthIterator<>(trashList.iterator());
@@ -72,7 +72,7 @@ class DepthIteratorTest {
     }
 
     @Test
-    void test_subnode() {
+    public void test_subnode() {
         Iterator<Integer> iterator = Node.fabric(5,
                 Node.fabric(4,
                         Node.fabric(
@@ -93,7 +93,7 @@ class DepthIteratorTest {
     }
 
     @Test
-    void test_graph() {
+    public void test_graph() {
         List<Node<Integer>> nodes = new ArrayList<>();
         nodes.add(Node.fabric(1,
                 new Node<>(2),
@@ -125,7 +125,7 @@ class DepthIteratorTest {
     }
 
     @Test
-    void test_graph_duplicateNode() {
+    public void test_graph_duplicateNode() {
         Node<Integer> splitNode = Node.fabric(7,
                 Node.fabric(8),
                 Node.fabric(9,
