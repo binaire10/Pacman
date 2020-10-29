@@ -1,4 +1,4 @@
-module kernel.core {
+open module kernel.core {
     exports fr.univ_amu.game.core;
     exports fr.univ_amu.game.event.application;
     exports fr.univ_amu.game.event.keyboard;

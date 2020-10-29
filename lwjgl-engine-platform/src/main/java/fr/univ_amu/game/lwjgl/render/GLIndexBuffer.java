@@ -2,7 +2,9 @@ package fr.univ_amu.game.lwjgl.render;
 
 import fr.univ_amu.game.render.IndexBuffer;
 
-import static org.lwjgl.opengl.GL30.*;
+import java.io.IOException;
+
+import static org.lwjgl.opengl.GL33.*;
 
 public class GLIndexBuffer implements IndexBuffer {
     private final int id;
@@ -23,5 +25,11 @@ public class GLIndexBuffer implements IndexBuffer {
     @Override
     public void bind() {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+    }
+
+    @Override
+    public void close() throws IOException {
+        System.out.println("free index buffer");
+        glDeleteBuffers(id);
     }
 }

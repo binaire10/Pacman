@@ -2,20 +2,18 @@ package fr.univ_amu.game.lwjgl;
 
 import fr.univ_amu.game.core.*;
 import fr.univ_amu.game.event.Event;
-import fr.univ_amu.game.lwjgl.render.GLIndexBuffer;
-import fr.univ_amu.game.lwjgl.render.GLMaterial;
-import fr.univ_amu.game.lwjgl.render.GLVertexArray;
-import fr.univ_amu.game.lwjgl.render.GLVertexBuffer;
+import fr.univ_amu.game.lwjgl.render.*;
 import fr.univ_amu.game.render.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
+import java.nio.ByteBuffer;
 import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 
-public final class LWJGLPlatform implements GraphicPlatform {
+public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatform {
     private boolean initialize = false;
     private LayerStack layers = new LayerStack();
 
@@ -201,6 +199,9 @@ public final class LWJGLPlatform implements GraphicPlatform {
         Window window = new GLFWWindow(title, width, height);
         if (!initialize) {
             GL.createCapabilities();
+            glEnable(GL_DEPTH_TEST);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             initialize = true;
         }
         return window;
@@ -240,5 +241,19 @@ public final class LWJGLPlatform implements GraphicPlatform {
     @Override
     public LayerStack getLayerStack() {
         return layers;
+    }
+
+    public RenderCommand getRenderCommand() {
+        return this;
+    }
+
+    @Override
+    public Texture2D load_texture(ByteBuffer data) {
+        return new GLTexture2D(data);
+    }
+
+    @Override
+    public GLTexture2D make_texture(int w, int h) {
+        return new GLTexture2D(w, h);
     }
 }

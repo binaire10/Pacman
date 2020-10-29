@@ -6,5 +6,7 @@ module lwjgl.engine.platform {
     requires org.lwjgl.natives;
     requires org.lwjgl.glfw.natives;
     requires org.lwjgl.opengl.natives;
+    requires org.lwjgl.stb;
+    requires org.lwjgl.stb.natives;
     provides fr.univ_amu.game.core.GraphicPlatform with fr.univ_amu.game.lwjgl.LWJGLPlatform;
 }

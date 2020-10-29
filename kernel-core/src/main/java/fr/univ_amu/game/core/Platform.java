@@ -5,6 +5,7 @@ import fr.univ_amu.game.render.*;
 import fr.univ_amu.graph.DepthIterator;
 import fr.univ_amu.graph.Node;
 
+import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
@@ -58,6 +59,10 @@ public final class Platform {
         return GRAPHIC_PLATFORM;
     }
 
+    public static RenderCommand getRenderCommand() {
+        return GRAPHIC_PLATFORM.getRenderCommand();
+    }
+
     public static void dispatch(Event event) {
         GRAPHIC_PLATFORM.dispatch(event);
     }
@@ -72,5 +77,13 @@ public final class Platform {
 
     public static LayerStack getLayerStack() {
         return GRAPHIC_PLATFORM.getLayerStack();
+    }
+      
+    public static Texture2D load_texture(ByteBuffer image) {
+        return GRAPHIC_PLATFORM.load_texture(image);
+    }
+
+    public static Texture2D make_texture(int w, int h) {
+        return GRAPHIC_PLATFORM.make_texture(w, h);
     }
 }
