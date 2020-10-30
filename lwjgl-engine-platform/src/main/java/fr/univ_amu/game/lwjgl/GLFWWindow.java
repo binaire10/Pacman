@@ -104,6 +104,11 @@ public class GLFWWindow implements Window {
         glfwSwapBuffers(winID);
     }
 
+    @Override
+    public void make_current() {
+        glfwMakeContextCurrent(winID);
+    }
+
     private void handleResizeEvent(long wid, int w, int h) {
         this.width = w;
         this.height = h;

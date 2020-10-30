@@ -8,4 +8,6 @@ public interface Window {
     boolean isClose();
 
     void swap();
+
+    void make_current();
 }
