@@ -2,6 +2,7 @@ package fr.univ_amu.game.core;
 
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.render.*;
+import fr.univ_amu.game.util.Utility;
 import fr.univ_amu.graph.DepthIterator;
 import fr.univ_amu.graph.Node;
 
