@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class BatchRender2D implements Closeable {
@@ -89,6 +90,8 @@ public class BatchRender2D implements Closeable {
     }
 
     public void drawQuad(float[] position, float[] size, float[] color, Texture2D texture2D, float tillingFactor) {
+        Objects.checkFromToIndex(0, 3, position.length);
+        Objects.checkFromToIndex(0, 2, size.length);
         float[] matrix = {
                 size[0], 0, 0, position[0],
                 0, size[1], 0, position[1],
@@ -118,6 +121,7 @@ public class BatchRender2D implements Closeable {
     }
 
     private void pushQuad(float[] matrix, float[] color, float textureIndex, float tillingFactor) {
+        Objects.checkFromToIndex(0, 4, color.length);
         ++quadCount;
         for (int i = 0; i < quadVertices.length; i++) {
             float[] r = Vec.dot_product(quadVertices[i], matrix, 4);
