@@ -13,19 +13,19 @@ import java.util.stream.Collectors;
 public final class Platform {
     private static final GraphicPlatform GRAPHIC_PLATFORM = ServiceLoader.load(GraphicPlatform.class).findFirst().orElseGet(() -> null);
 
-        static {
-            if (GRAPHIC_PLATFORM != null) {
-                var nodes = ServiceLoader.load(Layer.class).stream().map(Node::new).collect(Collectors.toList());
-                for (var node : nodes) {
-                    var classt = node.getValue().type().getAnnotation(RequireLayer.class);
-                    if (classt != null)
-                        for (Class<? extends Layer> require : classt.require())
-                            for (var child : nodes)
-                                if (require.isAssignableFrom(child.getValue().type()))
-                                    node.add(child);
-                }
+    static {
+        if (GRAPHIC_PLATFORM != null) {
+            var nodes = ServiceLoader.load(Layer.class).stream().map(Node::new).collect(Collectors.toList());
+            for (var node : nodes) {
+                var classt = node.getValue().type().getAnnotation(RequireLayer.class);
+                if (classt != null)
+                    for (Class<? extends Layer> require : classt.require())
+                        for (var child : nodes)
+                            if (require.isAssignableFrom(child.getValue().type()))
+                                node.add(child);
+            }
             LayerStack stack = GRAPHIC_PLATFORM.getLayerStack();
-                stack.pushLayer(Utility.iteratorToStream(new DepthIterator<>(nodes.iterator()), nodes.size()).map(ServiceLoader.Provider::get).toArray(Layer[]::new));
+            stack.pushLayer(Utility.iteratorToStream(new DepthIterator<>(nodes.iterator()), nodes.size()).map(ServiceLoader.Provider::get).toArray(Layer[]::new));
         }
     }
 
@@ -76,7 +76,7 @@ public final class Platform {
     public static LayerStack getLayerStack() {
         return GRAPHIC_PLATFORM.getLayerStack();
     }
-      
+
     public static Texture2D load_texture(ByteBuffer image) {
         return GRAPHIC_PLATFORM.load_texture(image);
     }
