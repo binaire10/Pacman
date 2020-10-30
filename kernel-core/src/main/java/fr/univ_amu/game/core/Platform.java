@@ -12,8 +12,10 @@ import java.util.stream.Collectors;
 
 public final class Platform {
     private static final GraphicPlatform GRAPHIC_PLATFORM = ServiceLoader.load(GraphicPlatform.class).findFirst().orElseGet(() -> null);
+    private static boolean isRunning;
 
-    static {
+    public static void initialise() {
+        isRunning = true;
         if (GRAPHIC_PLATFORM != null) {
             var nodes = ServiceLoader.load(Layer.class).stream().map(Node::new).collect(Collectors.toList());
             for (var node : nodes) {
@@ -83,5 +85,13 @@ public final class Platform {
 
     public static Texture2D make_texture(int w, int h) {
         return GRAPHIC_PLATFORM.make_texture(w, h);
+    }
+
+    public static boolean isRunning() {
+        return isRunning;
+    }
+
+    public static void shutdown() {
+        isRunning = false;
     }
 }
