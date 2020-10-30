@@ -1,4 +1,6 @@
-package fr.univ_amu.game.core;
+package fr.univ_amu.game.run;
+
+import fr.univ_amu.game.core.Platform;
 
 public class Main {
     public static void main(String[] arg) {

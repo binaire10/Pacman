@@ -23,7 +23,7 @@ public class ExampleLayer implements Layer {
         camera = new OrthographicCamera((float) window.getWidth() / window.getHeight());
 
         try {
-            texture = Platform.load_texture(Utility.readFile(Main.class.getResource("Checkerboard.png")));
+            texture = Platform.load_texture(Utility.readFile(ExampleLayer.class.getResource("Checkerboard.png")));
             render2D = new BatchRender2D();
         } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
@@ -55,5 +55,11 @@ public class ExampleLayer implements Layer {
     @Override
     public void onDetach() {
         System.out.println("Stop Example");
+        try {
+            render2D.close();
+            texture.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
