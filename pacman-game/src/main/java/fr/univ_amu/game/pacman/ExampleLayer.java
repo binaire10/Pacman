@@ -1,12 +1,16 @@
 package fr.univ_amu.game.pacman;
 
-import fr.univ_amu.game.core.*;
+import fr.univ_amu.game.core.EventDispatch;
+import fr.univ_amu.game.core.Layer;
+import fr.univ_amu.game.core.Platform;
+import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.event.application.WindowCloseEvent;
 import fr.univ_amu.game.graphic.camera.OrthographicCamera;
 import fr.univ_amu.game.graphic.render2D.BatchRender2D;
 import fr.univ_amu.game.math.Vec;
 import fr.univ_amu.game.render.Texture2D;
+import fr.univ_amu.game.util.Utility;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -44,6 +48,10 @@ public class ExampleLayer implements Layer {
         render2D.drawQuad(Vec.make_vec4(0, 0, 0.1f), Vec.make_vec2(4, 4), texture, 5);
         render2D.end();
 
+    }
+
+    @Override
+    public void afterUpdate() {
         window.swap();
     }
 
