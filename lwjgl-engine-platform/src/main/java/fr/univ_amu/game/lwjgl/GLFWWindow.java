@@ -28,6 +28,7 @@ public class GLFWWindow implements Window {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
         winID = glfwCreateWindow(width, height, title, NULL, NULL);
         if (winID == NULL)
@@ -107,6 +108,21 @@ public class GLFWWindow implements Window {
     @Override
     public void make_current() {
         glfwMakeContextCurrent(winID);
+    }
+
+    @Override
+    public void show() {
+        glfwShowWindow(winID);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        glfwSetWindowSize(winID, width, height);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        glfwSetWindowTitle(winID, title);
     }
 
     private void handleResizeEvent(long wid, int w, int h) {
