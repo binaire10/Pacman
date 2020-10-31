@@ -5,7 +5,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.UnknownFormatConversionException;
 
@@ -26,21 +25,22 @@ public final class GLTexture2D implements Texture2D {
             var pixels = STBImage.stbi_load_from_memory(storage, x, y, channel, 0);
             int internalFormat;
             int dataFormat;
+            if (pixels == null)
+                throw new RuntimeException("data provide but no image found");
             switch (channel.get(0)) {
-                case 4:
+                case 4 -> {
                     internalFormat = GL_RGBA8;
                     dataFormat = GL_RGBA;
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     internalFormat = GL_RGB8;
                     dataFormat = GL_RGB;
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     internalFormat = GL_RG8;
                     dataFormat = GL_RG;
-                    break;
-                default:
-                    throw new UnknownFormatConversionException("channel require = " + channel.get(0));
+                }
+                default -> throw new UnknownFormatConversionException("channel require = " + channel.get(0));
             }
             id = glGenTextures();
             glBindTexture(GL_TEXTURE_2D, id);
@@ -84,7 +84,7 @@ public final class GLTexture2D implements Texture2D {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         System.out.println("Release Texture");
         glDeleteTextures(id);
     }

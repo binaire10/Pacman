@@ -2,7 +2,6 @@ package fr.univ_amu.game.lwjgl.render;
 
 import fr.univ_amu.game.render.VertexBuffer;
 
-import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -53,7 +52,7 @@ public final class GLVertexBuffer implements VertexBuffer {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         System.out.println("free vertex buffer");
         glDeleteBuffers(id);
     }

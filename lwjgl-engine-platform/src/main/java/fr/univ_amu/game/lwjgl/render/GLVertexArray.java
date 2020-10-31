@@ -6,8 +6,6 @@ import fr.univ_amu.game.render.IndexBuffer;
 import fr.univ_amu.game.render.VertexArray;
 import fr.univ_amu.game.render.VertexBuffer;
 
-import java.io.IOException;
-
 import static org.lwjgl.opengl.GL33.*;
 
 public final class GLVertexArray implements VertexArray {
@@ -52,7 +50,7 @@ public final class GLVertexArray implements VertexArray {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         System.out.println("free vertex array");
         glDeleteVertexArrays(vertexArray);
     }

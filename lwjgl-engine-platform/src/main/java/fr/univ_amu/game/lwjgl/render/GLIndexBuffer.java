@@ -2,8 +2,6 @@ package fr.univ_amu.game.lwjgl.render;
 
 import fr.univ_amu.game.render.IndexBuffer;
 
-import java.io.IOException;
-
 import static org.lwjgl.opengl.GL33.*;
 
 public final class GLIndexBuffer implements IndexBuffer {
@@ -28,7 +26,7 @@ public final class GLIndexBuffer implements IndexBuffer {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         System.out.println("free index buffer");
         glDeleteBuffers(id);
     }

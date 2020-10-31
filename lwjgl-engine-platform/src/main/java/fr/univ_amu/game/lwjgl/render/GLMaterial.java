@@ -5,7 +5,6 @@ import fr.univ_amu.game.render.ShaderType;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -120,7 +119,7 @@ public final class GLMaterial implements Material {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         System.out.println("free program");
         glDeleteProgram(program);
     }

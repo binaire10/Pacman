@@ -12,8 +12,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 @HardwareLayer
 public final class LWJGLLayer implements Layer {
-    public static final LWJGLLayer LAYER = new LWJGLLayer();
-
     @Override
     public void onAttach() {
         GLFWWindow mainWindow = new GLFWWindow("", 1, 1);

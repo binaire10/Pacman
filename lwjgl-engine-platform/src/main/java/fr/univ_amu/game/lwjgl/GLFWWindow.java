@@ -50,26 +50,16 @@ public final class GLFWWindow implements Window {
 
     private void handleKeyEvent(long wid, int key, int scancode, int action, int mods) {
         switch (action) {
-            case GLFW_PRESS:
-                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), false, this));
-                break;
-            case GLFW_RELEASE:
-                Platform.dispatch(new KeyReleasedEvent(LWJGLPlatform.keyboardFromGLFW(key), this));
-                break;
-            case GLFW_REPEAT:
-                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), true, this));
-                break;
+            case GLFW_PRESS -> Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), false, this));
+            case GLFW_RELEASE -> Platform.dispatch(new KeyReleasedEvent(LWJGLPlatform.keyboardFromGLFW(key), this));
+            case GLFW_REPEAT -> Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), true, this));
         }
     }
 
     private void handleMouseButtonEvent(long wid, int button, int action, int mods) {
         switch (action) {
-            case GLFW_PRESS:
-                Platform.dispatch(new MouseButtonPressedEvent(LWJGLPlatform.mouseFromGLFW(button), this));
-                break;
-            case GLFW_RELEASE:
-                Platform.dispatch(new MouseButtonReleasedEvent(LWJGLPlatform.mouseFromGLFW(button), this));
-                break;
+            case GLFW_PRESS -> Platform.dispatch(new MouseButtonPressedEvent(LWJGLPlatform.mouseFromGLFW(button), this));
+            case GLFW_RELEASE -> Platform.dispatch(new MouseButtonReleasedEvent(LWJGLPlatform.mouseFromGLFW(button), this));
         }
     }
 
