@@ -11,7 +11,6 @@ public class Main {
             final double current = System.currentTimeMillis();
             final double delta = current - start;
             start = current;
-            System.out.println(delta);
             Platform.getLayerStack().iterator().forEachRemaining(Layer::beforeUpdate);
             Platform.getLayerStack().iterator().forEachRemaining(layer -> layer.onUpdate(delta));
             Platform.getLayerStack().reverseIterator().forEachRemaining(Layer::afterUpdate);
