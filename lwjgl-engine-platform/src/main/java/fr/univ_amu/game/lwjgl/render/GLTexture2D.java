@@ -45,6 +45,7 @@ public class GLTexture2D implements Texture2D {
             id = glGenTextures();
             glBindTexture(GL_TEXTURE_2D, id);
             glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width = x.get(0), height = y.get(0), 0, dataFormat, GL_UNSIGNED_BYTE, pixels);
+            STBImage.stbi_image_free(pixels);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         }
