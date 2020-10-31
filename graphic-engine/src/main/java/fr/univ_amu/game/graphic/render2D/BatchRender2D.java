@@ -73,7 +73,7 @@ public class BatchRender2D implements Closeable {
         vertexArray.setVertexBuffer(vertexBuffer, QUAD_LAYOUT);
 
         white = Platform.make_texture(1, 1);
-        white.setPixels(ByteBuffer.wrap(new byte[]{(byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff}));
+        white.setPixels(ByteBuffer.allocateDirect(4).order(ByteOrder.nativeOrder()).put((byte) 0xff).put((byte) 0xff).put((byte) 0xff).put((byte) 0xff).flip());
     }
 
     public void begin(Camera camera) {
