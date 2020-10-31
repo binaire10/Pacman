@@ -6,7 +6,7 @@ import fr.univ_amu.game.render.VertexArray;
 import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class GLRenderCommand implements RenderCommand {
+public final class GLRenderCommand implements RenderCommand {
 
     @Override
     public void setViewport(int x, int y, int width, int height) {

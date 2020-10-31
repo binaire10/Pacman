@@ -8,7 +8,7 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class GLVertexBuffer implements VertexBuffer {
+public final class GLVertexBuffer implements VertexBuffer {
     private final int id;
 
     public GLVertexBuffer(float[] data) {

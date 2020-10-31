@@ -16,7 +16,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class GLFWWindow implements Window {
+public final class GLFWWindow implements Window {
     private final long winID;
     private int width;
     private int height;

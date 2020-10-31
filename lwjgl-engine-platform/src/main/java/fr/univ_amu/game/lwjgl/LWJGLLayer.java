@@ -11,7 +11,7 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.opengl.GL11.*;
 
 @HardwareLayer
-public class LWJGLLayer implements Layer {
+public final class LWJGLLayer implements Layer {
     public static final LWJGLLayer LAYER = new LWJGLLayer();
 
     @Override

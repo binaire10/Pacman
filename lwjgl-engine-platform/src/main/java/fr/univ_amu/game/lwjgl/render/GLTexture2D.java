@@ -11,7 +11,7 @@ import java.util.UnknownFormatConversionException;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class GLTexture2D implements Texture2D {
+public final class GLTexture2D implements Texture2D {
     private final int id;
     private final int width;
     private final int height;

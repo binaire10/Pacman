@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class GLIndexBuffer implements IndexBuffer {
+public final class GLIndexBuffer implements IndexBuffer {
     private final int id;
     private final int count;
 

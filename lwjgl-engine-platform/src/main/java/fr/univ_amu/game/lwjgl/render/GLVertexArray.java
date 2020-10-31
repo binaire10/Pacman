@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class GLVertexArray implements VertexArray {
+public final class GLVertexArray implements VertexArray {
     private final int vertexArray;
     private int componentCount = 0;
 

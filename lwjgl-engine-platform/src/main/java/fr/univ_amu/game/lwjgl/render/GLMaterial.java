@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class GLMaterial implements Material {
+public final class GLMaterial implements Material {
     private final int program;
     private final Map<String, Integer> uniforms = new HashMap<>();
 
