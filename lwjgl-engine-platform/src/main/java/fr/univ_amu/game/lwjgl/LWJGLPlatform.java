@@ -17,7 +17,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
     private final boolean initialize = false;
     private final LayerStack layers = new LayerStack();
     private final GLRenderCommand renderCommand = new GLRenderCommand();
-    private Window mainWindow;
+    Window mainWindow;
 
     public LWJGLPlatform() {
         GLFWErrorCallback.createPrint(System.err).set();
@@ -242,7 +242,6 @@ public final class LWJGLPlatform implements GraphicPlatform {
     @Override
     public void clear() {
         layers.clear();
-        glfwTerminate();
     }
 
     @Override

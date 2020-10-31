@@ -14,7 +14,6 @@ public class Main {
             Platform.getLayerStack().iterator().forEachRemaining(Layer::beforeUpdate);
             Platform.getLayerStack().iterator().forEachRemaining(layer -> layer.onUpdate(delta));
             Platform.getLayerStack().reverseIterator().forEachRemaining(Layer::afterUpdate);
-            Platform.processEvent();
         }
         Platform.clear();
     }
