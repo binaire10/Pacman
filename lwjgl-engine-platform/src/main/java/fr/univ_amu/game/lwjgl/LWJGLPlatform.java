@@ -14,14 +14,21 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 
 public final class LWJGLPlatform implements GraphicPlatform {
-    private boolean initialize = false;
+    private final boolean initialize = false;
     private final LayerStack layers = new LayerStack();
     private final GLRenderCommand renderCommand = new GLRenderCommand();
+    private Window mainWindow;
 
     public LWJGLPlatform() {
         GLFWErrorCallback.createPrint(System.err).set();
         if (!glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW");
+        mainWindow = new GLFWWindow("", 1, 1);
+        mainWindow.make_current();
+        GL.createCapabilities();
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     public static int toOpenGL(ShaderDataType shaderDataType) {
@@ -163,7 +170,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
             case GLFW_KEY_RIGHT_SUPER -> KeyCode.RightSuper;
             case GLFW_KEY_MENU -> KeyCode.Menu;
 
-            default -> throw new IllegalArgumentException("Unmapped character");
+            default -> throw new IllegalArgumentException("Unmapped keyboard code");
         };
     }
 
@@ -177,7 +184,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
             case GLFW_MOUSE_BUTTON_6 -> MouseCode.Button5;
             case GLFW_MOUSE_BUTTON_7 -> MouseCode.Button6;
 
-            default -> throw new IllegalArgumentException("Unmapped character");
+            default -> throw new IllegalArgumentException("Unmapped mouse code");
         };
     }
 
@@ -197,15 +204,14 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     @Override
     public Window create_window(String title, int width, int height) {
-        Window window = new GLFWWindow(title, width, height);
-        if (!initialize) {
-            GL.createCapabilities();
-            glEnable(GL_DEPTH_TEST);
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            initialize = true;
+        if (mainWindow != null) {
+            Window window = mainWindow;
+            mainWindow = null;
+            window.setTitle(title);
+            window.resize(width, height);
+            return window;
         }
-        return window;
+        return new GLFWWindow(title, width, height);
     }
 
     @Override
