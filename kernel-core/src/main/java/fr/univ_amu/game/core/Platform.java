@@ -1,5 +1,6 @@
 package fr.univ_amu.game.core;
 
+import fr.univ_amu.game.core.loader.*;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.render.*;
 import fr.univ_amu.game.util.Utility;
@@ -7,6 +8,7 @@ import fr.univ_amu.graph.DepthIterator;
 import fr.univ_amu.graph.Node;
 
 import java.nio.ByteBuffer;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
@@ -18,7 +20,7 @@ public final class Platform {
     public static void initialise() {
         isRunning = true;
         if (GRAPHIC_PLATFORM != null) {
-            var nodes = ServiceLoader.load(Layer.class).stream().map(Node::new).collect(Collectors.toList());
+            var nodes = ServiceLoader.load(Layer.class).stream().map(Node::new).sorted(Comparator.comparingInt(c -> evaluate(c.getValue().type()))).collect(Collectors.toList());
             for (var node : nodes) {
                 var classt = node.getValue().type().getAnnotation(RequireLayer.class);
                 if (classt != null)
@@ -30,6 +32,18 @@ public final class Platform {
             LayerStack stack = GRAPHIC_PLATFORM.getLayerStack();
             stack.pushLayer(Utility.iteratorToStream(new DepthIterator<>(nodes.iterator()), nodes.size()).map(ServiceLoader.Provider::get).toArray(Layer[]::new));
         }
+    }
+
+    private static <T> int evaluate(Class<T> tClass) {
+        if (tClass.isAnnotationPresent(HardwareLayer.class))
+            return -3;
+        if (tClass.isAnnotationPresent(EngineLayer.class))
+            return -2;
+        if (tClass.isAnnotationPresent(GameplayLayer.class))
+            return -1;
+        if (tClass.isAnnotationPresent(UserLayer.class))
+            return tClass.getAnnotation(UserLayer.class).layer();
+        return Integer.MAX_VALUE;
     }
 
     public static IndexBuffer make_index(int[] index) {
