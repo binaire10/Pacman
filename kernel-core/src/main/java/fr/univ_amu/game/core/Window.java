@@ -8,4 +8,12 @@ public interface Window {
     boolean isClose();
 
     void swap();
+
+    void make_current();
+
+    void show();
+
+    void resize(int width, int height);
+
+    void setTitle(CharSequence title);
 }

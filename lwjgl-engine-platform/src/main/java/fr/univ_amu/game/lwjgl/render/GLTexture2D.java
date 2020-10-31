@@ -5,13 +5,12 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.UnknownFormatConversionException;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class GLTexture2D implements Texture2D {
+public final class GLTexture2D implements Texture2D {
     private final int id;
     private final int width;
     private final int height;
@@ -26,25 +25,27 @@ public class GLTexture2D implements Texture2D {
             var pixels = STBImage.stbi_load_from_memory(storage, x, y, channel, 0);
             int internalFormat;
             int dataFormat;
+            if (pixels == null)
+                throw new RuntimeException("data provide but no image found");
             switch (channel.get(0)) {
-                case 4:
+                case 4 -> {
                     internalFormat = GL_RGBA8;
                     dataFormat = GL_RGBA;
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     internalFormat = GL_RGB8;
                     dataFormat = GL_RGB;
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     internalFormat = GL_RG8;
                     dataFormat = GL_RG;
-                    break;
-                default:
-                    throw new UnknownFormatConversionException("channel require = " + channel.get(0));
+                }
+                default -> throw new UnknownFormatConversionException("channel require = " + channel.get(0));
             }
             id = glGenTextures();
             glBindTexture(GL_TEXTURE_2D, id);
             glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width = x.get(0), height = y.get(0), 0, dataFormat, GL_UNSIGNED_BYTE, pixels);
+            STBImage.stbi_image_free(pixels);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         }
@@ -83,7 +84,7 @@ public class GLTexture2D implements Texture2D {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         System.out.println("Release Texture");
         glDeleteTextures(id);
     }

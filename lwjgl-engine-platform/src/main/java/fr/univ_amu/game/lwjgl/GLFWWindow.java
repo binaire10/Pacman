@@ -16,7 +16,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class GLFWWindow implements Window {
+public final class GLFWWindow implements Window {
     private final long winID;
     private int width;
     private int height;
@@ -28,6 +28,7 @@ public class GLFWWindow implements Window {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
         winID = glfwCreateWindow(width, height, title, NULL, NULL);
         if (winID == NULL)
@@ -49,26 +50,16 @@ public class GLFWWindow implements Window {
 
     private void handleKeyEvent(long wid, int key, int scancode, int action, int mods) {
         switch (action) {
-            case GLFW_PRESS:
-                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), false, this));
-                break;
-            case GLFW_RELEASE:
-                Platform.dispatch(new KeyReleasedEvent(LWJGLPlatform.keyboardFromGLFW(key), this));
-                break;
-            case GLFW_REPEAT:
-                Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), true, this));
-                break;
+            case GLFW_PRESS -> Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), false, this));
+            case GLFW_RELEASE -> Platform.dispatch(new KeyReleasedEvent(LWJGLPlatform.keyboardFromGLFW(key), this));
+            case GLFW_REPEAT -> Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), true, this));
         }
     }
 
     private void handleMouseButtonEvent(long wid, int button, int action, int mods) {
         switch (action) {
-            case GLFW_PRESS:
-                Platform.dispatch(new MouseButtonPressedEvent(LWJGLPlatform.mouseFromGLFW(button), this));
-                break;
-            case GLFW_RELEASE:
-                Platform.dispatch(new MouseButtonReleasedEvent(LWJGLPlatform.mouseFromGLFW(button), this));
-                break;
+            case GLFW_PRESS -> Platform.dispatch(new MouseButtonPressedEvent(LWJGLPlatform.mouseFromGLFW(button), this));
+            case GLFW_RELEASE -> Platform.dispatch(new MouseButtonReleasedEvent(LWJGLPlatform.mouseFromGLFW(button), this));
         }
     }
 
@@ -102,6 +93,26 @@ public class GLFWWindow implements Window {
     @Override
     public void swap() {
         glfwSwapBuffers(winID);
+    }
+
+    @Override
+    public void make_current() {
+        glfwMakeContextCurrent(winID);
+    }
+
+    @Override
+    public void show() {
+        glfwShowWindow(winID);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        glfwSetWindowSize(winID, width, height);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        glfwSetWindowTitle(winID, title);
     }
 
     private void handleResizeEvent(long wid, int w, int h) {

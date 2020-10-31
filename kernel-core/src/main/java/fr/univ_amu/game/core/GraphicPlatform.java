@@ -26,7 +26,7 @@ public interface GraphicPlatform {
     void clear();
 
     LayerStack getLayerStack();
-  
+
     RenderCommand getRenderCommand();
 
     Texture2D load_texture(ByteBuffer data);

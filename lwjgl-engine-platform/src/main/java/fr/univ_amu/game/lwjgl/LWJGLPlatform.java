@@ -4,8 +4,6 @@ import fr.univ_amu.game.core.*;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.lwjgl.render.*;
 import fr.univ_amu.game.render.*;
-import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.opengl.GL;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -13,15 +11,10 @@ import java.util.Map;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 
-public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatform {
-    private boolean initialize = false;
-    private LayerStack layers = new LayerStack();
-
-    public LWJGLPlatform() {
-        GLFWErrorCallback.createPrint(System.err).set();
-        if (!glfwInit())
-            throw new IllegalStateException("Unable to initialize GLFW");
-    }
+public final class LWJGLPlatform implements GraphicPlatform {
+    private final LayerStack layers = new LayerStack();
+    private final GLRenderCommand renderCommand = new GLRenderCommand();
+    Window mainWindow;
 
     public static int toOpenGL(ShaderDataType shaderDataType) {
         return switch (shaderDataType) {
@@ -162,7 +155,7 @@ public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatf
             case GLFW_KEY_RIGHT_SUPER -> KeyCode.RightSuper;
             case GLFW_KEY_MENU -> KeyCode.Menu;
 
-            default -> throw new IllegalArgumentException("Unmapped character");
+            default -> throw new IllegalArgumentException("Unmapped keyboard code");
         };
     }
 
@@ -176,7 +169,7 @@ public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatf
             case GLFW_MOUSE_BUTTON_6 -> MouseCode.Button5;
             case GLFW_MOUSE_BUTTON_7 -> MouseCode.Button6;
 
-            default -> throw new IllegalArgumentException("Unmapped character");
+            default -> throw new IllegalArgumentException("Unmapped mouse code");
         };
     }
 
@@ -196,15 +189,14 @@ public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatf
 
     @Override
     public Window create_window(String title, int width, int height) {
-        Window window = new GLFWWindow(title, width, height);
-        if (!initialize) {
-            GL.createCapabilities();
-            glEnable(GL_DEPTH_TEST);
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            initialize = true;
+        if (mainWindow != null) {
+            Window window = mainWindow;
+            mainWindow = null;
+            window.setTitle(title);
+            window.resize(width, height);
+            return window;
         }
-        return window;
+        return new GLFWWindow(title, width, height);
     }
 
     @Override
@@ -235,7 +227,6 @@ public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatf
     @Override
     public void clear() {
         layers.clear();
-        glfwTerminate();
     }
 
     @Override
@@ -244,7 +235,7 @@ public final class LWJGLPlatform extends GLRenderCommand implements GraphicPlatf
     }
 
     public RenderCommand getRenderCommand() {
-        return this;
+        return renderCommand;
     }
 
     @Override

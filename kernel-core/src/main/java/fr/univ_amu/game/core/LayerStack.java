@@ -1,5 +1,7 @@
 package fr.univ_amu.game.core;
 
+import fr.univ_amu.game.util.ReverseListIterator;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -7,9 +9,6 @@ import java.util.List;
 public class LayerStack implements Iterable<Layer> {
     private final List<Layer> stack = new ArrayList<>();
     private int layerCount = 0;
-
-    public LayerStack() {
-    }
 
     public void pushLayer(Layer layer) {
         stack.add(layerCount++, layer);
@@ -63,4 +62,7 @@ public class LayerStack implements Iterable<Layer> {
         return stack.iterator();
     }
 
+    public Iterator<Layer> reverseIterator() {
+        return new ReverseListIterator<>(stack);
+    }
 }

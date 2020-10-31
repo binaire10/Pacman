@@ -46,12 +46,12 @@ public class OrthographicCamera implements Camera {
 
     @Override
     public float[] getMatrix() {
-        float cosA = (float) Math.cos(angle);
-        float sinA = (float) Math.sin(angle);
+        float cosA = (float) Math.cos(-angle);
+        float sinA = (float) Math.sin(-angle);
         return Mat.dot_product(Mat.ortho(ratio * zoom, -ratio * zoom, -zoom, zoom), new float[]{
-                cosA, -sinA, 0, position[0],
-                sinA, cosA, 0, position[1],
-                0, 0, 1, position[2],
+                cosA, -sinA, 0, -position[0],
+                sinA, cosA, 0, -position[1],
+                0, 0, 1, -position[2],
                 0, 0, 0, 1
         }, 4);
     }
