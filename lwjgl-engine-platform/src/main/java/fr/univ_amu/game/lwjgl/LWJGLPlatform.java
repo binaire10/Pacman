@@ -4,7 +4,6 @@ import fr.univ_amu.game.core.*;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.lwjgl.render.*;
 import fr.univ_amu.game.render.*;
-import org.lwjgl.glfw.GLFWErrorCallback;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -16,12 +15,6 @@ public final class LWJGLPlatform implements GraphicPlatform {
     private final LayerStack layers = new LayerStack();
     private final GLRenderCommand renderCommand = new GLRenderCommand();
     Window mainWindow;
-
-    public LWJGLPlatform() {
-        GLFWErrorCallback.createPrint(System.err).set();
-        if (!glfwInit())
-            throw new IllegalStateException("Unable to initialize GLFW");
-    }
 
     public static int toOpenGL(ShaderDataType shaderDataType) {
         return switch (shaderDataType) {
