@@ -23,6 +23,7 @@ public class ExampleLayer implements Layer {
 
     @Override
     public void onAttach() {
+        System.out.println("Run ExampleLayer");
         window = Platform.create_window("pacman", 720, 400);
         camera = new OrthographicCamera((float) window.getWidth() / window.getHeight());
 
@@ -32,6 +33,7 @@ public class ExampleLayer implements Layer {
         } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
         }
+        window.show();
     }
 
     @Override
@@ -40,11 +42,9 @@ public class ExampleLayer implements Layer {
         camera.setRatio((float) window.getWidth() / window.getHeight());
 
         render2D.begin(camera);
-        for (int i = 0; i < 33; i++) {
-            for (int j = 0; j < 33; j++) {
-                render2D.drawQuad(Vec.make_vec4((i - 16f) * 0.1f, (j - 16f) * 0.1f, 0), Vec.make_vec2(0.09f, 0.09f), Vec.make_vec4(1, 0, 1, 1));
-            }
-        }
+        for (int i = 0; i < 33; i++)
+            for (int j = 0; j < 33; j++)
+                render2D.drawQuad(Vec.make_vec4((i - 16f) * 0.05f, (j - 16f) * 0.05f, 0), Vec.make_vec2(0.009f * 5, 0.009f * 5), Vec.make_vec4(1, 0, 1, 1));
         render2D.drawQuad(Vec.make_vec4(0, 0, 0.1f), Vec.make_vec2(4, 4), texture, 5);
         render2D.end();
 
