@@ -87,7 +87,7 @@ public class JavaFXPlatform implements GraphicPlatform {
 
     @Override
     public Texture2D make_texture(int w, int h) {
-        return null;
+        return new JavaFXTexture2D(w, h);
     }
 
     @Override
