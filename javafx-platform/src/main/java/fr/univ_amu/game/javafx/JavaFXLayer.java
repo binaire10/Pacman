@@ -6,7 +6,6 @@ import fr.univ_amu.game.core.loader.HardwareLayer;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.graphic.engine.GraphicLayer;
 import fr.univ_amu.game.graphic.entities.GraphicEntity;
-import fr.univ_amu.game.graphic.entities.QuadEntity;
 import fr.univ_amu.game.javafx.render.JavaFXRenderCommand;
 import javafx.application.Application;
 import javafx.scene.canvas.GraphicsContext;
@@ -40,13 +39,13 @@ public class JavaFXLayer extends Application implements GraphicLayer {
 
     @Override
     public void onRender(GraphicEntity graphicEntity) {
-        if (graphicEntity instanceof QuadEntity) {
-            var quad = (QuadEntity) graphicEntity;
-            if (quad.getColor() != null && quad.getTexture() != null) {
-                context.drawImage();
-            }
-        }
-        context.
+//        if (graphicEntity instanceof QuadEntity) {
+//            var quad = (QuadEntity) graphicEntity;
+//            if (quad.getColor() != null && quad.getTexture() != null) {
+//                context.drawImage();
+//            }
+//        }
+//        context.
     }
 
     @Override
