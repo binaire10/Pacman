@@ -41,7 +41,6 @@ public class GraphicEngine implements Engine {
         final RenderCommand command = Platform.getRenderCommand();
         computeEvent(command);
         executor.compute();
-        command.clear();
         computeRender();
         window.swap();
     }

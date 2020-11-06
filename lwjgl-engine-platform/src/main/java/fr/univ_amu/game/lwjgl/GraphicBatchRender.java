@@ -1,5 +1,6 @@
 package fr.univ_amu.game.lwjgl;
 
+import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.core.loader.EngineLayer;
 import fr.univ_amu.game.graphic.camera.OrthographicCamera;
@@ -46,6 +47,7 @@ public class GraphicBatchRender implements GraphicLayer {
 
     @Override
     public void onBegin(Window surface) {
+        Platform.getRenderCommand().clear();
         camera.setRatio((float) surface.getWidth() / surface.getHeight());
         render2D.begin(camera);
     }
