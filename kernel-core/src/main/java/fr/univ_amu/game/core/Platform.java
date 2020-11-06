@@ -11,7 +11,6 @@ import java.nio.ByteBuffer;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.ServiceLoader;
-import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -119,7 +118,7 @@ public final class Platform {
         isRunning = false;
     }
 
-    public static void postTaskOnMain(FutureTask<?> task) {
-        GRAPHIC_PLATFORM.postTaskOnMain(task);
+    public static AutoCloseable startGraphicEngine(Engine runnable) {
+        return GRAPHIC_PLATFORM.startGraphicEngine(runnable);
     }
 }

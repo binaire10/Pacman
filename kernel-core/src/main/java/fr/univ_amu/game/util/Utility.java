@@ -1,6 +1,8 @@
 package fr.univ_amu.game.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -24,5 +26,14 @@ public final class Utility {
     public static ByteBuffer readFile(URL file) throws URISyntaxException, IOException {
         var path = Path.of(file.toURI());
         return FileChannel.open(path).map(FileChannel.MapMode.READ_ONLY, 0, Files.size(path));
+    }
+
+    // https://stackoverflow.com/questions/4332264/wrapping-a-bytebuffer-with-an-inputstream
+    public static InputStream asInputStream(ByteBuffer buffer) {
+        if (buffer.hasArray()) {
+            // use heap buffer; no array is created; only the reference is used
+            return new ByteArrayInputStream(buffer.array());
+        }
+        return new ByteBufferBackedInputStream(buffer);
     }
 }

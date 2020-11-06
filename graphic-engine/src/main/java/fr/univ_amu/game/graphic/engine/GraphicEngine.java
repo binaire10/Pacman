@@ -30,26 +30,34 @@ public class GraphicEngine implements Engine {
     }
 
     @Override
+    public void initialize() {
+        window.make_context();
+        layers.pushLayer(Platform.load_layers(ServiceLoader.load(GraphicLayer.class)).toArray(GraphicLayer[]::new));
+        window.show();
+    }
+
+    @Override
+    public void one_step() {
+        final RenderCommand command = Platform.getRenderCommand();
+        computeEvent(command);
+        executor.compute();
+        command.clear();
+        computeRender();
+        window.swap();
+    }
+
+    @Override
     public void shutdown() {
         finish = true;
     }
 
     @Override
-    public void run() {
-        window.make_context();
-        layers.pushLayer(Platform.load_layers(ServiceLoader.load(GraphicLayer.class)).toArray(GraphicLayer[]::new));
-        final RenderCommand command = Platform.getRenderCommand();
-        Platform.getMainCommandExecutor().add(new FutureTask<>(() -> {
-            window.show();
-            return null;
-        }));
-        while (!finish) {
-            computeEvent(command);
-            executor.compute();
-            command.clear();
-            computeRender();
-            window.swap();
-        }
+    public boolean isStop() {
+        return finish;
+    }
+
+    @Override
+    public void release() {
         executor.compute();
         layers.clear();
         events.clear();

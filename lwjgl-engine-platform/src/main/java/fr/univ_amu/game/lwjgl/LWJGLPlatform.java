@@ -7,7 +7,6 @@ import fr.univ_amu.game.render.*;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
-import java.util.concurrent.FutureTask;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
@@ -242,7 +241,14 @@ public final class LWJGLPlatform implements GraphicPlatform {
     }
 
     @Override
-    public void postTaskOnMain(FutureTask<?> task) {
-
+    public AutoCloseable startGraphicEngine(Engine runnable) {
+        var thread = new Thread(runnable);
+        thread.start();
+        return new AutoCloseable() {
+            @Override
+            public void close() throws Exception {
+                thread.join();
+            }
+        };
     }
 }

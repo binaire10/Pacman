@@ -13,6 +13,8 @@ import fr.univ_amu.game.event.mouse.MouseMovedEvent;
 import fr.univ_amu.game.event.mouse.MouseScrolledEvent;
 import org.lwjgl.opengl.GL;
 
+import java.util.concurrent.FutureTask;
+
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
@@ -105,7 +107,10 @@ public final class GLFWWindow implements Window {
 
     @Override
     public void show() {
-        glfwShowWindow(winID);
+        Platform.getMainCommandExecutor().add(new FutureTask<>(() -> {
+            glfwShowWindow(winID);
+            return null;
+        }));
     }
 
     @Override
