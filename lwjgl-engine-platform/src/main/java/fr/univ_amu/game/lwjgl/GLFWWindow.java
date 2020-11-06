@@ -11,9 +11,10 @@ import fr.univ_amu.game.event.mouse.MouseButtonPressedEvent;
 import fr.univ_amu.game.event.mouse.MouseButtonReleasedEvent;
 import fr.univ_amu.game.event.mouse.MouseMovedEvent;
 import fr.univ_amu.game.event.mouse.MouseScrolledEvent;
+import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL33.glViewport;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public final class GLFWWindow implements Window {
@@ -40,8 +41,6 @@ public final class GLFWWindow implements Window {
         glfwSetMouseButtonCallback(winID, this::handleMouseButtonEvent);
         glfwSetScrollCallback(winID, this::handleScrollEvent);
         glfwSetCursorPosCallback(winID, this::handleCursorPosEvent);
-
-        glfwMakeContextCurrent(winID);
     }
 
     private void handleTypedEvent(long wid, int key) {
@@ -96,8 +95,12 @@ public final class GLFWWindow implements Window {
     }
 
     @Override
-    public void make_current() {
+    public void make_context() {
         glfwMakeContextCurrent(winID);
+        GL.createCapabilities();
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     @Override
@@ -118,7 +121,6 @@ public final class GLFWWindow implements Window {
     private void handleResizeEvent(long wid, int w, int h) {
         this.width = w;
         this.height = h;
-        glViewport(0, 0, w, h);
         Platform.dispatch(new WindowResizeEvent(w, h, this));
     }
 }

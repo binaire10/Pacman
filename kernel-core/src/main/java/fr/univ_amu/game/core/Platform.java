@@ -11,27 +11,36 @@ import java.nio.ByteBuffer;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class Platform {
     private static final GraphicPlatform GRAPHIC_PLATFORM = ServiceLoader.load(GraphicPlatform.class).findFirst().orElseGet(() -> null);
     private static boolean isRunning;
+    private static final CommandExecutor mainCommandExecutor = new CommandExecutor();
+
+    public static CommandExecutor getMainCommandExecutor() {
+        return mainCommandExecutor;
+    }
+
+    public static <T extends Layer> Stream<T> load_layers(ServiceLoader<T> service) {
+        var nodes = service.stream().map(Node::new).sorted(Comparator.comparingInt(c -> evaluate(c.getValue().type()))).collect(Collectors.toList());
+        for (var node : nodes) {
+            var classt = node.getValue().type().getAnnotation(RequireLayer.class);
+            if (classt != null)
+                for (Class<? extends Layer> require : classt.require())
+                    for (var child : nodes)
+                        if (require.isAssignableFrom(child.getValue().type()))
+                            node.add(child);
+        }
+        return Utility.iteratorToStream(new DepthIterator<>(nodes.iterator()), nodes.size()).map(ServiceLoader.Provider::get);
+    }
 
     public static void initialise() {
         isRunning = true;
-        if (GRAPHIC_PLATFORM != null) {
-            var nodes = ServiceLoader.load(Layer.class).stream().map(Node::new).sorted(Comparator.comparingInt(c -> evaluate(c.getValue().type()))).collect(Collectors.toList());
-            for (var node : nodes) {
-                var classt = node.getValue().type().getAnnotation(RequireLayer.class);
-                if (classt != null)
-                    for (Class<? extends Layer> require : classt.require())
-                        for (var child : nodes)
-                            if (require.isAssignableFrom(child.getValue().type()))
-                                node.add(child);
-            }
-            LayerStack stack = GRAPHIC_PLATFORM.getLayerStack();
-            stack.pushLayer(Utility.iteratorToStream(new DepthIterator<>(nodes.iterator()), nodes.size()).map(ServiceLoader.Provider::get).toArray(Layer[]::new));
-        }
+        if (GRAPHIC_PLATFORM != null)
+            GRAPHIC_PLATFORM.getLayerStack().pushLayer(load_layers(ServiceLoader.load(MainLayer.class)).toArray(MainLayer[]::new));
     }
 
     private static <T> int evaluate(Class<T> tClass) {
@@ -90,7 +99,7 @@ public final class Platform {
         GRAPHIC_PLATFORM.clear();
     }
 
-    public static LayerStack getLayerStack() {
+    public static LayerStack<MainLayer> getLayerStack() {
         return GRAPHIC_PLATFORM.getLayerStack();
     }
 
@@ -108,5 +117,9 @@ public final class Platform {
 
     public static void shutdown() {
         isRunning = false;
+    }
+
+    public static void postTaskOnMain(FutureTask<?> task) {
+        GRAPHIC_PLATFORM.postTaskOnMain(task);
     }
 }

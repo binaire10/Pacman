@@ -1,9 +1,11 @@
 package fr.univ_amu.game.pacman;
 
-import fr.univ_amu.game.core.Layer;
+import fr.univ_amu.game.core.MainLayer;
+import fr.univ_amu.game.core.loader.EngineLayer;
 import fr.univ_amu.game.event.Event;
 
-public class EventLogger implements Layer {
+@EngineLayer
+public class EventLogger implements MainLayer {
     @Override
     public void onAttach() {
         System.out.println("Run Event Logger");

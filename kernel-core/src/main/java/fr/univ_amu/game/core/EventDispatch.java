@@ -11,8 +11,12 @@ public class EventDispatch {
         this.event = event;
     }
 
-    public <T extends Event> void dispatch(Class<T> value, Consumer<T> handle) {
+    public static <T extends Event> void dispatch(Event event, Class<T> value, Consumer<T> handle) {
         if (value.isInstance(event))
             handle.accept(value.cast(event));
+    }
+
+    public <T extends Event> void dispatch(Class<T> value, Consumer<T> handle) {
+        EventDispatch.dispatch(event, value, handle);
     }
 }

@@ -106,6 +106,8 @@ public class BatchRender2D implements Closeable {
     }
 
     public void drawQuadWithTransform(float[] matrix, float[] color, Texture2D texture2D, float tillingFactor) {
+        if (texture2D == null) texture2D = white;
+        if (color == null) color = Color.WHITE;
         int textureIndex;
         for (textureIndex = 0; textureIndex < textureOffsets; textureIndex++)
             if (texture2D.equals(textures[textureIndex]))

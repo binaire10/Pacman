@@ -10,5 +10,5 @@ open module kernel.core {
     exports fr.univ_amu.game.util;
     exports fr.univ_amu.graph;
     uses fr.univ_amu.game.core.GraphicPlatform;
-    uses fr.univ_amu.game.core.Layer;
+    uses fr.univ_amu.game.core.MainLayer;
 }

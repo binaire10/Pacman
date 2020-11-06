@@ -7,14 +7,14 @@ import fr.univ_amu.game.render.*;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.concurrent.FutureTask;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 
 public final class LWJGLPlatform implements GraphicPlatform {
-    private final LayerStack layers = new LayerStack();
+    private final LayerStack<MainLayer> layers = new LayerStack<>();
     private final GLRenderCommand renderCommand = new GLRenderCommand();
-    Window mainWindow;
 
     public static int toOpenGL(ShaderDataType shaderDataType) {
         return switch (shaderDataType) {
@@ -180,7 +180,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     @Override
     public void dispatch(Event event) {
-        for (Layer layer : layers) {
+        for (MainLayer layer : layers) {
             layer.onEvent(event);
             if (event.isHandle())
                 break;
@@ -189,13 +189,6 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     @Override
     public Window create_window(String title, int width, int height) {
-        if (mainWindow != null) {
-            Window window = mainWindow;
-            mainWindow = null;
-            window.setTitle(title);
-            window.resize(width, height);
-            return window;
-        }
         return new GLFWWindow(title, width, height);
     }
 
@@ -246,5 +239,10 @@ public final class LWJGLPlatform implements GraphicPlatform {
     @Override
     public GLTexture2D make_texture(int w, int h) {
         return new GLTexture2D(w, h);
+    }
+
+    @Override
+    public void postTaskOnMain(FutureTask<?> task) {
+
     }
 }

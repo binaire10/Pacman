@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-class MatTest {
+public class MatTest {
     @Test
     public void test_matrix_translate() {
         float[] translate1 = Mat.translateMatrix4(Mat.identity(4), Vec.make_vec4(3, 2, 1));

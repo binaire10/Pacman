@@ -1,3 +1,5 @@
+import fr.univ_amu.game.lwjgl.GraphicBatchRender;
+
 module lwjgl.engine.platform {
     requires kernel.core;
     requires org.lwjgl;
@@ -8,6 +10,8 @@ module lwjgl.engine.platform {
     requires org.lwjgl.opengl.natives;
     requires org.lwjgl.stb;
     requires org.lwjgl.stb.natives;
+    requires graphic.engine;
     provides fr.univ_amu.game.core.GraphicPlatform with fr.univ_amu.game.lwjgl.LWJGLPlatform;
-    provides fr.univ_amu.game.core.Layer with fr.univ_amu.game.lwjgl.LWJGLLayer;
+    provides fr.univ_amu.game.core.MainLayer with fr.univ_amu.game.lwjgl.LWJGLLayer;
+    provides fr.univ_amu.game.graphic.engine.GraphicLayer with GraphicBatchRender;
 }

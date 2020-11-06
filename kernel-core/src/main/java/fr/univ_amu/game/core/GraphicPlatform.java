@@ -5,6 +5,7 @@ import fr.univ_amu.game.render.*;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.concurrent.FutureTask;
 
 public interface GraphicPlatform {
     void processEvent();
@@ -25,11 +26,13 @@ public interface GraphicPlatform {
 
     void clear();
 
-    LayerStack getLayerStack();
+    LayerStack<MainLayer> getLayerStack();
 
     RenderCommand getRenderCommand();
 
     Texture2D load_texture(ByteBuffer data);
 
     Texture2D make_texture(int w, int h);
+
+    void postTaskOnMain(FutureTask<?> task);
 }
