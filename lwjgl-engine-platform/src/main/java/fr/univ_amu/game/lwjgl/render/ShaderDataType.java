@@ -1,4 +1,4 @@
-package fr.univ_amu.game.render;
+package fr.univ_amu.game.lwjgl.render;
 
 public enum ShaderDataType {
     Float(4, 1),

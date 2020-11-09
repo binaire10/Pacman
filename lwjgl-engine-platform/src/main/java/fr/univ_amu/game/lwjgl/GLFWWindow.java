@@ -4,16 +4,11 @@ import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.application.WindowCloseEvent;
 import fr.univ_amu.game.event.application.WindowResizeEvent;
-import fr.univ_amu.game.event.keyboard.KeyPressedEvent;
-import fr.univ_amu.game.event.keyboard.KeyReleasedEvent;
-import fr.univ_amu.game.event.keyboard.KeyTypedEvent;
 import fr.univ_amu.game.event.mouse.MouseButtonPressedEvent;
 import fr.univ_amu.game.event.mouse.MouseButtonReleasedEvent;
 import fr.univ_amu.game.event.mouse.MouseMovedEvent;
 import fr.univ_amu.game.event.mouse.MouseScrolledEvent;
 import org.lwjgl.opengl.GL;
-
-import java.util.concurrent.FutureTask;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -37,24 +32,15 @@ public final class GLFWWindow implements Window {
         if (winID == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
         glfwSetWindowSizeCallback(winID, this::handleResizeEvent);
-        glfwSetCharCallback(winID, this::handleTypedEvent);
-        glfwSetKeyCallback(winID, this::handleKeyEvent);
         glfwSetWindowCloseCallback(winID, this::handleClose);
         glfwSetMouseButtonCallback(winID, this::handleMouseButtonEvent);
         glfwSetScrollCallback(winID, this::handleScrollEvent);
         glfwSetCursorPosCallback(winID, this::handleCursorPosEvent);
-    }
-
-    private void handleTypedEvent(long wid, int key) {
-        Platform.dispatch(new KeyTypedEvent(key, this));
-    }
-
-    private void handleKeyEvent(long wid, int key, int scancode, int action, int mods) {
-        switch (action) {
-            case GLFW_PRESS -> Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), false, this));
-            case GLFW_RELEASE -> Platform.dispatch(new KeyReleasedEvent(LWJGLPlatform.keyboardFromGLFW(key), this));
-            case GLFW_REPEAT -> Platform.dispatch(new KeyPressedEvent(LWJGLPlatform.keyboardFromGLFW(key), true, this));
-        }
+        make_context();
+        GL.createCapabilities();
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     private void handleMouseButtonEvent(long wid, int button, int action, int mods) {
@@ -99,18 +85,11 @@ public final class GLFWWindow implements Window {
     @Override
     public void make_context() {
         glfwMakeContextCurrent(winID);
-        GL.createCapabilities();
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     @Override
     public void show() {
-        Platform.getMainCommandExecutor().add(new FutureTask<>(() -> {
-            glfwShowWindow(winID);
-            return null;
-        }));
+        glfwShowWindow(winID);
     }
 
     @Override

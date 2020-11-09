@@ -2,17 +2,19 @@ package fr.univ_amu.game.lwjgl;
 
 import fr.univ_amu.game.core.*;
 import fr.univ_amu.game.event.Event;
-import fr.univ_amu.game.lwjgl.render.*;
-import fr.univ_amu.game.render.*;
+import fr.univ_amu.game.lwjgl.render.GLRenderCommand;
+import fr.univ_amu.game.lwjgl.render.GLTexture2D;
+import fr.univ_amu.game.lwjgl.render.ShaderDataType;
+import fr.univ_amu.game.render.RenderCommand;
+import fr.univ_amu.game.render.Texture2D;
 
 import java.nio.ByteBuffer;
-import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 
 public final class LWJGLPlatform implements GraphicPlatform {
-    private final LayerStack<MainLayer> layers = new LayerStack<>();
+    private final LayerStack<UpdatableLayer> layers = new LayerStack<>();
     private final GLRenderCommand renderCommand = new GLRenderCommand();
 
     public static int toOpenGL(ShaderDataType shaderDataType) {
@@ -179,7 +181,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     @Override
     public void dispatch(Event event) {
-        for (MainLayer layer : layers) {
+        for (UpdatableLayer layer : layers) {
             layer.onEvent(event);
             if (event.isHandle())
                 break;
@@ -192,37 +194,12 @@ public final class LWJGLPlatform implements GraphicPlatform {
     }
 
     @Override
-    public IndexBuffer make_index(int[] index) {
-        return new GLIndexBuffer(index);
-    }
-
-    @Override
-    public VertexBuffer make_buffer(float[] data) {
-        return new GLVertexBuffer(data);
-    }
-
-    @Override
-    public VertexBuffer make_buffer(int capacity) {
-        return new GLVertexBuffer(capacity);
-    }
-
-    @Override
-    public VertexArray create_vertexArray() {
-        return new GLVertexArray();
-    }
-
-    @Override
-    public Material create_material(Map<ShaderType, String> shaders) {
-        return new GLMaterial(shaders);
-    }
-
-    @Override
     public void clear() {
         layers.clear();
     }
 
     @Override
-    public LayerStack getLayerStack() {
+    public LayerStack<UpdatableLayer> getLayerStack() {
         return layers;
     }
 
@@ -241,14 +218,10 @@ public final class LWJGLPlatform implements GraphicPlatform {
     }
 
     @Override
-    public AutoCloseable startGraphicEngine(Engine runnable) {
-        var thread = new Thread(runnable);
-        thread.start();
-        return new AutoCloseable() {
-            @Override
-            public void close() throws Exception {
-                thread.join();
-            }
-        };
+    public void startMainThread(Runnable runnable) {
+        Platform.initialise();
+        while (Platform.isRunning())
+            runnable.run();
+        clear();
     }
 }

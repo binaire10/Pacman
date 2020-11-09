@@ -2,7 +2,6 @@ package fr.univ_amu.game.javafx.render;
 
 import fr.univ_amu.game.javafx.JavaFxWindow;
 import fr.univ_amu.game.render.RenderCommand;
-import fr.univ_amu.game.render.VertexArray;
 import javafx.scene.paint.Color;
 
 public class JavaFXRenderCommand implements RenderCommand {
@@ -15,11 +14,6 @@ public class JavaFXRenderCommand implements RenderCommand {
 
     @Override
     public void setViewport(int x, int y, int width, int height) {
-    }
-
-    @Override
-    public void drawElements(VertexArray vertexArray, int count) {
-        throw new UnsupportedOperationException("draw of vertex array unimplemented");
     }
 
     @Override

@@ -1,10 +1,10 @@
-package fr.univ_amu.game.graphic.render2D;
+package fr.univ_amu.game.lwjgl.render;
 
 import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.graphic.Color;
 import fr.univ_amu.game.graphic.camera.Camera;
-import fr.univ_amu.game.math.Vec;
-import fr.univ_amu.game.render.*;
+import fr.univ_amu.game.math.VectorUtility;
+import fr.univ_amu.game.render.Texture2D;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -48,7 +48,7 @@ public class BatchRender2D implements Closeable {
 
     public BatchRender2D() throws IOException {
         System.out.println(QUAD_LAYOUT.getStride());
-        shader = Platform.create_material(Material.splitCode(new String(BatchRender2D.class.getResourceAsStream("batchShader.glsl").readAllBytes())));
+        shader = new Material(Material.splitCode(new String(BatchRender2D.class.getResourceAsStream("batchShader.glsl").readAllBytes())));
         shader.bind();
         shader.uploadUniform("u_Textures", IntStream.range(0, 32).toArray());
 
@@ -64,11 +64,11 @@ public class BatchRender2D implements Closeable {
             indices[i + 5] = offset;
             offset += 4;
         }
-        indexBuffer = Platform.make_index(indices);
+        indexBuffer = new IndexBuffer(indices);
 
-        vertexBuffer = Platform.make_buffer(QUAD_COUNT * VERTEX_PER_QUAD * QUAD_LAYOUT.getStride());
+        vertexBuffer = new VertexBuffer(QUAD_COUNT * VERTEX_PER_QUAD * QUAD_LAYOUT.getStride());
 
-        vertexArray = Platform.create_vertexArray();
+        vertexArray = new VertexArray();
         vertexArray.setIndexBuffer(indexBuffer);
         vertexArray.setVertexBuffer(vertexBuffer, QUAD_LAYOUT);
 
@@ -126,7 +126,7 @@ public class BatchRender2D implements Closeable {
         Objects.checkFromToIndex(0, 4, color.length);
         ++quadCount;
         for (int i = 0; i < quadVertices.length; i++) {
-            float[] r = Vec.dot_product(quadVertices[i], matrix, 4);
+            float[] r = VectorUtility.dot_product(quadVertices[i], matrix, 4);
             buffer.put(r, 0, 3);
             buffer.put(color);
             buffer.put(quadTextCoord[i]);
@@ -144,7 +144,7 @@ public class BatchRender2D implements Closeable {
         vertexArray.bind();
         for (int i = 0; i < textureOffsets; i++)
             textures[i].bind(i);
-        Platform.getRenderCommand().drawElements(vertexArray, quadCount * 6);
+        GLRenderCommand.drawElements(vertexArray, quadCount * 6);
         buffer.clear();
         textureOffsets = 0;
         quadCount = 0;

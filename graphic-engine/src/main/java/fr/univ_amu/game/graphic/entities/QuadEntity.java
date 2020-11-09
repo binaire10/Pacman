@@ -4,7 +4,7 @@ import fr.univ_amu.game.render.Texture2D;
 
 import java.util.Arrays;
 
-public class QuadEntity implements GraphicEntity {
+public class QuadEntity {
     float[] color;
     Texture2D texture;
     float[] position;

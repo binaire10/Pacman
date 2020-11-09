@@ -1,121 +1,72 @@
 package fr.univ_amu.game.graphic.engine;
 
-import fr.univ_amu.game.core.*;
+import fr.univ_amu.game.core.Platform;
+import fr.univ_amu.game.core.UpdatableLayer;
+import fr.univ_amu.game.core.Window;
+import fr.univ_amu.game.core.loader.EngineLayer;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.event.application.WindowResizeEvent;
-import fr.univ_amu.game.graphic.entities.GraphicEntity;
+import fr.univ_amu.game.graphic.entities.QuadEntity;
 import fr.univ_amu.game.render.RenderCommand;
-import fr.univ_amu.game.render.Texture2D;
+import fr.univ_amu.game.util.Utility;
 
-import java.nio.ByteBuffer;
 import java.util.List;
-import java.util.Queue;
 import java.util.ServiceLoader;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
-public class GraphicEngine implements Engine {
-    private final Window window = Platform.create_window("Graphic Engine", 720, 400);
-    private final LayerStack<GraphicLayer> layers = new LayerStack<>();
-    private final List<GraphicEntity> graphicEntities = new CopyOnWriteArrayList<>();
-    private final Queue<Event> events = new ConcurrentLinkedQueue<>();
-    private final CommandExecutor executor = new CommandExecutor();
-    private volatile boolean finish = false;
+@EngineLayer
+public class GraphicEngine implements UpdatableLayer {
+    private static GraphicEngine instance;
+    private final List<QuadEntity> graphicEntities = new CopyOnWriteArrayList<>();
+    private Window window;
+    private GraphicLayer layer;
 
-    @Override
-    public LayerStack<GraphicLayer> getStack() {
-        return layers;
+    public static GraphicEngine getEngine() {
+        return instance;
     }
 
     @Override
-    public void initialize() {
-        window.make_context();
-        layers.pushLayer(Platform.load_layers(ServiceLoader.load(GraphicLayer.class)).toArray(GraphicLayer[]::new));
-        window.show();
-    }
-
-    @Override
-    public void one_step() {
+    public void onUpdate(double timestep) {
         final RenderCommand command = Platform.getRenderCommand();
-        computeEvent(command);
-        executor.compute();
         computeRender();
         window.swap();
     }
 
     @Override
-    public void shutdown() {
-        finish = true;
+    public void onEvent(Event e) {
+        Utility.dispatch(e, WindowResizeEvent.class, r -> Platform.getRenderCommand().setViewport(0, 0, r.width, r.height));
     }
 
     @Override
-    public boolean isStop() {
-        return finish;
+    public void onAttach() {
+        instance = this;
+        window = Platform.create_window("Graphic Engine", 720, 400);
+        window.make_context();
+        layer = ServiceLoader.load(GraphicLayer.class).findFirst().get();
+        layer.onAttach();
+        window.show();
     }
 
     @Override
-    public void release() {
-        executor.compute();
-        layers.clear();
-        events.clear();
+    public void onDetach() {
+        layer.onDetach();
     }
 
     private void computeRender() {
-        layers.iterator().forEachRemaining(g -> g.onBegin(window));
-        layers.iterator().forEachRemaining(g -> graphicEntities.forEach(g::onRender));
-        layers.reverseIterator().forEachRemaining(GraphicLayer::onEnd);
+        layer.onBegin(window);
+        layer.onRender(graphicEntities);
+        layer.onEnd();
     }
 
-    private void computeEvent(RenderCommand command) {
-        final int pendingEvent = (events.size() + 1) / 2;
-        for (int i = 0; i < pendingEvent; i++) {
-            Event e = events.poll();
-            EventDispatch.dispatch(e, WindowResizeEvent.class, r -> command.setViewport(0, 0, r.width, r.height));
-            layers.iterator().forEachRemaining(layer -> layer.onEvent(e));
-        }
+    public void setTitle(String title) {
+        window.setTitle(title);
     }
 
-    public List<GraphicEntity> getGraphicEntities() {
+    public void show() {
+        window.show();
+    }
+
+    public List<QuadEntity> getGraphicEntities() {
         return graphicEntities;
-    }
-
-    public void postEvent(Event e) {
-        events.add(e);
-    }
-
-    public CommandExecutor getExecutor() {
-        return executor;
-    }
-
-    public Texture2D load_texture(ByteBuffer data) {
-        FutureTask<Texture2D> futureTask = new FutureTask<>(() -> Platform.load_texture(data));
-        executor.add(futureTask);
-        try {
-            return futureTask.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public Texture2D make_texture(int w, int h) {
-        FutureTask<Texture2D> futureTask = new FutureTask<>(() -> Platform.make_texture(w, h));
-        executor.add(futureTask);
-        try {
-            return futureTask.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void free_texture(Texture2D texture2D) {
-        FutureTask<Texture2D> futureTask = new FutureTask<>(() -> {
-            texture2D.close();
-            return null;
-        });
-        executor.add(futureTask);
     }
 }

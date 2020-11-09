@@ -2,7 +2,7 @@ package fr.univ_amu.game.math;
 
 import java.util.Arrays;
 
-public final class Mat {
+public final class MatrixUtility {
     public static float[] identity(int n) {
         float[] res = new float[n * n];
         for (int i = 0; i < n; i++)
@@ -11,8 +11,8 @@ public final class Mat {
     }
 
     public static float[] ortho(float left, float right, float bottom, float top) {
-        return new float[] {
-                2f/(right - left)           , 0                         , 0, 0,
+        return new float[]{
+                2f / (right - left), 0, 0, 0,
                 0                           , 2f/(top - bottom)         , 0, 0,
                 0                           , 0                         , 1, 0,
                 -(right+left)/(right-left)  , -(top+bottom)/(top-bottom), 0, 1
@@ -41,17 +41,17 @@ public final class Mat {
 
     public static float[] translateMatrix4(float[] matrix, float[] position) {
         float[] result = Arrays.copyOf(matrix, matrix.length);
-        float[] r = Vec.dot_product(position, matrix, 4);
+        float[] r = VectorUtility.dot_product(position, matrix, 4);
         for (int i = 0; i < position.length; i++)
             result[3 + i * 4] = r[i];
         return result;
     }
 
     public static float[] rotateMatrix4(float[] matrix, float[] axis, float angle) {
-        float[] a = Vec.normalize(axis);
+        float[] a = VectorUtility.normalize(axis);
         float c = (float) Math.cos(angle);
         float s = (float) Math.sin(angle);
-        float[] temp = Vec.product(axis, 1 - c);
+        float[] temp = VectorUtility.product(axis, 1 - c);
         float[] rotate = new float[matrix.length];
         rotate[0] = c + temp[0] * axis[0];
         rotate[4] = temp[0] * axis[1] + s * axis[2];

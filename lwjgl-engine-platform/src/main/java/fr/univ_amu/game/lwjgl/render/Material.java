@@ -1,7 +1,5 @@
 package fr.univ_amu.game.lwjgl.render;
 
-import fr.univ_amu.game.render.Material;
-import fr.univ_amu.game.render.ShaderType;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
@@ -10,11 +8,11 @@ import java.util.Map;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public final class GLMaterial implements Material {
+public final class Material implements Bindable {
     private final int program;
     private final Map<String, Integer> uniforms = new HashMap<>();
 
-    public GLMaterial(Map<ShaderType, String> sources) {
+    public Material(Map<ShaderType, String> sources) {
         int[] shaders = new int[sources.size()];
         int index = 0;
         for (Map.Entry<ShaderType, String> source : sources.entrySet()) {
@@ -76,6 +74,25 @@ public final class GLMaterial implements Material {
         System.out.println(uniforms);
     }
 
+    public static Map<ShaderType, String> splitCode(String txt) {
+        final String token = "#type";
+        int pos = txt.indexOf(token);
+        Map<ShaderType, String> code = new HashMap<>();
+        while (pos != -1) {
+            int eol1 = txt.indexOf('\n', pos);
+            int eol2 = txt.indexOf('\r', pos);
+            int eol = eol2 == -1 ? eol1 : eol1 == -1 ? eol2 : Math.min(eol1, eol2);
+            String type = txt.substring(pos + token.length() + 1, eol);
+
+            pos = txt.indexOf(token, eol);
+            if (pos == -1)
+                code.put(ShaderType.shaderTypeFromString(type), txt.substring(eol + 1));
+            else
+                code.put(ShaderType.shaderTypeFromString(type), txt.substring(eol + 1, pos));
+        }
+        return code;
+    }
+
     private static int getShaderType(ShaderType shaderType) {
         return switch (shaderType) {
             case VERTEX -> GL_VERTEX_SHADER;
@@ -83,32 +100,26 @@ public final class GLMaterial implements Material {
         };
     }
 
-    @Override
     public void uploadUniform(String key, int value) {
         glUniform1i(uniforms.get(key), value);
     }
 
-    @Override
     public void uploadUniform(String key, int[] value) {
         glUniform1iv(uniforms.get(key), value);
     }
 
-    @Override
     public void uploadUniform(String key, float value) {
         glUniform1f(uniforms.get(key), value);
     }
 
-    @Override
     public void uploadUniform(String key, float[] vector) {
         glUniform1fv(uniforms.get(key), vector);
     }
 
-    @Override
     public void uploadUniformMatrix3(String key, float[] matrix) {
         glUniformMatrix3fv(uniforms.get(key), false, matrix);
     }
 
-    @Override
     public void uploadUniformMatrix4(String key, float[] matrix) {
         glUniformMatrix4fv(uniforms.get(key), false, matrix);
     }
@@ -118,7 +129,6 @@ public final class GLMaterial implements Material {
         glUseProgram(program);
     }
 
-    @Override
     public void close() {
         System.out.println("free program");
         glDeleteProgram(program);

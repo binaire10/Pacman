@@ -1,5 +1,7 @@
 package fr.univ_amu.game.util;
 
+import fr.univ_amu.game.event.Event;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Spliterators;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -35,5 +38,10 @@ public final class Utility {
             return new ByteArrayInputStream(buffer.array());
         }
         return new ByteBufferBackedInputStream(buffer);
+    }
+
+    public static <T extends Event> void dispatch(Event event, Class<T> value, Consumer<T> handle) {
+        if (value.isInstance(event))
+            handle.accept(value.cast(event));
     }
 }

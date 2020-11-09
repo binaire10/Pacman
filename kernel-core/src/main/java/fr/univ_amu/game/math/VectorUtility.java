@@ -2,7 +2,7 @@ package fr.univ_amu.game.math;
 
 import java.util.Arrays;
 
-public final class Vec {
+public final class VectorUtility {
     public static float[] make_vec2(float x, float y) {
         return new float[]{x, y};
     }

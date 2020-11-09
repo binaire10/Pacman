@@ -5,12 +5,12 @@ import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.core.loader.EngineLayer;
 import fr.univ_amu.game.graphic.camera.OrthographicCamera;
 import fr.univ_amu.game.graphic.engine.GraphicLayer;
-import fr.univ_amu.game.graphic.entities.GraphicEntity;
 import fr.univ_amu.game.graphic.entities.QuadEntity;
-import fr.univ_amu.game.graphic.render2D.BatchRender2D;
+import fr.univ_amu.game.lwjgl.render.BatchRender2D;
 import fr.univ_amu.game.render.Texture2D;
 
 import java.io.IOException;
+import java.util.Collection;
 
 @EngineLayer
 public class GraphicBatchRender implements GraphicLayer {
@@ -19,11 +19,9 @@ public class GraphicBatchRender implements GraphicLayer {
     private Texture2D texture;
 
     @Override
-    public void onRender(GraphicEntity graphicEntity) {
-        if (graphicEntity instanceof QuadEntity) {
-            QuadEntity entity = (QuadEntity) graphicEntity;
+    public void onRender(Collection<QuadEntity> graphicEntity) {
+        for (QuadEntity entity : graphicEntity)
             render2D.drawQuad(entity.getPosition(), entity.getSize(), entity.getColor(), entity.getTexture(), 1);
-        }
     }
 
     @Override

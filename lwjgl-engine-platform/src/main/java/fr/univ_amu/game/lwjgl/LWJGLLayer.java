@@ -1,6 +1,6 @@
 package fr.univ_amu.game.lwjgl;
 
-import fr.univ_amu.game.core.MainLayer;
+import fr.univ_amu.game.core.UpdatableLayer;
 import fr.univ_amu.game.core.loader.HardwareLayer;
 import fr.univ_amu.game.event.Event;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -8,7 +8,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import static org.lwjgl.glfw.GLFW.*;
 
 @HardwareLayer
-public final class LWJGLLayer implements MainLayer {
+public final class LWJGLLayer implements UpdatableLayer {
     @Override
     public void onAttach() {
         GLFWErrorCallback.createPrint(System.err).set();

@@ -1,22 +1,17 @@
 package fr.univ_amu.game.lwjgl.render;
 
 import fr.univ_amu.game.lwjgl.LWJGLPlatform;
-import fr.univ_amu.game.render.BufferLayout;
-import fr.univ_amu.game.render.IndexBuffer;
-import fr.univ_amu.game.render.VertexArray;
-import fr.univ_amu.game.render.VertexBuffer;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public final class GLVertexArray implements VertexArray {
+public final class VertexArray implements Bindable {
     private final int vertexArray;
     private int componentCount = 0;
 
-    public GLVertexArray() {
+    public VertexArray() {
         this.vertexArray = glGenVertexArrays();
     }
 
-    @Override
     public void setVertexBuffer(VertexBuffer vertexBuffer, BufferLayout bufferLayout) {
         glBindVertexArray(vertexArray);
         vertexBuffer.bind();
@@ -32,14 +27,12 @@ public final class GLVertexArray implements VertexArray {
         }
     }
 
-    @Override
     public void setIndexBuffer(IndexBuffer indexBuffer) {
         glBindVertexArray(vertexArray);
         indexBuffer.bind();
         componentCount = indexBuffer.count();
     }
 
-    @Override
     public int getComponentCount() {
         return componentCount;
     }
@@ -49,7 +42,6 @@ public final class GLVertexArray implements VertexArray {
         glBindVertexArray(vertexArray);
     }
 
-    @Override
     public void close() {
         System.out.println("free vertex array");
         glDeleteVertexArrays(vertexArray);
