@@ -1,4 +1,4 @@
-import fr.univ_amu.game.core.UpdatableLayer;
+import fr.univ_amu.game.core.Layer;
 import fr.univ_amu.game.lwjgl.GraphicBatchRender;
 
 module lwjgl.engine.platform {
@@ -13,6 +13,6 @@ module lwjgl.engine.platform {
     requires org.lwjgl.stb.natives;
     requires graphic.engine;
     provides fr.univ_amu.game.core.GraphicPlatform with fr.univ_amu.game.lwjgl.LWJGLPlatform;
-    provides UpdatableLayer with fr.univ_amu.game.lwjgl.LWJGLLayer;
+    provides Layer with fr.univ_amu.game.lwjgl.LWJGLLayer;
     provides fr.univ_amu.game.graphic.engine.GraphicLayer with GraphicBatchRender;
 }

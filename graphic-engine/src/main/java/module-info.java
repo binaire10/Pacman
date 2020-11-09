@@ -1,4 +1,4 @@
-import fr.univ_amu.game.core.UpdatableLayer;
+import fr.univ_amu.game.core.Layer;
 import fr.univ_amu.game.graphic.engine.GraphicEngine;
 
 module graphic.engine {
@@ -9,5 +9,5 @@ module graphic.engine {
     exports fr.univ_amu.game.graphic.engine;
     exports fr.univ_amu.game.graphic.entities;
     uses fr.univ_amu.game.graphic.engine.GraphicLayer;
-    provides UpdatableLayer with GraphicEngine;
+    provides Layer with GraphicEngine;
 }

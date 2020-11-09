@@ -1,4 +1,4 @@
-import fr.univ_amu.game.core.UpdatableLayer;
+import fr.univ_amu.game.core.Layer;
 
 open module kernel.core {
     exports fr.univ_amu.game.core;
@@ -11,5 +11,5 @@ open module kernel.core {
     exports fr.univ_amu.game.util;
     exports fr.univ_amu.graph;
     uses fr.univ_amu.game.core.GraphicPlatform;
-    uses UpdatableLayer;
+    uses Layer;
 }

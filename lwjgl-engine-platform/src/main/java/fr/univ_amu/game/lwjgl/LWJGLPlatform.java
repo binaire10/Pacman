@@ -14,7 +14,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 
 public final class LWJGLPlatform implements GraphicPlatform {
-    private final LayerStack<UpdatableLayer> layers = new LayerStack<>();
+    private final LayerStack<Layer> layers = new LayerStack<>();
     private final GLRenderCommand renderCommand = new GLRenderCommand();
 
     public static int toOpenGL(ShaderDataType shaderDataType) {
@@ -181,7 +181,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     @Override
     public void dispatch(Event event) {
-        for (UpdatableLayer layer : layers) {
+        for (Layer layer : layers) {
             layer.onEvent(event);
             if (event.isHandle())
                 break;
@@ -199,7 +199,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
     }
 
     @Override
-    public LayerStack<UpdatableLayer> getLayerStack() {
+    public LayerStack<Layer> getLayerStack() {
         return layers;
     }
 

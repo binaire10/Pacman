@@ -18,7 +18,7 @@ public final class Platform {
     private static final GraphicPlatform GRAPHIC_PLATFORM = ServiceLoader.load(GraphicPlatform.class).findFirst().orElseGet(() -> null);
     private static boolean isRunning;
 
-    public static <T extends Layer> Stream<T> load_layers(ServiceLoader<T> service) {
+    public static <T> Stream<T> load_layers(ServiceLoader<T> service) {
         var nodes = service.stream().map(Node::new).sorted(Comparator.comparingInt(c -> evaluate(c.getValue().type()))).collect(Collectors.toList());
         for (var node : nodes) {
             var classt = node.getValue().type().getAnnotation(RequireLayer.class);
@@ -34,7 +34,7 @@ public final class Platform {
     public static void initialise() {
         isRunning = true;
         if (GRAPHIC_PLATFORM != null)
-            GRAPHIC_PLATFORM.getLayerStack().pushLayer(load_layers(ServiceLoader.load(UpdatableLayer.class)).toArray(UpdatableLayer[]::new));
+            GRAPHIC_PLATFORM.getLayerStack().pushLayer(load_layers(ServiceLoader.load(Layer.class)).toArray(Layer[]::new));
     }
 
     private static <T> int evaluate(Class<T> tClass) {
@@ -73,7 +73,7 @@ public final class Platform {
         GRAPHIC_PLATFORM.clear();
     }
 
-    public static LayerStack<UpdatableLayer> getLayerStack() {
+    public static LayerStack<Layer> getLayerStack() {
         return GRAPHIC_PLATFORM.getLayerStack();
     }
 

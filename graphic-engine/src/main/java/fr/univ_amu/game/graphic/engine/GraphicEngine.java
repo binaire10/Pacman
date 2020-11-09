@@ -1,7 +1,7 @@
 package fr.univ_amu.game.graphic.engine;
 
+import fr.univ_amu.game.core.Layer;
 import fr.univ_amu.game.core.Platform;
-import fr.univ_amu.game.core.UpdatableLayer;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.core.loader.EngineLayer;
 import fr.univ_amu.game.event.Event;
@@ -15,7 +15,7 @@ import java.util.ServiceLoader;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @EngineLayer
-public class GraphicEngine implements UpdatableLayer {
+public class GraphicEngine implements Layer {
     private static GraphicEngine instance;
     private final List<QuadEntity> graphicEntities = new CopyOnWriteArrayList<>();
     private Window window;

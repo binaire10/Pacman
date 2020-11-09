@@ -15,7 +15,7 @@ public interface GraphicPlatform {
 
     void clear();
 
-    LayerStack<UpdatableLayer> getLayerStack();
+    LayerStack<Layer> getLayerStack();
 
     RenderCommand getRenderCommand();
 

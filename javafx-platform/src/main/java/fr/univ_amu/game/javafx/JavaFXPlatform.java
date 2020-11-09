@@ -1,8 +1,8 @@
 package fr.univ_amu.game.javafx;
 
 import fr.univ_amu.game.core.GraphicPlatform;
+import fr.univ_amu.game.core.Layer;
 import fr.univ_amu.game.core.LayerStack;
-import fr.univ_amu.game.core.UpdatableLayer;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.javafx.render.JavaFXRenderCommand;
@@ -15,7 +15,7 @@ import javafx.application.Platform;
 import java.nio.ByteBuffer;
 
 public class JavaFXPlatform implements GraphicPlatform {
-    private final LayerStack<UpdatableLayer> layers = new LayerStack<>();
+    private final LayerStack<Layer> layers = new LayerStack<>();
     private final JavaFXRenderCommand renderCommand = new JavaFXRenderCommand();
 
     @Override
@@ -25,7 +25,7 @@ public class JavaFXPlatform implements GraphicPlatform {
 
     @Override
     public void dispatch(Event event) {
-        for (UpdatableLayer layer : layers) {
+        for (Layer layer : layers) {
             layer.onEvent(event);
             if (event.isHandle())
                 break;
@@ -43,7 +43,7 @@ public class JavaFXPlatform implements GraphicPlatform {
     }
 
     @Override
-    public LayerStack<UpdatableLayer> getLayerStack() {
+    public LayerStack<Layer> getLayerStack() {
         return layers;
     }
 
@@ -65,7 +65,7 @@ public class JavaFXPlatform implements GraphicPlatform {
     @Override
     public void startMainThread(Runnable runnable) {
         Platform.startup(() -> {
-
+            fr.univ_amu.game.core.Platform.initialise();
             new AnimationTimer() {
                 @Override
                 public void handle(long l) {

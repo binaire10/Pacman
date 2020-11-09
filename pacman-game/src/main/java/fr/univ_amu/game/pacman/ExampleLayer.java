@@ -1,7 +1,7 @@
 package fr.univ_amu.game.pacman;
 
+import fr.univ_amu.game.core.Layer;
 import fr.univ_amu.game.core.Platform;
-import fr.univ_amu.game.core.UpdatableLayer;
 import fr.univ_amu.game.core.loader.GameplayLayer;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.event.application.WindowCloseEvent;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @GameplayLayer
-public class ExampleLayer implements UpdatableLayer {
+public class ExampleLayer implements Layer {
     //    private Window window;
     Texture2D texture2D;
 
