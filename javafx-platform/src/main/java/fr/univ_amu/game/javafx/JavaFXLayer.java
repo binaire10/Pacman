@@ -9,8 +9,8 @@ import fr.univ_amu.game.graphic.entities.QuadEntity;
 import fr.univ_amu.game.javafx.render.JavaFXTexture2D;
 import fr.univ_amu.game.math.MatrixUtility;
 import fr.univ_amu.game.math.VectorUtility;
+import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @HardwareLayer
 public class JavaFXLayer implements GraphicLayer {
-    Pane render;
+    Group render;
     private OrthographicCamera camera;
     private float width;
     private float height;
@@ -64,7 +64,7 @@ public class JavaFXLayer implements GraphicLayer {
                     0, 0, 1, position[2],
                     0, 0, 0, 1
             };
-            float[] transform = MatrixUtility.dot_product(matrix, view, 4);
+            float[] transform = MatrixUtility.dot_product(view, matrix, 4);
             float[] p0 = VectorUtility.dot_product(new float[]{-0.5f, -0.5f, 0f, 1f}, transform, 4);
             float[] p1 = VectorUtility.dot_product(new float[]{0.5f, 0.5f, 0f, 1f}, transform, 4);
 
@@ -84,13 +84,6 @@ public class JavaFXLayer implements GraphicLayer {
             rectangle.setStrokeWidth(0);
             children.add(rectangle);
         }
-//        if (graphicEntity instanceof QuadEntity) {
-//            var quad = (QuadEntity) graphicEntity;
-//            if (quad.getColor() != null && quad.getTexture() != null) {
-//                context.drawImage();
-//            }
-//        }
-//        context.
     }
 
     @Override

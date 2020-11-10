@@ -4,24 +4,21 @@ import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.application.WindowCloseEvent;
 import fr.univ_amu.game.javafx.render.JavaFXRenderCommand;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class JavaFxWindow implements Window {
     private final Stage stage;
     private final Scene scene;
-    Pane canvas;
+    Group canvas;
 
     public JavaFxWindow(String title, int width, int height) {
-        canvas = new Pane();
-        scene = new Scene(canvas, width, height, Color.BLACK);
+        canvas = new Group();
         stage = new Stage();
+        scene = new Scene(canvas, width, height, Color.BLACK);
         stage.setScene(scene);
-//        canvas = new Canvas(width, height);
-//        scene.setFill(Color.BLACK);
-//        root.getChildren().add(canvas);
         stage.setTitle(title);
         stage.setOnCloseRequest((e) -> Platform.dispatch(new WindowCloseEvent(this)));
     }
@@ -60,7 +57,7 @@ public class JavaFxWindow implements Window {
         canvas.resize(width, height);
     }
 
-    public Pane getCanvas() {
+    public Group getCanvas() {
         return canvas;
     }
 
