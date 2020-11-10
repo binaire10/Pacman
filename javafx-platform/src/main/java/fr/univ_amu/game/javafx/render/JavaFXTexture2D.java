@@ -23,6 +23,10 @@ public class JavaFXTexture2D implements Texture2D {
         this.height = height;
     }
 
+    public Image getImage() {
+        return image;
+    }
+
     @Override
     public void bind(int textureUnit) {
 

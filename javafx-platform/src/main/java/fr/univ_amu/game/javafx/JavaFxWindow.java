@@ -3,34 +3,37 @@ package fr.univ_amu.game.javafx;
 import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.application.WindowCloseEvent;
-import javafx.scene.Group;
+import fr.univ_amu.game.javafx.render.JavaFXRenderCommand;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class JavaFxWindow implements Window {
-    private final String title;
-    private final int width;
-    private final int height;
-    Canvas canvas;
-    private Stage stage;
-    private Scene scene;
+    private final Stage stage;
+    private final Scene scene;
+    Pane canvas;
 
     public JavaFxWindow(String title, int width, int height) {
-        this.title = title;
-        this.width = width;
-        this.height = height;
+        canvas = new Pane();
+        scene = new Scene(canvas, width, height, Color.BLACK);
+        stage = new Stage();
+        stage.setScene(scene);
+//        canvas = new Canvas(width, height);
+//        scene.setFill(Color.BLACK);
+//        root.getChildren().add(canvas);
+        stage.setTitle(title);
+        stage.setOnCloseRequest((e) -> Platform.dispatch(new WindowCloseEvent(this)));
     }
 
     @Override
     public int getWidth() {
-        return (int) canvas.getWidth();
+        return (int) scene.getWidth();
     }
 
     @Override
     public int getHeight() {
-        return (int) canvas.getHeight();
+        return (int) scene.getHeight();
     }
 
     @Override
@@ -44,14 +47,7 @@ public class JavaFxWindow implements Window {
 
     @Override
     public void make_context() {
-        Group root = new Group();
-        scene = new Scene(root);
-        stage = new Stage();
-        stage.setScene(scene);
-        canvas = new Canvas(width, height);
-        root.getChildren().add(canvas);
-        stage.setTitle(title);
-        stage.setOnCloseRequest((e) -> Platform.dispatch(new WindowCloseEvent(this)));
+        ((JavaFXRenderCommand) Platform.getRenderCommand()).setFxWindow(this);
     }
 
     @Override
@@ -64,12 +60,12 @@ public class JavaFxWindow implements Window {
         canvas.resize(width, height);
     }
 
-    public Canvas getCanvas() {
+    public Pane getCanvas() {
         return canvas;
     }
 
-    public GraphicsContext getContext() {
-        return canvas.getGraphicsContext2D();
+    public Scene getScene() {
+        return scene;
     }
 
     @Override
