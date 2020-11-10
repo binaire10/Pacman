@@ -46,7 +46,6 @@ public class JavaFXLayer implements GraphicLayer {
         Platform.getRenderCommand().clear();
         float ratio = (float) surface.getWidth() / surface.getHeight();
         camera.setRatio(ratio);
-        camera.setZoom(2);
         width = surface.getWidth();
         height = surface.getHeight();
     }
