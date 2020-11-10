@@ -1,6 +1,6 @@
 package fr.univ_amu.game.graphic.camera;
 
-import fr.univ_amu.game.math.Mat;
+import fr.univ_amu.game.math.MatrixUtility;
 
 public class OrthographicCamera implements Camera {
     private final float[] position = {0, 0, 0};
@@ -48,7 +48,7 @@ public class OrthographicCamera implements Camera {
     public float[] getMatrix() {
         float cosA = (float) Math.cos(-angle);
         float sinA = (float) Math.sin(-angle);
-        return Mat.dot_product(Mat.ortho(ratio * zoom, -ratio * zoom, -zoom, zoom), new float[]{
+        return MatrixUtility.dot_product(MatrixUtility.ortho(ratio * zoom, -ratio * zoom, -zoom, zoom), new float[]{
                 cosA, -sinA, 0, -position[0],
                 sinA, cosA, 0, -position[1],
                 0, 0, 1, -position[2],

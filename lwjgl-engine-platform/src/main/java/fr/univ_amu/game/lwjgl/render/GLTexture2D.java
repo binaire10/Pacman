@@ -21,7 +21,7 @@ public final class GLTexture2D implements Texture2D {
             var x = memory.mallocInt(1);
             var y = memory.mallocInt(1);
             var channel = memory.mallocInt(1);
-            STBImage.stbi_set_flip_vertically_on_load(true);
+            STBImage.stbi_set_flip_vertically_on_load(false);
             var pixels = STBImage.stbi_load_from_memory(storage, x, y, channel, 0);
             int internalFormat;
             int dataFormat;

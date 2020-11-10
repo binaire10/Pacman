@@ -1,7 +1,6 @@
 package fr.univ_amu.game.lwjgl.render;
 
 import fr.univ_amu.game.render.RenderCommand;
-import fr.univ_amu.game.render.VertexArray;
 
 import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
@@ -13,8 +12,7 @@ public final class GLRenderCommand implements RenderCommand {
         glViewport(x, y, width, height);
     }
 
-    @Override
-    public void drawElements(VertexArray vertexArray, int count) {
+    public static void drawElements(VertexArray vertexArray, int count) {
         glDrawElements(GL_TRIANGLES, count == 0 ? vertexArray.getComponentCount() : count, GL_UNSIGNED_INT, NULL);
     }
 

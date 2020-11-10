@@ -2,19 +2,20 @@ package fr.univ_amu.game.lwjgl;
 
 import fr.univ_amu.game.core.*;
 import fr.univ_amu.game.event.Event;
-import fr.univ_amu.game.lwjgl.render.*;
-import fr.univ_amu.game.render.*;
+import fr.univ_amu.game.lwjgl.render.GLRenderCommand;
+import fr.univ_amu.game.lwjgl.render.GLTexture2D;
+import fr.univ_amu.game.lwjgl.render.ShaderDataType;
+import fr.univ_amu.game.render.RenderCommand;
+import fr.univ_amu.game.render.Texture2D;
 
 import java.nio.ByteBuffer;
-import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 
 public final class LWJGLPlatform implements GraphicPlatform {
-    private final LayerStack layers = new LayerStack();
+    private final LayerStack<Layer> layers = new LayerStack<>();
     private final GLRenderCommand renderCommand = new GLRenderCommand();
-    Window mainWindow;
 
     public static int toOpenGL(ShaderDataType shaderDataType) {
         return switch (shaderDataType) {
@@ -189,39 +190,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
 
     @Override
     public Window create_window(String title, int width, int height) {
-        if (mainWindow != null) {
-            Window window = mainWindow;
-            mainWindow = null;
-            window.setTitle(title);
-            window.resize(width, height);
-            return window;
-        }
         return new GLFWWindow(title, width, height);
-    }
-
-    @Override
-    public IndexBuffer make_index(int[] index) {
-        return new GLIndexBuffer(index);
-    }
-
-    @Override
-    public VertexBuffer make_buffer(float[] data) {
-        return new GLVertexBuffer(data);
-    }
-
-    @Override
-    public VertexBuffer make_buffer(int capacity) {
-        return new GLVertexBuffer(capacity);
-    }
-
-    @Override
-    public VertexArray create_vertexArray() {
-        return new GLVertexArray();
-    }
-
-    @Override
-    public Material create_material(Map<ShaderType, String> shaders) {
-        return new GLMaterial(shaders);
     }
 
     @Override
@@ -230,7 +199,7 @@ public final class LWJGLPlatform implements GraphicPlatform {
     }
 
     @Override
-    public LayerStack getLayerStack() {
+    public LayerStack<Layer> getLayerStack() {
         return layers;
     }
 
@@ -246,5 +215,13 @@ public final class LWJGLPlatform implements GraphicPlatform {
     @Override
     public GLTexture2D make_texture(int w, int h) {
         return new GLTexture2D(w, h);
+    }
+
+    @Override
+    public void startMainThread(Runnable runnable) {
+        Platform.initialise();
+        while (Platform.isRunning())
+            runnable.run();
+        clear();
     }
 }
