@@ -1,5 +1,6 @@
 package fr.univ_amu.game.pacman;
 
+import fr.univ_amu.Animation;
 import fr.univ_amu.game.core.EventDispatch;
 import fr.univ_amu.game.core.Layer;
 import fr.univ_amu.game.core.Platform;
@@ -40,11 +41,16 @@ public class ExampleLayer implements Layer {
     public void onUpdate(double timestep) {
         Platform.getRenderCommand().clear();
         camera.setRatio((float) window.getWidth() / window.getHeight());
+        Animation<float[]> anim =new Animation(1000);
+        anim.animation.add(Vec.make_vec4(0, 0, 1, 1));
+        anim.animation.add(Vec.make_vec4(1, 0, 1, 1));
+        anim.animation.add(Vec.make_vec4(0, 1, 1, 1));
+        anim.animation.add(Vec.make_vec4(1, 0.3f, 1, 1));
 
         render2D.begin(camera);
         for (int i = 0; i < 33; i++)
             for (int j = 0; j < 33; j++)
-                render2D.drawQuad(Vec.make_vec4((i - 16f) * 0.05f, (j - 16f) * 0.05f, 0), Vec.make_vec2(0.009f * 5, 0.009f * 5), Vec.make_vec4(1, 0, 1, 1));
+                render2D.drawQuad(Vec.make_vec4((i - 16f) * 0.05f, (j - 16f) * 0.05f, 0), Vec.make_vec2(0.009f * 5, 0.009f * 5), anim.getFrame(System.currentTimeMillis()));
         render2D.drawQuad(Vec.make_vec4(0, 0, 0.1f), Vec.make_vec2(4, 4), texture, 5);
         render2D.end();
 
