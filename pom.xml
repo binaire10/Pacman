@@ -22,6 +22,7 @@
         <module>lwjgl-engine-platform</module>
         <module>pacman-game</module>
         <module>javafx-platform</module>
+        <module>physics-engine</module>
     </modules>
 
 

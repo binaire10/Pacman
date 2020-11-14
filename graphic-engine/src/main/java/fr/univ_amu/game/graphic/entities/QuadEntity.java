@@ -60,7 +60,7 @@ public class QuadEntity {
     }
 
     public void setPosition(float[] position) {
-        this.color = Arrays.copyOf(position, position.length);
+        this.position = Arrays.copyOf(position, position.length);
     }
 
     public float[] getSize() {
