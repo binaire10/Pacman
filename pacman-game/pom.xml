@@ -18,7 +18,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.5</version>
                 <configuration>
-                    <mainClass>fr.univ_amu.game.pacman.Main</mainClass>
+                    <mainClass>kernel.core/fr.univ_amu.game.run.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>
