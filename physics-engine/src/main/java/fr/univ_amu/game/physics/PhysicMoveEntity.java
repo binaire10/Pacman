@@ -10,17 +10,36 @@ public class PhysicMoveEntity implements PhysicEntity {
     private float[] position;
     private float[] speed;
     private List<PositionListener> positionListeners;
+    private Shape shape;
 
-    public PhysicMoveEntity(float[] position, float[] speed) {
+    public void setSpeed(float[] speed) {
+        this.speed = speed;
+    }
+
+    public void setPosition(float[] position) {
+        float[] diffPos = minus(position, this.position);
+        this.position = position;
+        getShape().applyVector(diffPos);
+    }
+
+    public PhysicMoveEntity(float[] position, float[] speed, Shape shape) {
         this.positionListeners = new ArrayList<>();
         this.position = position;
         this.speed = speed;
+        this.shape = shape;
     }
 
     @Override
     public void update(double timestep) {
-        position = sum(position, product(speed, (float) timestep));
+        float[] vector = product(speed, (float) timestep);
+        position = sum(position, vector);
+        shape.applyVector(vector);
         changePosition();
+    }
+
+    @Override
+    public Shape getShape() {
+        return shape;
     }
 
     public void addPositionListener(PositionListener positionListener) {
