@@ -19,6 +19,10 @@ public class Animation <T> {
         this.duration = duration;
     }
 
+    public void addframe(T frame2add){
+        if(frame2add != null)animation.add(frame2add);
+    }
+
     public T getFrame(double time){
         return animation.get( (int) (( time%(animation.size()* duration)) /duration));
     }
