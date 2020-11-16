@@ -1,4 +1,4 @@
-package fr.univ_amu;
+package fr.univ_amu.game.util;
 
 import fr.univ_amu.game.math.Vec;
 import fr.univ_amu.game.render.Texture2D;

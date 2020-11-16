@@ -1,6 +1,6 @@
 package fr.univ_amu.game.pacman;
 
-import fr.univ_amu.Animation;
+import fr.univ_amu.game.util.Animation;
 import fr.univ_amu.game.core.EventDispatch;
 import fr.univ_amu.game.core.Layer;
 import fr.univ_amu.game.core.Platform;
@@ -54,7 +54,7 @@ public class ExampleLayer implements Layer {
         anim.addframe(Vec.make_vec4(1, 0, 1, 1));
         anim.addframe(Vec.make_vec4(0, 1, 1, 1));
         anim.addframe(Vec.make_vec4(1, 0.3f, 1, 1));
-        Animation<Texture2D> anim2 = new Animation<>(1000);
+        Animation<Texture2D> anim2 = new Animation<>(5000);
         anim2.addframe(texture);
         anim2.addframe(texture2);
 
