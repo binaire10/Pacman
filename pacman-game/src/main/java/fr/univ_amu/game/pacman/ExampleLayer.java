@@ -82,6 +82,7 @@ public class ExampleLayer implements Layer {
         GraphicEngine.getEngine().getGraphicEntities().add(q1);
         GraphicEngine.getEngine().getGraphicEntities().add(q2);
 
+
     }
 
     @Override
