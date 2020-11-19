@@ -25,6 +25,10 @@ public class GraphicEngine implements Layer {
         return instance;
     }
 
+    public Window getWindow() {
+        return window;
+    }
+
     @Override
     public void onUpdate(double timestep) {
         final RenderCommand command = Platform.getRenderCommand();

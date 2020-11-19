@@ -1,5 +1,6 @@
 package fr.univ_amu.game.pacman;
 
+import fr.univ_amu.game.IO.Input;
 import fr.univ_amu.game.core.KeyCode;
 import fr.univ_amu.game.core.Layer;
 import fr.univ_amu.game.core.Platform;
@@ -22,6 +23,7 @@ import java.util.List;
 public class ExampleLayer implements Layer {
     //    private Window window;
     Texture2D texture2D;
+    QuadEntity player;
 
     @Override
     public void onAttach() {
@@ -38,6 +40,8 @@ public class ExampleLayer implements Layer {
 
         entities.add(new QuadEntity(VectorUtility.make_vec4(0, 0, 0.1f), VectorUtility.make_vec2(4, 4), texture2D));*/
         GraphicEngine.getEngine().show();
+        player = new QuadEntity(VectorUtility.make_vec4(0,0,0),VectorUtility.make_vec2(1,1),VectorUtility.make_vec4(1,0,0,1));
+        GraphicEngine.getEngine().getGraphicEntities().add(player);
         //GraphicEngine.getEngine().getGraphicEntities().addAll(entities);
 
         float[] position1 = VectorUtility.make_vec4(2, 0, 0.1f);
@@ -87,6 +91,12 @@ public class ExampleLayer implements Layer {
 
     @Override
     public void onUpdate(double timestep) {
+        Input inst = Input.getInstance();
+
+        float[] pos = player.getPosition();
+        pos[1] += ((inst.Keys.get(KeyCode.Up)?1:0)-(inst.Keys.get(KeyCode.Down)?1:0))*timestep/1000f;
+        pos[0] += ((inst.Keys.get(KeyCode.Right)?1:0)-(inst.Keys.get(KeyCode.Left)?1:0))*timestep/1000f;
+
     }
 
     @Override
