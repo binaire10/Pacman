@@ -1,21 +1,28 @@
+import fr.univ_amu.game.core.KeyCode;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Input implements EventHandler<KeyEvent> {
 
-    List<String> Keys = new ArrayList<>();
+    public HashMap<KeyCode,Boolean> Keys;
+
+    public Input(){
+        Keys = new HashMap<>();
+        for(KeyCode key : KeyCode.values()){
+            Keys.put(key,false);
+        }
+    }
     @Override
     public void handle(KeyEvent keyEvent) {
-        String keyPressed = keyEvent.getCode().getName();
-        if(!Keys.contains(keyPressed))Keys.add(keyPressed);
+        Keys.replace(KeyCode.valueOf(keyEvent.getCode().getName()),true);
     }
 
-    public List<String> getKeys(){
+    public HashMap<KeyCode, Boolean> getKeys() {
         return Keys;
     }
 }
