@@ -1,11 +1,15 @@
 package fr.univ_amu.game.javafx;
 
+import fr.univ_amu.game.core.KeyCode;
 import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.event.application.WindowCloseEvent;
+import fr.univ_amu.game.event.keyboard.KeyPressedEvent;
+import fr.univ_amu.game.event.keyboard.KeyReleasedEvent;
 import fr.univ_amu.game.javafx.render.JavaFXRenderCommand;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -21,6 +25,8 @@ public class JavaFxWindow implements Window {
         stage.setScene(scene);
         stage.setTitle(title);
         stage.setOnCloseRequest((e) -> Platform.dispatch(new WindowCloseEvent(this)));
+        scene.addEventFilter(KeyEvent.KEY_RELEASED,(KeyEvent k)->Platform.dispatch(new KeyReleasedEvent(KeyCode.valueOf(k.getCode().getName()),this) ));
+        scene.addEventFilter(KeyEvent.KEY_PRESSED,(KeyEvent k)->Platform.dispatch(new KeyPressedEvent(KeyCode.valueOf(k.getCode().getName()),this) ));
     }
 
     @Override

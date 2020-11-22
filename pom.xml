@@ -22,6 +22,7 @@
         <module>pacman-game</module>
         <module>javafx-platform</module>
         <module>physics-engine</module>
+        <module>IO-engine</module>
     </modules>
 
 
