@@ -5,5 +5,6 @@ module pacman.game {
     requires graphic.engine;
     requires physics.engine;
     requires javafx.platform;
+    requires IO.engine;
     provides Layer with fr.univ_amu.game.pacman.ExampleLayer;
 }
