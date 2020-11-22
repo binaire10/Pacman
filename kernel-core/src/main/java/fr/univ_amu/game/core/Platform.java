@@ -31,12 +31,6 @@ public final class Platform {
         return Utility.iteratorToStream(new DepthIterator<>(nodes.iterator()), nodes.size()).map(ServiceLoader.Provider::get);
     }
 
-    public static void initialise() {
-        isRunning = true;
-        if (GRAPHIC_PLATFORM != null)
-            GRAPHIC_PLATFORM.getLayerStack().pushLayer(load_layers(ServiceLoader.load(Layer.class)).toArray(Layer[]::new));
-    }
-
     private static <T> int evaluate(Class<T> tClass) {
         if (tClass.isAnnotationPresent(HardwareLayer.class))
             return -3;
@@ -47,6 +41,12 @@ public final class Platform {
         if (tClass.isAnnotationPresent(UserLayer.class))
             return tClass.getAnnotation(UserLayer.class).layer();
         return Integer.MAX_VALUE;
+    }
+
+    public static void initialise() {
+        isRunning = true;
+        if (GRAPHIC_PLATFORM != null)
+            GRAPHIC_PLATFORM.getLayerStack().pushLayer(load_layers(ServiceLoader.load(Layer.class)).toArray(Layer[]::new));
     }
 
     public static Window create_window(String title, int width, int height) {
