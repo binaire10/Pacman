@@ -19,7 +19,6 @@
     <modules>
         <module>kernel-core</module>
         <module>graphic-engine</module>
-        <module>lwjgl-engine-platform</module>
         <module>pacman-game</module>
         <module>javafx-platform</module>
         <module>physics-engine</module>
