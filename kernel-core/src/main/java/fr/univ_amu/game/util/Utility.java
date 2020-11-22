@@ -28,7 +28,11 @@ public final class Utility {
 
     public static ByteBuffer readFile(URL file) throws URISyntaxException, IOException {
         var path = Path.of(file.toURI());
-        return FileChannel.open(path).map(FileChannel.MapMode.READ_ONLY, 0, Files.size(path));
+        try {
+            return FileChannel.open(path).map(FileChannel.MapMode.READ_ONLY, 0, Files.size(path));
+        } catch (UnsupportedOperationException | IOException e) {
+            return ByteBuffer.wrap(Files.readAllBytes(path));
+        }
     }
 
     // https://stackoverflow.com/questions/4332264/wrapping-a-bytebuffer-with-an-inputstream
