@@ -1,33 +1,27 @@
 package fr.univ_amu.game.pacman;
 
+import fr.univ_amu.game.graphic.entities.QuadEntity;
 import fr.univ_amu.game.physics.PhysicEntity;
-import fr.univ_amu.game.physics.Shape;
 
-public class Pacman implements PhysicEntity {
+public class Pacman{
 
-    private Shape shape;
-    private float[] position;
-    private short life; // Uses a short because it won't be a high number
+    private int life;
+    private PhysicEntity physical;
+    private QuadEntity graphical;
 
-    @Override
-    public void update(double timestep) {
-
+    public PhysicEntity getPhysical() {
+        return this.physical;
     }
 
-    @Override
-    public Shape getShape() {
-        return this.shape;
+    public QuadEntity getGraphical() {
+        return this.graphical;
     }
 
-    public float[] getPosition(){
-        return this.position;
-    }
-
-    public short getLife(){
+    public int getLife(){
         return this.life;
     }
 
-    public void decreaseLife(short amountToDecrease){
+    public void decreaseLife(int amountToDecrease){
         if(amountToDecrease > this.life){
             this.life = 0;
             return;
