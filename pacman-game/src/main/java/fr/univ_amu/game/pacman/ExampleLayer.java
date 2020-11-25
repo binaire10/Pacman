@@ -61,7 +61,7 @@ public class ExampleLayer implements Layer {
 
         PhysicLayer.getEngine().addCollideListener(new CollideListener() {
             @Override
-            public void collideBetween(PhysicEntity p1, PhysicEntity p2) {
+            public void collideBetween(PhysicEntity p1, Rectangle2D oldObj1, PhysicEntity p2, Rectangle2D oldObj2) {
                 sprite1.setPosition(initialPositionSprite1);
                 sprite2.setPosition(initialPositionSprite2);
             }

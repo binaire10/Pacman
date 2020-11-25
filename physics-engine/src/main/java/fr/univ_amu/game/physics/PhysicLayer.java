@@ -4,11 +4,13 @@ import fr.univ_amu.game.core.Layer;
 import fr.univ_amu.game.core.Sprite;
 import fr.univ_amu.game.core.loader.EngineLayer;
 import fr.univ_amu.game.event.Event;
+import fr.univ_amu.game.math.Rectangle2D;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @EngineLayer
 public class PhysicLayer implements Layer {
@@ -35,15 +37,18 @@ public class PhysicLayer implements Layer {
     @Override
     public void onUpdate(double timestep) {
         List<PhysicEntity> entities = new ArrayList<>(physicEntities.values());
+        List<Rectangle2D> oldShape = entities.stream().map(PhysicEntity::getShape).collect(Collectors.toList());
         for (PhysicEntity physicEntity : entities) {
             physicEntity.update(timestep);
         }
         for (int i = 0; i < entities.size(); i++) {
             PhysicEntity a = entities.get(i);
+            Rectangle2D oldA = oldShape.get(i);
             for (int j = i + 1; j < entities.size(); j++) {
                 PhysicEntity b = entities.get(j);
                 if (a.getShape().isIntersect(b.getShape())) {
-                    notifyCollide(a, b);
+                    Rectangle2D oldB = oldShape.get(j);
+                    notifyCollide(a, oldA, b, oldB);
                 }
             }
         }
@@ -72,9 +77,9 @@ public class PhysicLayer implements Layer {
         this.collideListeners.remove(collideListener);
     }
 
-    private void notifyCollide(PhysicEntity obj1, PhysicEntity obj2) {
+    private void notifyCollide(PhysicEntity obj1, Rectangle2D oldObj1, PhysicEntity obj2, Rectangle2D oldObj2) {
         for (CollideListener collideListener : collideListeners) {
-            collideListener.collideBetween(obj1, obj2);
+            collideListener.collideBetween(obj1, oldObj1, obj2, oldObj2);
         }
     }
 }
