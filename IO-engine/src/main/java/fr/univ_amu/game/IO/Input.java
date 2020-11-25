@@ -8,7 +8,6 @@ import fr.univ_amu.game.event.keyboard.KeyPressedEvent;
 import fr.univ_amu.game.event.keyboard.KeyReleasedEvent;
 import fr.univ_amu.game.util.Utility;
 
-
 import java.util.HashMap;
 
 @EngineLayer

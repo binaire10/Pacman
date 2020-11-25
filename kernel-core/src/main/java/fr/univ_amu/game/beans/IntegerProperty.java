@@ -22,6 +22,10 @@ public class IntegerProperty implements ObservableValue<Integer> {
     public void setValue(int value) {
         int old = this.value;
         this.value = value;
+        notify(value, old);
+    }
+
+    private void notify(int value, int old) {
         for (var listener : listeners) {
             listener.update(this, old, value);
             if (this.value != value)
@@ -37,5 +41,12 @@ public class IntegerProperty implements ObservableValue<Integer> {
     @Override
     public void removeListener(ChangeValueListener<? super Integer> listener) {
         listeners.remove(listener);
+    }
+
+    @Override
+    public String toString() {
+        return "IntegerProperty{" +
+                "value=" + value +
+                '}';
     }
 }

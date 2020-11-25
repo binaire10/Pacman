@@ -5,6 +5,7 @@ import fr.univ_amu.game.render.RenderCommand;
 import fr.univ_amu.game.render.Texture2D;
 
 import java.nio.ByteBuffer;
+import java.util.function.Supplier;
 
 public interface GraphicPlatform {
     void processEvent();
@@ -23,5 +24,5 @@ public interface GraphicPlatform {
 
     Texture2D make_texture(int w, int h);
 
-    void startMainThread(Runnable runnable);
+    void startMainThread(Supplier<Runnable> runnable);
 }

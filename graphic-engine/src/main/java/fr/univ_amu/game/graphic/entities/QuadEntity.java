@@ -1,77 +1,100 @@
 package fr.univ_amu.game.graphic.entities;
 
+import fr.univ_amu.game.beans.Binding;
+import fr.univ_amu.game.beans.ChangeValueListener;
+import fr.univ_amu.game.beans.ObjectProperty;
+import fr.univ_amu.game.core.Layer;
+import fr.univ_amu.game.core.Sprite;
+import fr.univ_amu.game.graphic.engine.GraphicEngine;
+import fr.univ_amu.game.math.Point2D;
+import fr.univ_amu.game.math.Point3D;
+import fr.univ_amu.game.math.Rectangle2D;
 import fr.univ_amu.game.render.Texture2D;
 
 import java.util.Arrays;
 
 public class QuadEntity {
-    float[] color;
-    Texture2D texture;
-    float[] position;
-    float[] size;
-    float rotation;
+    private final Sprite sprite;
+    private final ObjectProperty<float[]> color;
+    private final ObjectProperty<Texture2D> texture;
+    private final ObjectProperty<Point3D> position;
+    private final ObjectProperty<Point2D> size;
 
-    public QuadEntity(float[] position, float[] size, float[] color, Texture2D texture, float rotation) {
-        this.color = color;
-        this.texture = texture;
-        this.size = size;
-        this.position = position;
-        this.rotation = rotation;
+    private final ChangeValueListener<Texture2D> textureListener;
+    private final ChangeValueListener<float[]> colorListener;
+    private final ChangeValueListener<Rectangle2D> sizeListener;
+    private final ChangeValueListener<Point2D> positionListener;
+
+    public QuadEntity(Class<? extends Layer> source, Sprite sprite, float z) {
+        this.sprite = sprite;
+        this.color = new ObjectProperty<>();
+        this.texture = new ObjectProperty<>();
+        this.size = new ObjectProperty<>();
+        this.position = new ObjectProperty<>();
+
+        this.textureListener = Binding.bind(source, sprite.getTextureProperty(), GraphicEngine.class, texture);
+        this.colorListener = Binding.bind(source, sprite.getColorProperty(), GraphicEngine.class, color);
+        this.positionListener = Binding.bind(source, sprite.getPositionProperty(), GraphicEngine.class, position, p -> new Point3D(p, z));
+        this.sizeListener = Binding.bind(source, sprite.getShapeProperty(), GraphicEngine.class, size, s -> new Point2D(s.width, s.heigth));
     }
 
-    public QuadEntity(float[] position, float[] size, float rotation, Texture2D texture) {
-        this(position, size, null, texture, rotation);
+    public QuadEntity(Point3D position, Point2D size, float[] color, Texture2D texture) {
+        this.sprite = null;
+        this.color = new ObjectProperty<>(color);
+        this.texture = new ObjectProperty<>(texture);
+        this.size = new ObjectProperty<>(size);
+        this.position = new ObjectProperty<>(position);
+
+        this.textureListener = null;
+        this.colorListener = null;
+        this.positionListener = null;
+        this.sizeListener = null;
     }
 
-    public QuadEntity(float[] position, float[] size, float rotation, float[] color) {
-        this(position, size, color, null, rotation);
+    public QuadEntity(Point3D position, Point2D size, Texture2D texture) {
+        this(position, size, null, texture);
     }
 
-    public QuadEntity(float[] position, float[] size, float[] color, Texture2D texture) {
-        this(position, size, color, texture, 0);
-    }
-
-    public QuadEntity(float[] position, float[] size, Texture2D texture) {
-        this(position, size, null, texture, 0);
-    }
-
-    public QuadEntity(float[] position, float[] size, float[] color) {
-        this(position, size, color, null, 0);
+    public QuadEntity(Point3D position, Point2D size, float[] color) {
+        this(position, size, color, null);
     }
 
     public float[] getColor() {
-        return color;
+        return color.getValue();
     }
 
     public void setColor(float[] color) {
-        this.color = Arrays.copyOf(color, color.length);
+        this.color.setValue(Arrays.copyOf(color, color.length));
     }
 
     public Texture2D getTexture() {
-        return texture;
+        return texture.getValue();
     }
 
     public void setTexture(Texture2D texture) {
-        this.texture = texture;
+        this.texture.setValue(texture);
     }
 
-    public float[] getPosition() {
+    public Point3D getPosition() {
+        return position.getValue();
+    }
+
+    public void setPosition(Point3D position) {
+        this.position.setValue(position);
+    }
+
+    public Point2D getSize() {
+        return size.getValue();
+    }
+
+    public ObjectProperty<Point3D> getPositionProperty() {
         return position;
     }
 
-    public void setPosition(float[] position) {
-        this.position = Arrays.copyOf(position, position.length);
-    }
-
-    public float[] getSize() {
-        return size;
-    }
-
-    public float getRotation() {
-        return rotation;
-    }
-
-    public void setRotation(float rotation) {
-        this.rotation = rotation;
+    public void unbind() {
+        sprite.getTextureProperty().removeListener(textureListener);
+        sprite.getColorProperty().removeListener(colorListener);
+        sprite.getPositionProperty().removeListener(positionListener);
+        sprite.getShapeProperty().removeListener(sizeListener);
     }
 }
