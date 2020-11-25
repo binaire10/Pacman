@@ -14,6 +14,7 @@ import fr.univ_amu.game.render.Texture2D;
 import java.util.Arrays;
 
 public class QuadEntity {
+    private final Sprite sprite;
     private final ObjectProperty<float[]> color;
     private final ObjectProperty<Texture2D> texture;
     private final ObjectProperty<Point3D> position;
@@ -25,6 +26,7 @@ public class QuadEntity {
     private final ChangeValueListener<Point2D> positionListener;
 
     public QuadEntity(Class<? extends Layer> source, Sprite sprite, float z) {
+        this.sprite = sprite;
         this.color = new ObjectProperty<>();
         this.texture = new ObjectProperty<>();
         this.size = new ObjectProperty<>();
@@ -37,6 +39,7 @@ public class QuadEntity {
     }
 
     public QuadEntity(Point3D position, Point2D size, float[] color, Texture2D texture) {
+        this.sprite = null;
         this.color = new ObjectProperty<>(color);
         this.texture = new ObjectProperty<>(texture);
         this.size = new ObjectProperty<>(size);
@@ -88,6 +91,10 @@ public class QuadEntity {
         return position;
     }
 
-    private void bind(Class<? extends Layer> source, Sprite sprite, float z) {
+    public void unbind() {
+        sprite.getTextureProperty().removeListener(textureListener);
+        sprite.getColorProperty().removeListener(colorListener);
+        sprite.getPositionProperty().removeListener(positionListener);
+        sprite.getShapeProperty().removeListener(sizeListener);
     }
 }

@@ -79,6 +79,6 @@ public class GraphicEngine implements Layer {
     }
 
     public void remove(Sprite sprite) {
-        graphicEntities.remove(sprite);
+        graphicEntities.remove(sprite).unbind();
     }
 }
