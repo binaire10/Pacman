@@ -22,6 +22,10 @@ public class ObjectProperty<T> implements ObservableValue<T> {
     public void setValue(T value) {
         T old = this.value;
         this.value = value;
+        notify(value, old);
+    }
+
+    private void notify(T value, T old) {
         for (var listener : listeners) {
             listener.update(this, old, value);
             if (!this.value.equals(value))
@@ -37,5 +41,12 @@ public class ObjectProperty<T> implements ObservableValue<T> {
     @Override
     public void removeListener(ChangeValueListener<? super T> listener) {
         listeners.remove(listener);
+    }
+
+    @Override
+    public String toString() {
+        return "ObjectProperty{" +
+                "value=" + value +
+                '}';
     }
 }

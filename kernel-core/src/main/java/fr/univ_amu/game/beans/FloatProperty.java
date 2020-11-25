@@ -22,6 +22,10 @@ public class FloatProperty implements ObservableValue<Float> {
     public void setValue(float value) {
         float old = this.value;
         this.value = value;
+        notify(value, old);
+    }
+
+    private void notify(float value, float old) {
         for (var listener : listeners) {
             listener.update(this, old, value);
             if (this.value != value)
@@ -37,5 +41,12 @@ public class FloatProperty implements ObservableValue<Float> {
     @Override
     public void removeListener(ChangeValueListener<? super Float> listener) {
         listeners.remove(listener);
+    }
+
+    @Override
+    public String toString() {
+        return "FloatProperty{" +
+                "value=" + value +
+                '}';
     }
 }

@@ -11,6 +11,7 @@ import fr.univ_amu.graph.Node;
 import java.nio.ByteBuffer;
 import java.util.Comparator;
 import java.util.ServiceLoader;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -93,7 +94,7 @@ public final class Platform {
         isRunning = false;
     }
 
-    public static void startMainThread(Runnable runnable) {
+    public static void startMainThread(Supplier<Runnable> runnable) {
         GRAPHIC_PLATFORM.startMainThread(runnable);
     }
 }

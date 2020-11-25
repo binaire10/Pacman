@@ -13,6 +13,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 
 import java.nio.ByteBuffer;
+import java.util.function.Supplier;
 
 public class JavaFXPlatform implements GraphicPlatform {
     private final LayerStack<Layer> layers = new LayerStack<>();
@@ -63,13 +64,14 @@ public class JavaFXPlatform implements GraphicPlatform {
     }
 
     @Override
-    public void startMainThread(Runnable runnable) {
+    public void startMainThread(Supplier<Runnable> runnable) {
         Platform.startup(() -> {
             fr.univ_amu.game.core.Platform.initialise();
+            var main = runnable.get();
             new AnimationTimer() {
                 @Override
                 public void handle(long l) {
-                    runnable.run();
+                    main.run();
                 }
             }.start();
         });

@@ -2,6 +2,7 @@ package fr.univ_amu.game.graphic.engine;
 
 import fr.univ_amu.game.core.Layer;
 import fr.univ_amu.game.core.Platform;
+import fr.univ_amu.game.core.Sprite;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.core.loader.EngineLayer;
 import fr.univ_amu.game.event.Event;
@@ -10,14 +11,15 @@ import fr.univ_amu.game.graphic.entities.QuadEntity;
 import fr.univ_amu.game.render.RenderCommand;
 import fr.univ_amu.game.util.Utility;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ServiceLoader;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @EngineLayer
 public class GraphicEngine implements Layer {
     private static GraphicEngine instance;
-    private final List<QuadEntity> graphicEntities = new CopyOnWriteArrayList<>();
+    private final Map<Sprite, QuadEntity> graphicEntities = new HashMap<>();
     private Window window;
     private GraphicLayer layer;
 
@@ -58,7 +60,7 @@ public class GraphicEngine implements Layer {
 
     private void computeRender() {
         layer.onBegin(window);
-        layer.onRender(graphicEntities);
+        layer.onRender(new ArrayList<>(graphicEntities.values()));
         layer.onEnd();
     }
 
@@ -70,7 +72,13 @@ public class GraphicEngine implements Layer {
         window.show();
     }
 
-    public List<QuadEntity> getGraphicEntities() {
-        return graphicEntities;
+    public QuadEntity add(Class<? extends Layer> layer, Sprite sprite, float z) {
+        QuadEntity entity = new QuadEntity(layer, sprite, z);
+        graphicEntities.put(sprite, entity);
+        return entity;
+    }
+
+    public void remove(Sprite sprite) {
+        graphicEntities.remove(sprite);
     }
 }
