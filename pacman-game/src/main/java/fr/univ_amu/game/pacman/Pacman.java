@@ -9,6 +9,12 @@ public class Pacman{
     private PhysicEntity physical;
     private QuadEntity graphical;
 
+    public Pacman(PhysicEntity physical, QuadEntity graphical, int life){
+        this.physical = physical;
+        this.graphical = graphical;
+        this.life = life;
+    }
+
     public PhysicEntity getPhysical() {
         return this.physical;
     }

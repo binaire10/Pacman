@@ -8,6 +8,11 @@ public class PowerPellet{
     private PhysicEntity physical;
     private QuadEntity graphical;
 
+    public PowerPellet(PhysicEntity physical, QuadEntity graphical){
+        this.physical = physical;
+        this.graphical = graphical;
+    }
+
     public PhysicEntity getPhysical() {
         return this.physical;
     }

@@ -9,8 +9,10 @@ public class Ghost {
     private PhysicEntity physical;
     private QuadEntity graphical;
 
-    public Ghost(){
+    public Ghost(PhysicEntity physical, QuadEntity graphical){
         this.isVulnerable = false;
+        this.physical = physical;
+        this.graphical = graphical;
     }
 
     public boolean getVulnerability() {
