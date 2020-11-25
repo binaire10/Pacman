@@ -14,11 +14,11 @@ public abstract class Entity {
     }
 
     public PhysicEntity getPhysical() {
-        return physical;
+        return this.physical;
     }
 
     public QuadEntity getGraphical() {
-        return graphical;
+        return this.graphical;
     }
 
 }
