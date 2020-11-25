@@ -2,7 +2,7 @@ package fr.univ_amu.game.pacman;
 
 public class Scorer {
 
-    private long score; // Uses a long to have the same maximum number as a unsigned int, which does not exist in Java.
+    private long score; // Uses a long to have the same maximum number as an unsigned int, which does not exist in Java.
 
     public Scorer(){
         this.score = 0;
