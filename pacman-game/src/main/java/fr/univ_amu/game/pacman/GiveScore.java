@@ -1,14 +1,18 @@
 package fr.univ_amu.game.pacman;
 
-public abstract class GiveScore {
+import fr.univ_amu.game.graphic.entities.QuadEntity;
+import fr.univ_amu.game.physics.PhysicEntity;
+
+public abstract class GiveScore extends Entity{
 
     private int score;
 
-    protected GiveScore(int score){
+    protected GiveScore(int score, PhysicEntity physical, QuadEntity graphical){
+        super(physical, graphical);
         this.score = score;
     }
 
-    protected int getScore(){
+    public int getScore(){
         return this.score;
     }
 }
