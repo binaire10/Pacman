@@ -19,6 +19,14 @@ public final class VectorUtility {
         return new float[]{x, y, z, w};
     }
 
+    public static float[] make_vec2(Point2D vec) {
+        return new float[]{vec.x, vec.y};
+    }
+
+    public static float[] make_vec2(Point3D vec) {
+        return new float[]{vec.x, vec.y};
+    }
+
     public static float[] make_vec2(float[] vec) {
         float[] result = {0, 0};
         int n = Math.min(vec.length, 2);

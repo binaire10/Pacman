@@ -11,6 +11,7 @@ import fr.univ_amu.graph.Node;
 import java.nio.ByteBuffer;
 import java.util.Comparator;
 import java.util.ServiceLoader;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,12 +32,6 @@ public final class Platform {
         return Utility.iteratorToStream(new DepthIterator<>(nodes.iterator()), nodes.size()).map(ServiceLoader.Provider::get);
     }
 
-    public static void initialise() {
-        isRunning = true;
-        if (GRAPHIC_PLATFORM != null)
-            GRAPHIC_PLATFORM.getLayerStack().pushLayer(load_layers(ServiceLoader.load(Layer.class)).toArray(Layer[]::new));
-    }
-
     private static <T> int evaluate(Class<T> tClass) {
         if (tClass.isAnnotationPresent(HardwareLayer.class))
             return -3;
@@ -47,6 +42,12 @@ public final class Platform {
         if (tClass.isAnnotationPresent(UserLayer.class))
             return tClass.getAnnotation(UserLayer.class).layer();
         return Integer.MAX_VALUE;
+    }
+
+    public static void initialise() {
+        isRunning = true;
+        if (GRAPHIC_PLATFORM != null)
+            GRAPHIC_PLATFORM.getLayerStack().pushLayer(load_layers(ServiceLoader.load(Layer.class)).toArray(Layer[]::new));
     }
 
     public static Window create_window(String title, int width, int height) {
@@ -93,7 +94,7 @@ public final class Platform {
         isRunning = false;
     }
 
-    public static void startMainThread(Runnable runnable) {
+    public static void startMainThread(Supplier<Runnable> runnable) {
         GRAPHIC_PLATFORM.startMainThread(runnable);
     }
 }
