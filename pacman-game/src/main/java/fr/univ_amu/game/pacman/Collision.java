@@ -13,9 +13,14 @@ public class Collision implements CollideListener {
     private List<Ghost> enemies;
     private Pellet pellet;
 
-    public void pacmanGhost(){
-        player.decreaseLife(1);
-        for(Ghost enemy: enemies) enemy.getPhysical().getSprite().setPosition(new Point2D(0,0));
+    public void pacmanGhost(Ghost eaten, boolean Vulnerable){
+        if(Vulnerable){
+            player.increaseScore(eaten.getScore());
+        }
+        else{
+            player.decreaseLife(1);
+            for (Ghost enemy : enemies) enemy.getSprite().setPosition(new Point2D(0, 0));
+        }
     }
 
     public void pacmanPellet(){
@@ -25,16 +30,16 @@ public class Collision implements CollideListener {
     @Override
     public void collideBetween(PhysicEntity p1, Rectangle2D oldObj1, PhysicEntity p2, Rectangle2D oldObj2) {
 
-        if(p1.getSprite() == player.getPhysical().getSprite() && p2.getSprite() == pellet.getPhysical().getSprite())
+        if(p1.getSprite() == player.getSprite() && p2.getSprite() == pellet.getSprite())
             pacmanPellet();
-        else if(p2.getSprite() == pellet.getPhysical().getSprite() && p1.getSprite() == player.getPhysical().getSprite())
+        else if(p2.getSprite() == pellet.getSprite() && p1.getSprite() == player.getSprite())
             pacmanPellet();
 
         for(Ghost enemy : enemies){
-            if (p1.getSprite() == player.getPhysical().getSprite() && p2.getSprite() == enemy.getPhysical().getSprite())
-                pacmanGhost();
-            else if (p2.getSprite() == player.getPhysical().getSprite() && p1.getSprite() == enemy.getPhysical().getSprite())
-                pacmanGhost();
+            if (p1.getSprite() == player.getSprite() && p2.getSprite() == enemy.getSprite())
+                pacmanGhost(enemy, enemy.getVulnerability());
+            else if (p2.getSprite() == player.getSprite() && p1.getSprite() == enemy.getSprite())
+                pacmanGhost(enemy, enemy.getVulnerability());
         }
     }
 }

@@ -1,14 +1,13 @@
 package fr.univ_amu.game.pacman;
 
-import fr.univ_amu.game.graphic.entities.QuadEntity;
-import fr.univ_amu.game.physics.PhysicEntity;
+import fr.univ_amu.game.core.Sprite;
 
 public class Ghost extends GiveScore {
 
     private boolean isVulnerable;
 
-    public Ghost(PhysicEntity physical, QuadEntity graphical) {
-        super(500, physical, graphical);
+    public Ghost(Sprite sprite) {
+        super(500, sprite);
         this.isVulnerable = false;
     }
 

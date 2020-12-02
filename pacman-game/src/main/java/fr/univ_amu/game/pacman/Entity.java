@@ -1,24 +1,17 @@
 package fr.univ_amu.game.pacman;
 
-import fr.univ_amu.game.graphic.entities.QuadEntity;
-import fr.univ_amu.game.physics.PhysicEntity;
+
+import fr.univ_amu.game.core.Sprite;
 
 public abstract class Entity {
 
-    private PhysicEntity physical;
-    private QuadEntity graphical;
+    private Sprite sprite;
 
-    protected Entity(PhysicEntity physical, QuadEntity graphical){
-        this.physical = physical;
-        this.graphical = graphical;
+    protected Entity(Sprite sprite){
+        this.sprite = sprite;
     }
 
-    public PhysicEntity getPhysical() {
-        return this.physical;
+    public Sprite getSprite() {
+        return this.sprite;
     }
-
-    public QuadEntity getGraphical() {
-        return this.graphical;
-    }
-
 }

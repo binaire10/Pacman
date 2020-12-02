@@ -1,11 +1,10 @@
 package fr.univ_amu.game.pacman;
 
-import fr.univ_amu.game.graphic.entities.QuadEntity;
-import fr.univ_amu.game.physics.PhysicEntity;
+import fr.univ_amu.game.core.Sprite;
 
 public class PowerPellet extends GiveScore {
 
-    public PowerPellet(PhysicEntity physical, QuadEntity graphical) {
-        super(100, physical, graphical);
+    public PowerPellet(Sprite sprite) {
+        super(100, sprite);
     }
 }

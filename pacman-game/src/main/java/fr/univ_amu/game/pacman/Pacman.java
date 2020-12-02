@@ -1,15 +1,15 @@
 package fr.univ_amu.game.pacman;
 
-import fr.univ_amu.game.graphic.entities.QuadEntity;
-import fr.univ_amu.game.physics.PhysicEntity;
+
+import fr.univ_amu.game.core.Sprite;
 
 public class Pacman extends Entity{
 
     private int life;
     private Scorer score;
 
-    public Pacman(PhysicEntity physical, QuadEntity graphical, int life){
-        super(physical, graphical);
+    public Pacman(Sprite sprite, int life){
+        super(sprite);
         this.life = life;
         score = new Scorer();
     }
