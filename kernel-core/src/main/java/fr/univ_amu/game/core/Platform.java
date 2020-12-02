@@ -2,36 +2,34 @@ package fr.univ_amu.game.core;
 
 import fr.univ_amu.game.core.loader.*;
 import fr.univ_amu.game.event.Event;
-import fr.univ_amu.game.render.*;
+import fr.univ_amu.game.render.RenderCommand;
+import fr.univ_amu.game.render.Texture2D;
 import fr.univ_amu.game.util.Utility;
 import fr.univ_amu.graph.DepthIterator;
 import fr.univ_amu.graph.Node;
 
 import java.nio.ByteBuffer;
 import java.util.Comparator;
-import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class Platform {
     private static final GraphicPlatform GRAPHIC_PLATFORM = ServiceLoader.load(GraphicPlatform.class).findFirst().orElseGet(() -> null);
     private static boolean isRunning;
 
-    public static void initialise() {
-        isRunning = true;
-        if (GRAPHIC_PLATFORM != null) {
-            var nodes = ServiceLoader.load(Layer.class).stream().map(Node::new).sorted(Comparator.comparingInt(c -> evaluate(c.getValue().type()))).collect(Collectors.toList());
-            for (var node : nodes) {
-                var classt = node.getValue().type().getAnnotation(RequireLayer.class);
-                if (classt != null)
-                    for (Class<? extends Layer> require : classt.require())
-                        for (var child : nodes)
-                            if (require.isAssignableFrom(child.getValue().type()))
-                                node.add(child);
-            }
-            LayerStack stack = GRAPHIC_PLATFORM.getLayerStack();
-            stack.pushLayer(Utility.iteratorToStream(new DepthIterator<>(nodes.iterator()), nodes.size()).map(ServiceLoader.Provider::get).toArray(Layer[]::new));
+    public static <T> Stream<T> load_layers(ServiceLoader<T> service) {
+        var nodes = service.stream().map(Node::new).sorted(Comparator.comparingInt(c -> evaluate(c.getValue().type()))).collect(Collectors.toList());
+        for (var node : nodes) {
+            var classt = node.getValue().type().getAnnotation(RequireLayer.class);
+            if (classt != null)
+                for (Class<? extends Layer> require : classt.require())
+                    for (var child : nodes)
+                        if (require.isAssignableFrom(child.getValue().type()))
+                            node.add(child);
         }
+        return Utility.iteratorToStream(new DepthIterator<>(nodes.iterator()), nodes.size()).map(ServiceLoader.Provider::get);
     }
 
     private static <T> int evaluate(Class<T> tClass) {
@@ -46,24 +44,10 @@ public final class Platform {
         return Integer.MAX_VALUE;
     }
 
-    public static IndexBuffer make_index(int[] index) {
-        return GRAPHIC_PLATFORM.make_index(index);
-    }
-
-    public static VertexBuffer make_buffer(float[] data) {
-        return GRAPHIC_PLATFORM.make_buffer(data);
-    }
-
-    public static VertexBuffer make_buffer(int capacity) {
-        return GRAPHIC_PLATFORM.make_buffer(capacity);
-    }
-
-    public static VertexArray create_vertexArray() {
-        return GRAPHIC_PLATFORM.create_vertexArray();
-    }
-
-    public static Material create_material(Map<ShaderType, String> shader) {
-        return GRAPHIC_PLATFORM.create_material(shader);
+    public static void initialise() {
+        isRunning = true;
+        if (GRAPHIC_PLATFORM != null)
+            GRAPHIC_PLATFORM.getLayerStack().pushLayer(load_layers(ServiceLoader.load(Layer.class)).toArray(Layer[]::new));
     }
 
     public static Window create_window(String title, int width, int height) {
@@ -90,7 +74,7 @@ public final class Platform {
         GRAPHIC_PLATFORM.clear();
     }
 
-    public static LayerStack getLayerStack() {
+    public static LayerStack<Layer> getLayerStack() {
         return GRAPHIC_PLATFORM.getLayerStack();
     }
 
@@ -108,5 +92,9 @@ public final class Platform {
 
     public static void shutdown() {
         isRunning = false;
+    }
+
+    public static void startMainThread(Supplier<Runnable> runnable) {
+        GRAPHIC_PLATFORM.startMainThread(runnable);
     }
 }

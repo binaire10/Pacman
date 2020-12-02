@@ -3,18 +3,20 @@ package fr.univ_amu.game.run;
 import fr.univ_amu.game.core.Layer;
 import fr.univ_amu.game.core.Platform;
 
-public class Main {
+public class Main implements Runnable {
+    private double start = System.currentTimeMillis();
+
     public static void main(String[] arg) {
-        Platform.initialise();
-        double start = System.currentTimeMillis();
-        while (Platform.isRunning()) {
-            final double current = System.currentTimeMillis();
-            final double delta = current - start;
-            start = current;
-            Platform.getLayerStack().iterator().forEachRemaining(Layer::beforeUpdate);
-            Platform.getLayerStack().iterator().forEachRemaining(layer -> layer.onUpdate(delta));
-            Platform.getLayerStack().reverseIterator().forEachRemaining(Layer::afterUpdate);
-        }
-        Platform.clear();
+        Platform.startMainThread(Main::new);
+    }
+
+    @Override
+    public void run() {
+        final double current = System.currentTimeMillis();
+        final double delta = (current - start) / 1000;
+        start = current;
+        Platform.getLayerStack().iterator().forEachRemaining(Layer::beforeUpdate);
+        Platform.getLayerStack().iterator().forEachRemaining(layer -> layer.onUpdate(delta));
+        Platform.getLayerStack().reverseIterator().forEachRemaining(Layer::afterUpdate);
     }
 }

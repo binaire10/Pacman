@@ -2,38 +2,38 @@ package fr.univ_amu.game.core;
 
 import fr.univ_amu.game.util.ReverseListIterator;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public class LayerStack implements Iterable<Layer> {
-    private final List<Layer> stack = new ArrayList<>();
+public class LayerStack<T extends Layer> implements Iterable<T> {
+    private final List<T> stack = new CopyOnWriteArrayList<>();
     private int layerCount = 0;
 
-    public void pushLayer(Layer layer) {
+    public void pushLayer(T layer) {
         stack.add(layerCount++, layer);
         layer.onAttach();
     }
 
-    public void pushLayer(Layer... layers) {
+    public void pushLayer(T... layers) {
         stack.addAll(layerCount, List.of(layers));
         layerCount += layers.length;
         for (Layer layer : layers)
             layer.onAttach();
     }
 
-    public void pushOverlay(Layer overlay) {
+    public void pushOverlay(T overlay) {
         stack.add(overlay);
         overlay.onAttach();
     }
 
-    public void pushOverlay(Layer... overlays) {
+    public void pushOverlay(T... overlays) {
         stack.addAll(List.of(overlays));
         for (Layer overlay : overlays)
             overlay.onAttach();
     }
 
-    public void popOverlay(Layer overlay) {
+    public void popOverlay(T overlay) {
         int index = stack.lastIndexOf(overlay);
         if (index < layerCount || index == -1)
             return;
@@ -41,7 +41,7 @@ public class LayerStack implements Iterable<Layer> {
         overlay.onDetach();
     }
 
-    public void popLayer(Layer layer) {
+    public void popLayer(T layer) {
         int index = stack.indexOf(layer);
         if (index >= layerCount || index == -1)
             return;
@@ -58,11 +58,11 @@ public class LayerStack implements Iterable<Layer> {
     }
 
     @Override
-    public Iterator<Layer> iterator() {
+    public Iterator<T> iterator() {
         return stack.iterator();
     }
 
-    public Iterator<Layer> reverseIterator() {
+    public Iterator<T> reverseIterator() {
         return new ReverseListIterator<>(stack);
     }
 }

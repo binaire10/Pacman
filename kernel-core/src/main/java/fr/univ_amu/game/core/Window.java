@@ -9,7 +9,7 @@ public interface Window {
 
     void swap();
 
-    void make_current();
+    void make_context();
 
     void show();
 

@@ -5,6 +5,8 @@ import fr.univ_amu.game.event.Event;
 public interface Layer {
     void onAttach();
 
+    void onDetach();
+
     default void beforeUpdate() {
     }
 
@@ -15,5 +17,4 @@ public interface Layer {
 
     void onEvent(Event e);
 
-    void onDetach();
 }
