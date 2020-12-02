@@ -14,8 +14,8 @@ public class Collision implements CollideListener {
     private Pellet pellet;
     private PowerPellet power;
 
-    public void pacmanGhost(Ghost eaten, boolean Vulnerable){
-        if(Vulnerable){
+    public void pacmanGhost(Ghost eaten){
+        if(eaten.getVulnerability()){
             player.increaseScore(eaten.getScore());
             eaten.unsetVulnerability();
         }
@@ -49,9 +49,9 @@ public class Collision implements CollideListener {
 
         for(Ghost enemy : enemies){
             if (p1.getSprite() == player.getSprite() && p2.getSprite() == enemy.getSprite())
-                pacmanGhost(enemy, enemy.getVulnerability());
+                pacmanGhost(enemy);
             else if (p2.getSprite() == player.getSprite() && p1.getSprite() == enemy.getSprite())
-                pacmanGhost(enemy, enemy.getVulnerability());
+                pacmanGhost(enemy);
         }
     }
 }
