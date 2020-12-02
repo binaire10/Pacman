@@ -11,6 +11,10 @@ public class Ghost extends GiveScore {
         this.isVulnerable = false;
     }
 
+    public void setVulnerability(){this.isVulnerable = true;}
+
+    public void unsetVulnerability(){this.isVulnerable = false;}
+
     public boolean getVulnerability() {
         return this.isVulnerable;
     }
