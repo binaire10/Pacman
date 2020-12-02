@@ -2,6 +2,9 @@ package fr.univ_amu.game.math;
 
 import java.util.Objects;
 
+/**
+ * Classe nous fournissant des vecteur 2D(point) et different outil pour les manipuler entre eux
+ */
 public class Point2D {
     public static final Point2D ZERO = new Point2D(0, 0);
     public final float x;

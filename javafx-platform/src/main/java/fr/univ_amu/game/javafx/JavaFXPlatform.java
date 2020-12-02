@@ -15,6 +15,9 @@ import javafx.application.Platform;
 import java.nio.ByteBuffer;
 import java.util.function.Supplier;
 
+/**
+ * Classe initialisant et reunissant nos differentes classe nous permettant de créer l'abstraction lié à JavaFX
+ */
 public class JavaFXPlatform implements GraphicPlatform {
     private final LayerStack<Layer> layers = new LayerStack<>();
     private final JavaFXRenderCommand renderCommand = new JavaFXRenderCommand();

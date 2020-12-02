@@ -6,6 +6,9 @@ import fr.univ_amu.game.math.Point2D;
 import fr.univ_amu.game.math.Rectangle2D;
 import fr.univ_amu.game.render.Texture2D;
 
+/**
+ * Un sprite est un objet jeu,reunissant sa position,sa texture et sa vitesse.
+ */
 public class Sprite {
     private final ObjectProperty<Point2D> position;
     private final ObjectProperty<Rectangle2D> shape;

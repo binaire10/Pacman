@@ -4,6 +4,9 @@ import fr.univ_amu.game.javafx.JavaFxWindow;
 import fr.univ_amu.game.render.RenderCommand;
 import javafx.scene.paint.Color;
 
+/**
+ * Commande basique pour les rendus à l'écran créant une couche de genericité au pres du moteur de jeu
+ */
 public class JavaFXRenderCommand implements RenderCommand {
     private JavaFxWindow fxWindow;
 

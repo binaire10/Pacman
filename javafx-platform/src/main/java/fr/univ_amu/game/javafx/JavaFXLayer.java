@@ -22,6 +22,9 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Classe permettant l'abstraction entre JavaFX et le moteur jeu
+ */
 @HardwareLayer
 public class JavaFXLayer implements GraphicLayer {
     Group render;
@@ -39,6 +42,11 @@ public class JavaFXLayer implements GraphicLayer {
     public void onDetach() {
     }
 
+    /**
+     * Fonction initalisant la fenetre d'un point de vue JavaFX,le moteur jeu lui utilisera une version abstraite qui fera appel a cette fonction
+     * en faisant appel à la @class JavaFxWindow
+     * @param surface
+     */
     @Override
     public void onBegin(Window surface) {
         var win = (JavaFxWindow) surface;
@@ -52,6 +60,10 @@ public class JavaFXLayer implements GraphicLayer {
         height = surface.getHeight();
     }
 
+    /**
+     * Transforme les primitive de notre moteur graphique en primitive JavaFX
+     * @param graphicEntity
+     */
     @Override
     public void onRender(Collection<QuadEntity> graphicEntity) {
         children = new ArrayList<>(graphicEntity.size());

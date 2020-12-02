@@ -77,8 +77,8 @@ public class ExampleLayer implements Layer {
         float t = (float) timestep;
         player.setPosition(
                 player.getPosition().sum(new Point2D(
-                        ((inst.Keys.get(KeyCode.Right) ? 1 : 0) - (inst.Keys.get(KeyCode.Left) ? 1 : 0)) * t,
-                        ((inst.Keys.get(KeyCode.Up) ? 1 : 0) - (inst.Keys.get(KeyCode.Down) ? 1 : 0)) * t
+                        ((inst.getKeys().get(KeyCode.Right) ? 1 : 0) - (inst.getKeys().get(KeyCode.Left) ? 1 : 0)) * t,
+                        ((inst.getKeys().get(KeyCode.Up) ? 1 : 0) - (inst.getKeys().get(KeyCode.Down) ? 1 : 0)) * t
                 ))
         );
 
