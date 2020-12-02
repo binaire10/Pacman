@@ -8,7 +8,7 @@ import fr.univ_amu.game.math.Rectangle2D;
 public class PowerPellet extends GiveScore {
 
     private static Sprite createSprite(Point2D p){
-        return new Sprite(new Rectangle2D(p, 0.75f,0.75f), Color.WHITE);
+        return new Sprite(new Rectangle2D(p, 0.5f,0.5f), Color.WHITE);
     }
 
     public PowerPellet(Point2D p) {

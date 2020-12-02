@@ -12,7 +12,7 @@ public class Pacman extends Entity{
     private Scorer score;
 
     private static Sprite createSprite(Point2D p){
-        return new Sprite(new Rectangle2D(p, 1,1), Color.YELLOW);
+        return new Sprite(new Rectangle2D(p, 0.25f,0.25f), Color.YELLOW);
     }
 
     public Pacman(int life, Point2D p){

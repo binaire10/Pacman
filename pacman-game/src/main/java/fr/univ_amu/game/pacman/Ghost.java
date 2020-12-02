@@ -10,7 +10,7 @@ public class Ghost extends GiveScore {
     private boolean isVulnerable;
 
     private static Sprite createSprite(Point2D p, float[] color){
-        return new Sprite(new Rectangle2D(p, 1,1), color);
+        return new Sprite(new Rectangle2D(p, 0.25f,0.25f), color);
     }
 
     public Ghost(float[] color, Point2D p) {
