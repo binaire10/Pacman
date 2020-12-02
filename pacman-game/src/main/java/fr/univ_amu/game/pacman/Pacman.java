@@ -6,14 +6,20 @@ import fr.univ_amu.game.physics.PhysicEntity;
 public class Pacman extends Entity{
 
     private int life;
+    private Scorer score;
 
     public Pacman(PhysicEntity physical, QuadEntity graphical, int life){
         super(physical, graphical);
         this.life = life;
+        score = new Scorer();
     }
 
     public int getLife(){
         return this.life;
+    }
+
+    public void increaseScore(long amount){
+        this.score.addScore(amount);
     }
 
     public void decreaseLife(int amountToDecrease){
