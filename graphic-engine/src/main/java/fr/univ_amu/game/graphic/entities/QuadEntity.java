@@ -13,6 +13,10 @@ import fr.univ_amu.game.render.Texture2D;
 
 import java.util.Arrays;
 
+/**
+ * Classe gérant nos primitive graphique, sous forme rectangulaire sur laquelle nous pouvons appliqué des textures tel que des images ou des couleurs
+ */
+
 public class QuadEntity {
     private final Sprite sprite;
     private final ObjectProperty<float[]> color;
@@ -24,7 +28,13 @@ public class QuadEntity {
     private final ChangeValueListener<float[]> colorListener;
     private final ChangeValueListener<Rectangle2D> sizeListener;
     private final ChangeValueListener<Point2D> positionListener;
-
+    /**
+     * Constructeur créant une entité graphique,sous forme rectangulaire
+     * @param source Couche intermédiare possedant des sprites aidant la synchronisation si multi threading utilisé
+     * @param sprite Image/Couleur associé au rectangle
+     * @param z Profondeur de l'affichage(comprise entre -1 et 1) -1 étant le plus proche de l'utilisateur
+     * @return
+     */
     public QuadEntity(Class<? extends Layer> source, Sprite sprite, float z) {
         this.sprite = sprite;
         this.color = new ObjectProperty<>();
@@ -38,6 +48,13 @@ public class QuadEntity {
         this.sizeListener = Binding.bind(source, sprite.getShapeProperty(), GraphicEngine.class, size, s -> new Point2D(s.width, s.heigth));
     }
 
+    /**
+     * Constructeur créant une entité graphique à un point donnée,d'une taille donnée avec la texture de notre choix
+     * @param position
+     * @param size
+     * @param color
+     * @param texture
+     */
     public QuadEntity(Point3D position, Point2D size, float[] color, Texture2D texture) {
         this.sprite = null;
         this.color = new ObjectProperty<>(color);

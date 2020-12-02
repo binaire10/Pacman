@@ -2,6 +2,9 @@ package fr.univ_amu.game.graphic.camera;
 
 import fr.univ_amu.game.math.MatrixUtility;
 
+/**
+ * Classe gérant la caméra,caméra orthonommé et avec l'origine au centre de l'écran
+ */
 public class OrthographicCamera implements Camera {
     private final float[] position = {0, 0, 0};
     private float angle = 0;
