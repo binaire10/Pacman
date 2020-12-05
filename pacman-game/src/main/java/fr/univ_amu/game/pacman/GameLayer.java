@@ -1,5 +1,7 @@
 package fr.univ_amu.game.pacman;
 
+import fr.univ_amu.game.IO.Input;
+import fr.univ_amu.game.core.KeyCode;
 import fr.univ_amu.game.core.Layer;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.graphic.Color;
@@ -61,7 +63,14 @@ public class GameLayer implements Layer {
 
     @Override
     public void onUpdate(double timestep) {
-
+        Input inst = Input.getInstance();
+        float t = (float) timestep;
+        player.getSprite().setPosition(
+                player.getSprite().getPosition().sum(new Point2D(
+                        ((inst.Keys.get(KeyCode.Right) ? 1 : 0) - (inst.Keys.get(KeyCode.Left) ? 1 : 0)) * t,
+                        ((inst.Keys.get(KeyCode.Up) ? 1 : 0) - (inst.Keys.get(KeyCode.Down) ? 1 : 0)) * t
+                ))
+        );
     }
 
     @Override
