@@ -15,6 +15,11 @@ public class Collision implements CollideListener {
     private PowerPellet power;
     private Wall wall;
 
+    public Collision(Pacman player, List<Ghost> enemies){
+        this.player = player;
+        this.enemies = enemies;
+    }
+
     public void pacmanGhost(Ghost eaten){
         if(eaten.getVulnerability()){
             player.increaseScore(eaten.getScore());

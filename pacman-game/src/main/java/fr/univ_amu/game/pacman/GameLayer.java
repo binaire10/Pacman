@@ -18,6 +18,7 @@ public class GameLayer implements Layer {
     private List<Wall> walls;
     private List<Pellet> pellet;
     private List<PowerPellet> power;
+    private Collision collisions;
 
     @Override
     public void onAttach() {
@@ -54,6 +55,7 @@ public class GameLayer implements Layer {
         for(Wall wall:walls){
             GraphicEngine.getEngine().add(GameLayer.class, wall.getSprite(), -0.75f);
         }
+        this.collisions = new Collision(this.player, this.enemies);
     }
 
     @Override
@@ -71,6 +73,11 @@ public class GameLayer implements Layer {
                         ((inst.Keys.get(KeyCode.Up) ? 1 : 0) - (inst.Keys.get(KeyCode.Down) ? 1 : 0)) * t
                 ))
         );
+    }
+
+    @Override
+    public void afterUpdate() {
+        //this.collisions.collideBetween();
     }
 
     @Override
