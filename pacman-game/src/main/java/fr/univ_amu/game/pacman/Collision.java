@@ -22,7 +22,7 @@ public class Collision implements CollideListener {
         }
         else{
             player.decreaseLife(1);
-            for (Ghost enemy : enemies) enemy.getSprite().setPosition(new Point2D(0, 0));
+            for (Ghost enemy : enemies) enemy.getSprite().setPosition(new Point2D(-0.125f, -0.125f));
         }
     }
 
