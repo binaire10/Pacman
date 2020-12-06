@@ -2,6 +2,9 @@ package fr.univ_amu.game.math;
 
 import java.util.Objects;
 
+/**
+ * Classe nous fournissant des vecteur 3 dimension(point 3d) ainsi que des outils pour les manipuler
+ */
 public class Point3D {
     public static final Point3D ZERO = new Point3D(0, 0, 0);
     public final float x;

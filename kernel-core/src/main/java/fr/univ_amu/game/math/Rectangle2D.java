@@ -2,6 +2,9 @@ package fr.univ_amu.game.math;
 
 import java.util.Objects;
 
+/**
+ * Classe fournissant notre forme primitve du moteur graphique ainsi que different outils pour nous aider à les gerer
+ */
 public class Rectangle2D implements Shape2D {
     public final Point2D p1;
     public final Point2D p2;

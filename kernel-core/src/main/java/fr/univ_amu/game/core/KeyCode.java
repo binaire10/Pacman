@@ -1,5 +1,8 @@
 package fr.univ_amu.game.core;
 
+/**
+ * Liste de nos touches lié à des KeyCode,nous permettant des les differencier plus tard
+ */
 public enum KeyCode {
     Space,
     Apostrophe, /* ' */

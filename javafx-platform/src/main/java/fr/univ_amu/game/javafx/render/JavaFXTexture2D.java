@@ -10,6 +10,9 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+/**
+ * Classe gérant les textures utilisées par le moteur graphique
+ */
 public class JavaFXTexture2D implements Texture2D {
     private int width, height;
     private Image image;
@@ -42,6 +45,10 @@ public class JavaFXTexture2D implements Texture2D {
         return (int) image.getHeight();
     }
 
+    /**
+     * Change les pixels un à un d'une image pour les pixels du buffer passé en parametre
+     * @param pixels Tableau de float représentant les pixels
+     */
     @Override
     public void setPixels(ByteBuffer pixels) {
         byte[] pixel = new byte[4];
