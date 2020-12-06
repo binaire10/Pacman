@@ -67,6 +67,12 @@ public class PhysicLayer implements Layer {
 
     }
 
+    /**
+     * Ajoute une entité physique avec un sprite à un Layer passé en parametre
+     * @param source
+     * @param sprite Entité graphique
+     * @return
+     */
     public PhysicEntity add(Class<? extends Layer> source, Sprite sprite) {
         PhysicMoveEntity entity = new PhysicMoveEntity(source, sprite);
         physicEntities.put(sprite, entity);

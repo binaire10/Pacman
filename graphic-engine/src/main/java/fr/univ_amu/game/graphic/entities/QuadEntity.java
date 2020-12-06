@@ -50,10 +50,10 @@ public class QuadEntity {
 
     /**
      * Constructeur créant une entité graphique à un point donnée,d'une taille donnée avec la texture de notre choix
-     * @param position
-     * @param size
-     * @param color
-     * @param texture
+     * @param position Point 3D x,y profondeur(comprise entre -1 et 1)
+     * @param size Point 2D
+     * @param color Float[4] RGB transparence
+     * @param texture Entité graphique
      */
     public QuadEntity(Point3D position, Point2D size, float[] color, Texture2D texture) {
         this.sprite = null;

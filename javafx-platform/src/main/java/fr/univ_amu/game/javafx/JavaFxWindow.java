@@ -22,6 +22,12 @@ public class JavaFxWindow implements Window {
     private final Scene scene;
     Group canvas;
 
+    /**
+     *  Constructeur créant notre fenetre JavaFX
+     * @param title Titre de la fenetre
+     * @param width largeur
+     * @param height hauteur
+     */
     public JavaFxWindow(String title, int width, int height) {
         canvas = new Group();
         stage = new Stage();

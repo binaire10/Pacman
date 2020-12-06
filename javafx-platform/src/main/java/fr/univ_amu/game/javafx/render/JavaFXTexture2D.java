@@ -47,7 +47,7 @@ public class JavaFXTexture2D implements Texture2D {
 
     /**
      * Change les pixels un à un d'une image pour les pixels du buffer passé en parametre
-     * @param pixels
+     * @param pixels Tableau de float représentant les pixels
      */
     @Override
     public void setPixels(ByteBuffer pixels) {
