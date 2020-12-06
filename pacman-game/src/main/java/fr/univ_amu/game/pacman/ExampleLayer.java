@@ -81,7 +81,6 @@ public class ExampleLayer implements Layer {
                         ((inst.getKeys().get(KeyCode.Up) ? 1 : 0) - (inst.getKeys().get(KeyCode.Down) ? 1 : 0)) * t
                 ))
         );
-
     }
 
     @Override
