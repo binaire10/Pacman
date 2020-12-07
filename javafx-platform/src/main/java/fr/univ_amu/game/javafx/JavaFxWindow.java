@@ -13,11 +13,21 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * Gestion et création de la fenetre javaFX
+ * d'un point de vue graphique ou evenementiel
+ */
 public class JavaFxWindow implements Window {
     private final Stage stage;
     private final Scene scene;
     Group canvas;
 
+    /**
+     *  Constructeur créant notre fenetre JavaFX
+     * @param title Titre de la fenetre
+     * @param width largeur
+     * @param height hauteur
+     */
     public JavaFxWindow(String title, int width, int height) {
         canvas = new Group();
         stage = new Stage();

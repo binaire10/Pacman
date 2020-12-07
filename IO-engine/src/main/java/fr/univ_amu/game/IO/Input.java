@@ -11,32 +11,37 @@ import fr.univ_amu.game.util.Utility;
 import java.util.HashMap;
 
 @EngineLayer
-
+/**
+ * Classe gérant les inputs de maniere générique
+ */
 public class Input implements  Layer {
 
-    private static Input instance;
+    private static Input instance; /**< Instance est utilisé pour pouvoir fournir cette classe au autre moteur sans créer de nouvel objet */
 
-
-
-    public HashMap<KeyCode,Boolean> Keys;
-
+    private HashMap<KeyCode,Boolean> Keys;/**< Hashmap liant les keycodes present dans @class KeyCode représentant des touches à des boolean donnant
+      leur état True pour pressé et False pour non pressé */
 
     public static Input getInstance() {
         return instance;
     }
 
-
+    /**
+     * Simple getter retournant la hashmap des touches pressé
+     * @return
+     */
     public HashMap<KeyCode, Boolean> getKeys() {
         return Keys;
     }
 
+    /**
+     * initialise la Hashmap
+     */
     @Override
     public void onAttach() {
         Keys = new HashMap<>();
         for(KeyCode key : KeyCode.values()){
             Keys.put(key,false);
         }
-        System.out.println("Chargement input?");
         instance = this;
     }
 
@@ -60,11 +65,15 @@ public class Input implements  Layer {
 
     }
 
+    /**
+     * Lorsque un évenement clavier est detecté,la hashmap est mise à jour en fonction du type d'evenement (presser/relacher)
+     * et de la touche à l'origine de cet evenement.
+     * @param e
+     */
     @Override
     public void onEvent(Event e) {
         Utility.dispatch(e, KeyPressedEvent.class, k->{
             Keys.put(k.keyCode,true);
-            System.out.println(k.keyCode);
         });
         Utility.dispatch(e, KeyReleasedEvent.class,k->{
             Keys.put(k.keyCode,false);

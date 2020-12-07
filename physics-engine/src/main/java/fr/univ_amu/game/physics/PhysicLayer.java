@@ -12,12 +12,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Moteur physique gérant les collisions
+ */
 @EngineLayer
 public class PhysicLayer implements Layer {
 
     private static PhysicLayer engine;
-    private final List<CollideListener> collideListeners = new ArrayList<>();
-    private Map<Sprite, PhysicEntity> physicEntities;
+    private final List<CollideListener> collideListeners = new ArrayList<>();/**< Liste des entités physique existante à un moment T */
+    private Map<Sprite, PhysicEntity> physicEntities; /**< Map regroupant les entités physique lié à leur sprite(entité graphique le représentant */
 
     public static PhysicLayer getEngine() {
         return engine;
@@ -34,6 +37,11 @@ public class PhysicLayer implements Layer {
 
     }
 
+    /**
+     * A chaque mise à jour de l'écran,nous parcourons toutes nos entites physique et vérifions si il y a collision entre elle si oui alors
+     * nous sommes notifié de cette collision par notifyCollide
+     * @param timestep
+     */
     @Override
     public void onUpdate(double timestep) {
         List<PhysicEntity> entities = new ArrayList<>(physicEntities.values());
@@ -59,6 +67,12 @@ public class PhysicLayer implements Layer {
 
     }
 
+    /**
+     * Ajoute une entité physique avec un sprite à un Layer passé en parametre
+     * @param source
+     * @param sprite Entité graphique
+     * @return
+     */
     public PhysicEntity add(Class<? extends Layer> source, Sprite sprite) {
         PhysicMoveEntity entity = new PhysicMoveEntity(source, sprite);
         physicEntities.put(sprite, entity);
