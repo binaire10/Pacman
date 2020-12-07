@@ -6,26 +6,23 @@ import fr.univ_amu.game.graphic.Color;
 import fr.univ_amu.game.math.Point2D;
 import fr.univ_amu.game.math.Rectangle2D;
 
-public class Pacman extends Entity{
+public class Pacman extends Sprite {
 
     private int life;
-    private Scorer score;
+    private final Scorer score;
 
-    private static Sprite createSprite(Point2D p){
-        return new Sprite(new Rectangle2D(p, 0.25f,0.25f), Color.YELLOW);
-    }
-
-    public Pacman(int life, Point2D p){
-        super(Pacman.createSprite(p));
+    public Pacman(int life, Point2D p, float size) {
+        super(new Rectangle2D(new Point2D(0, 0), new Point2D(size, size)), Color.YELLOW);
+        setPosition(p);
         this.life = life;
         score = new Scorer();
     }
 
-    public int getLife(){
+    public int getLife() {
         return this.life;
     }
 
-    public void increaseScore(long amount){
+    public void increaseScore(long amount) {
         this.score.addScore(amount);
     }
 

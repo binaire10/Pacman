@@ -1,26 +1,24 @@
 package fr.univ_amu.game.pacman;
 
-import fr.univ_amu.game.core.Sprite;
-import fr.univ_amu.game.graphic.Color;
 import fr.univ_amu.game.math.Point2D;
 import fr.univ_amu.game.math.Rectangle2D;
 
 public class Ghost extends GiveScore {
-
     private boolean isVulnerable;
 
-    private static Sprite createSprite(Point2D p, float[] color){
-        return new Sprite(new Rectangle2D(p, 0.25f,0.25f), color);
-    }
-
-    public Ghost(float[] color, Point2D p) {
-        super(500, Ghost.createSprite(p, color));
+    public Ghost(float[] color, Point2D p, float size) {
+        super(new Rectangle2D(new Point2D(0, 0), new Point2D(size, size)), color, 500);
+        setPosition(p);
         this.isVulnerable = false;
     }
 
-    public void setVulnerability(){this.isVulnerable = true;}
+    public void setVulnerability() {
+        this.isVulnerable = true;
+    }
 
-    public void unsetVulnerability(){this.isVulnerable = false;}
+    public void unsetVulnerability() {
+        this.isVulnerable = false;
+    }
 
     public boolean getVulnerability() {
         return this.isVulnerable;

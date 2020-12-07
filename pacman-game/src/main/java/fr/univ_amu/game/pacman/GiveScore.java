@@ -2,17 +2,24 @@ package fr.univ_amu.game.pacman;
 
 
 import fr.univ_amu.game.core.Sprite;
+import fr.univ_amu.game.math.Rectangle2D;
+import fr.univ_amu.game.render.Texture2D;
 
-public abstract class GiveScore extends Entity{
+public abstract class GiveScore extends Sprite {
 
-    private int score;
+    private final int score;
 
-    protected GiveScore(int score, Sprite sprite){
-        super(sprite);
+    public GiveScore(Rectangle2D shape, Texture2D texture, int score) {
+        super(shape, texture);
         this.score = score;
     }
 
-    public int getScore(){
+    public GiveScore(Rectangle2D shape, float[] color, int score) {
+        super(shape, color);
+        this.score = score;
+    }
+
+    public int getScore() {
         return this.score;
     }
 }
