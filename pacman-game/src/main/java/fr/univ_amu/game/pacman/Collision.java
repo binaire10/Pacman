@@ -49,6 +49,16 @@ public class Collision implements CollideListener {
             PhysicLayer.getEngine().remove(p1.getSprite());
         }
 
+        if (p1.getSprite() instanceof SuperPacman && p2.getSprite() instanceof Pellet) {
+            ((SuperPacman) p1.getSprite()).getPacman().increaseScore(((Pellet) p2.getSprite()).getScore());
+            GraphicEngine.getEngine().remove(p2.getSprite());
+            PhysicLayer.getEngine().remove(p2.getSprite());
+        } else if (p2.getSprite() instanceof SuperPacman && p1.getSprite() instanceof Pellet) {
+            ((SuperPacman) p2.getSprite()).getPacman().increaseScore(((Pellet) p1.getSprite()).getScore());
+            GraphicEngine.getEngine().remove(p1.getSprite());
+            PhysicLayer.getEngine().remove(p1.getSprite());
+        }
+
         if (p1.getSprite() instanceof Pacman && p2.getSprite() instanceof PowerPellet) {
             ((Pacman) p1.getSprite()).increaseScore(((PowerPellet) p2.getSprite()).getScore());
             GraphicEngine.getEngine().remove(p2.getSprite());
