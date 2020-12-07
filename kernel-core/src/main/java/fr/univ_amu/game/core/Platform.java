@@ -92,6 +92,7 @@ public final class Platform {
 
     public static void shutdown() {
         isRunning = false;
+        GRAPHIC_PLATFORM.shutdown();
     }
 
     public static void startMainThread(Supplier<Runnable> runnable) {

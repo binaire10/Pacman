@@ -25,4 +25,6 @@ public interface GraphicPlatform {
     Texture2D make_texture(int w, int h);
 
     void startMainThread(Supplier<Runnable> runnable);
+
+    void shutdown();
 }
