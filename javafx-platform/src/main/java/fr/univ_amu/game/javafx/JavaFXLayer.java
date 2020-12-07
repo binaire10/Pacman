@@ -3,6 +3,7 @@ package fr.univ_amu.game.javafx;
 import fr.univ_amu.game.core.Platform;
 import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.core.loader.HardwareLayer;
+import fr.univ_amu.game.graphic.camera.Camera;
 import fr.univ_amu.game.graphic.camera.OrthographicCamera;
 import fr.univ_amu.game.graphic.engine.GraphicLayer;
 import fr.univ_amu.game.graphic.entities.QuadEntity;
@@ -28,7 +29,7 @@ import java.util.List;
 @HardwareLayer
 public class JavaFXLayer implements GraphicLayer {
     Group render;
-    private OrthographicCamera camera;
+    private Camera camera;
     private float width;
     private float height;
     private List<Node> children;
@@ -54,8 +55,10 @@ public class JavaFXLayer implements GraphicLayer {
 //        context = win.getContext();
 //        ((JavaFXRenderCommand) Platform.getRenderCommand()).setFxWindow(win);
         Platform.getRenderCommand().clear();
-        float ratio = (float) surface.getWidth() / surface.getHeight();
-        camera.setRatio(ratio);
+        if (camera instanceof OrthographicCamera) {
+            float ratio = (float) surface.getWidth() / surface.getHeight();
+            ((OrthographicCamera) camera).setRatio(ratio);
+        }
         width = surface.getWidth();
         height = surface.getHeight();
     }
@@ -64,6 +67,11 @@ public class JavaFXLayer implements GraphicLayer {
      * Transforme les primitive de notre moteur graphique en primitive JavaFX
      * @param graphicEntity
      */
+    @Override
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
+
     @Override
     public void onRender(Collection<QuadEntity> graphicEntity) {
         children = new ArrayList<>(graphicEntity.size());

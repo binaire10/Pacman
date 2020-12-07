@@ -79,4 +79,9 @@ public class JavaFXPlatform implements GraphicPlatform {
             }.start();
         });
     }
+
+    @Override
+    public void shutdown() {
+        Platform.exit();
+    }
 }

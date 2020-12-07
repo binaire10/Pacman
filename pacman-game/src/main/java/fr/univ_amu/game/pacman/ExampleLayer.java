@@ -29,7 +29,7 @@ public class ExampleLayer implements Layer {
 
     @Override
     public void onAttach() {
-        System.out.println("Run ExampleLayer");
+        /*System.out.println("Run ExampleLayer");
         try {
             texture2D = Platform.load_texture(Utility.readFile(ExampleLayer.class.getResource("Checkerboard.png")));
         } catch (URISyntaxException | IOException e) {
@@ -68,19 +68,12 @@ public class ExampleLayer implements Layer {
         });
 
         GraphicEngine.getEngine().add(ExampleLayer.class, sprite1, 0.1f);
-        GraphicEngine.getEngine().add(ExampleLayer.class, sprite2, 0.1f);
+        GraphicEngine.getEngine().add(ExampleLayer.class, sprite2, 0.1f);*/
+        Platform.getLayerStack().pushOverlay(new GameLayer());
     }
 
     @Override
     public void onUpdate(double timestep) {
-        Input inst = Input.getInstance();
-        float t = (float) timestep;
-        player.setPosition(
-                player.getPosition().sum(new Point2D(
-                        ((inst.getKeys().get(KeyCode.Right) ? 1 : 0) - (inst.getKeys().get(KeyCode.Left) ? 1 : 0)) * t,
-                        ((inst.getKeys().get(KeyCode.Up) ? 1 : 0) - (inst.getKeys().get(KeyCode.Down) ? 1 : 0)) * t
-                ))
-        );
     }
 
     @Override
