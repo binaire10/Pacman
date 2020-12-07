@@ -7,6 +7,7 @@ import fr.univ_amu.game.core.Window;
 import fr.univ_amu.game.core.loader.EngineLayer;
 import fr.univ_amu.game.event.Event;
 import fr.univ_amu.game.event.application.WindowResizeEvent;
+import fr.univ_amu.game.graphic.camera.Camera;
 import fr.univ_amu.game.graphic.entities.QuadEntity;
 import fr.univ_amu.game.render.RenderCommand;
 import fr.univ_amu.game.util.Utility;
@@ -79,6 +80,12 @@ public class GraphicEngine implements Layer {
     }
 
     public void remove(Sprite sprite) {
-        graphicEntities.remove(sprite).unbind();
+        var r = graphicEntities.remove(sprite);
+        if (r != null)
+            r.unbind();
+    }
+
+    public void setCamera(Camera camera) {
+        layer.setCamera(camera);
     }
 }
