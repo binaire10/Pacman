@@ -68,7 +68,7 @@ public class Collision implements CollideListener {
             PhysicLayer.getEngine().remove(player);
 
             SuperPacman superPacman = new SuperPacman(player);
-            GraphicEngine.getEngine().add(GameLayer.class, superPacman, -0.75f);
+            GraphicEngine.getEngine().add(GameLayer.class, superPacman, -1f);
             PhysicLayer.getEngine().add(GameLayer.class, superPacman);
         } else if (p2.getSprite() instanceof Pacman && p1.getSprite() instanceof PowerPellet) {
             ((Pacman) p2.getSprite()).increaseScore(((PowerPellet) p1.getSprite()).getScore());
@@ -78,7 +78,7 @@ public class Collision implements CollideListener {
             PhysicLayer.getEngine().remove(player);
 
             SuperPacman superPacman = new SuperPacman(player);
-            GraphicEngine.getEngine().add(GameLayer.class, superPacman, -0.75f);
+            GraphicEngine.getEngine().add(GameLayer.class, superPacman, -1f);
             PhysicLayer.getEngine().add(GameLayer.class, superPacman);
         }
 
