@@ -13,6 +13,7 @@ public class SuperPacman extends Sprite {
         super(new Rectangle2D(Point2D.ZERO, Point2D.ZERO), Color.RED);
         this.pacman = pacman;
         Binding.bindBidirectional(null, pacman.getShapeProperty(), null, getShapeProperty());
+        Binding.bindBidirectional(null, pacman.getSpeedProperty(), null, getSpeedProperty());
     }
 
     public Pacman getPacman() {

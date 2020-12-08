@@ -26,8 +26,7 @@ public class Collision implements CollideListener {
         if (eaten.getVulnerability()) {
             player.increaseScore(eaten.getScore());
             eaten.unsetVulnerability();
-        }
-        else{
+        } else {
             player.decreaseLife(1);
             for (Ghost enemy : enemies) enemy.setPosition(new Point2D(-0.125f, -0.125f));
         }
@@ -88,15 +87,9 @@ public class Collision implements CollideListener {
             Platform.shutdown();
         }
 
-        if (p1.getSprite() instanceof Pacman && p2.getSprite() instanceof Wall) {
-            System.out.println(oldObj1 + " " + p1.getShape());
-            System.out.println(oldObj1 == p1.getShape());
-            System.out.println(oldObj1.equals(p1.getShape()));
+        if ((p1.getSprite() instanceof Pacman || p1.getSprite() instanceof SuperPacman) && p2.getSprite() instanceof Wall) {
             p1.getSprite().setShape(oldObj1);
-        } else if (p2.getSprite() instanceof Pacman && p1.getSprite() instanceof Wall) {
-            System.out.println(oldObj2 + " " + p2.getShape());
-            System.out.println(oldObj2 == p2.getShape());
-            System.out.println(oldObj2.equals(p2.getShape()));
+        } else if ((p2.getSprite() instanceof Pacman || p2.getSprite() instanceof SuperPacman) && p1.getSprite() instanceof Wall) {
             p2.getSprite().setShape(oldObj2);
         }
     }
