@@ -87,5 +87,17 @@ public class Collision implements CollideListener {
         } else if (p2.getSprite() instanceof Pacman && p1.getSprite() instanceof Ghost) {
             Platform.shutdown();
         }
+
+        if (p1.getSprite() instanceof Pacman && p2.getSprite() instanceof Wall) {
+            System.out.println(oldObj1 + " " + p1.getShape());
+            System.out.println(oldObj1 == p1.getShape());
+            System.out.println(oldObj1.equals(p1.getShape()));
+            p1.getSprite().setShape(oldObj1);
+        } else if (p2.getSprite() instanceof Pacman && p1.getSprite() instanceof Wall) {
+            System.out.println(oldObj2 + " " + p2.getShape());
+            System.out.println(oldObj2 == p2.getShape());
+            System.out.println(oldObj2.equals(p2.getShape()));
+            p2.getSprite().setShape(oldObj2);
+        }
     }
 }

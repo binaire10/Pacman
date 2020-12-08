@@ -95,13 +95,10 @@ public class GameLayer implements Layer {
     @Override
     public void onUpdate(double timestep) {
         Input inst = Input.getInstance();
-        float t = (float) timestep;
-        player.setPosition(
-                player.getPosition().sum(new Point2D(
-                        ((inst.getKeys().get(KeyCode.Right) ? 1 : 0) - (inst.getKeys().get(KeyCode.Left) ? 1 : 0)) * t,
-                        ((inst.getKeys().get(KeyCode.Up) ? 1 : 0) - (inst.getKeys().get(KeyCode.Down) ? 1 : 0)) * t
-                ))
-        );
+        player.setSpeed(new Point2D(
+                ((inst.getKeys().get(KeyCode.Right) ? 1 : 0) - (inst.getKeys().get(KeyCode.Left) ? 1 : 0)),
+                ((inst.getKeys().get(KeyCode.Up) ? 1 : 0) - (inst.getKeys().get(KeyCode.Down) ? 1 : 0))
+        ));
     }
 
     @Override
